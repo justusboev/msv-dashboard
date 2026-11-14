@@ -1,0 +1,95 @@
+name: MSV Dashboard aktualisieren
+
+on:
+  schedule:
+    - cron: "23 4,16 * * *"   # taeglich ca. 5:23 und 17:23 Uhr (Winterzeit), 6:23 und 18:23 (Sommerzeit)
+  workflow_dispatch: {}        # Knopf "Run workflow" zum Starten von Hand
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: msv-dashboard
+  cancel-in-progress: false
+
+jobs:
+  aktualisieren:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.veroeffentlichen.outputs.page_url }}
+    env:
+      ZUSTAND_SCHLUESSEL: ${{ secrets.ZUSTAND_SCHLUESSEL }}
+      MSV_PW: ${{ secrets.DASHBOARD_PASSWORT }}
+      POLAR_CLIENT_ID: ${{ secrets.POLAR_CLIENT_ID }}
+      POLAR_CLIENT_SECRET: ${{ secrets.POLAR_CLIENT_SECRET }}
+      POLAR_REFRESH_TOKEN: ${{ secrets.POLAR_REFRESH_TOKEN }}
+      MSV_TOKEN_DATEI: 02_Daten/polar_token.txt
+      SKILLCORNER_USER: ${{ secrets.SKILLCORNER_USER }}
+      SKILLCORNER_PW: ${{ secrets.SKILLCORNER_PASSWORT }}
+      TZ: Europe/Berlin
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Werkzeuge installieren
+        run: pip install cryptography
+
+      - name: Datenstand entschluesseln
+        run: python 03_Skripte/zustand.py auspacken
+
+      - name: Trainings von Polar holen
+        id: polar
+        run: |
+          mkdir -p 04_Tests 01_Dashboard
+          set +e
+          python 03_Skripte/polar_abholen.py --auto
+          rc=$?
+          if [ $rc -ne 0 ] && [ $rc -ne 10 ]; then echo "fehler=1" >> "$GITHUB_OUTPUT"; fi
+          exit 0
+
+      - name: Spiele von SkillCorner holen
+        id: skillcorner
+        run: |
+          if [ -z "$SKILLCORNER_PW" ]; then echo "Kein SkillCorner-Zugang hinterlegt, uebersprungen."; exit 0; fi
+          set +e
+          cd 03_Skripte
+          python skillcorner_abholen.py --auto --ohne-events
+          rc=$?
+          if [ $rc -ne 0 ] && [ $rc -ne 10 ]; then echo "fehler=1" >> "$GITHUB_OUTPUT"; fi
+          python daten_zusammenfuehren.py
+          exit 0
+
+      - name: Dashboard bauen
+        run: |
+          mkdir -p seite
+          python 03_Skripte/html_mit_passwort_bauen.py 02_Daten/skillcorner_physis_alle_spiele.csv seite/index.html
+
+      - name: Datenstand verschluesselt sichern
+        if: always()
+        run: |
+          python 03_Skripte/zustand.py einpacken
+          git config user.name "MSV Dashboard"
+          git config user.email "actions@users.noreply.github.com"
+          git add daten/zustand.enc daten/zustand.pruefsumme
+          git diff --cached --quiet || (git commit -m "Datenstand $(date '+%d.%m.%Y %H:%M')" && git push)
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: seite
+
+      - name: Veroeffentlichen
+        id: veroeffentlichen
+        uses: actions/deploy-pages@v4
+
+      - name: Fehler melden
+        if: steps.polar.outputs.fehler == '1' || steps.skillcorner.outputs.fehler == '1'
+        run: |
+          echo "Abruf fehlgeschlagen. Details im Schritt 'Trainings von Polar holen' bzw. 'Spiele von SkillCorner holen'."
+          tail -20 04_Tests/polar_protokoll.txt || true
+          exit 1
