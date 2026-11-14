@@ -1,0 +1,1700 @@
+<meta name="dash-one-writer">
+<style>
+.msv { --msv-blau: #0058a8; --msv-blau-dunkel: #003d7a; --msv-blau-text: color-mix(in srgb, var(--msv-blau) 70%, var(--color-fg)); --msv-blau-chart: color-mix(in srgb, var(--msv-blau) 85%, var(--color-fg)); --msv-zebra: repeating-linear-gradient(90deg, var(--msv-blau) 0 10px, #ffffff 10px 18px); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+.msv-head { position:relative; overflow:hidden; display:flex; flex-direction:column; gap: var(--cds-gap-xs); padding: var(--cds-pad-xl) var(--cds-pad-lg); border-radius: var(--cds-radius); color:#fff;
+  background: linear-gradient(90deg, var(--msv-blau-dunkel) 0%, var(--msv-blau) 45%, rgba(0,88,168,0.15) 80%, rgba(0,88,168,0) 100%), repeating-linear-gradient(115deg, var(--msv-blau) 0 16px, #ffffff 16px 28px); }
+.msv-head { flex-direction:row; align-items:center; gap: var(--cds-gap-lg); }
+.msv-head-text { display:flex; flex-direction:column; gap: var(--cds-gap-xs); min-width:0; }
+.msv-logo { flex:none; width:84px; height:104px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius: 14px; padding:8px; box-shadow: 0 2px 10px rgba(0,0,0,.18); }
+.msv-logo img { max-width:100%; max-height:100%; display:block; }
+@media (max-width: 480px) { .msv-logo { width:64px; height:80px; padding:6px; } }
+.msv-kicker { margin:0; font-size: var(--cds-font-size-caption); letter-spacing:.14em; text-transform:uppercase; opacity:.85; }
+.msv-title { font-family: var(--font-anthropic-serif); font-weight:400; font-size: var(--cds-font-size-title); margin:0; color:#fff; }
+.msv-sub { color: rgba(255,255,255,.85); font-size: var(--cds-font-size-caption); margin:0; }
+.msv-tabs { display:flex; gap: var(--cds-gap-xs); border-bottom:2px solid var(--msv-blau); margin: var(--cds-gap-md) 0 var(--cds-gap-lg); overflow-x:auto; }
+.msv-tab { appearance:none; background:none; border:0; border-radius: var(--cds-radius) var(--cds-radius) 0 0; padding: var(--cds-pad-sm) var(--cds-pad-md); font: inherit; color: var(--color-fg-muted); cursor:pointer; white-space:nowrap; }
+.msv-tab:hover { color: var(--msv-blau-text); }
+.msv-tab[aria-selected="true"] { color:#fff; background: var(--msv-blau); font-weight: var(--cds-font-weight-medium); }
+.msv-lede { font-size: var(--cds-font-size-heading); line-height:1.4; margin: 0 0 var(--cds-gap-lg); max-width: 60ch; }
+.msv-lede b { font-variant-numeric: tabular-nums; }
+.msv-cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-lg); }
+.msv-card, .msv-panel { background: var(--color-panel); border:1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); }
+.msv-card { position:relative; overflow:hidden; padding-top: calc(var(--cds-pad-lg) + 6px); }
+.msv-card::before { content:""; position:absolute; left:0; right:0; top:0; height:6px; background: var(--msv-zebra); }
+.msv-card h3, .msv-panel h2 { margin:0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
+.msv-panel h2 { font-size: var(--cds-font-size-body); color: var(--msv-blau-text); padding-left: 12px; border-left: 4px solid var(--msv-blau); }
+.msv-card .msv-big { color: var(--msv-blau-text); }
+.msv-lede b { color: var(--msv-blau-text); }
+.msv-big { font-family: var(--font-anthropic-serif); font-weight:400; font-size: 2rem; font-variant-numeric: tabular-nums; margin: var(--cds-gap-xs) 0; }
+.msv-unit { font-size: var(--cds-font-size-body); color: var(--color-fg-muted); margin-left: .2em; }
+.msv-delta { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.msv-good { color: var(--color-ok); } .msv-bad { color: var(--color-bad); }
+.msv-panel { margin-bottom: var(--cds-gap-lg); }
+.msv-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 var(--cds-gap-md); }
+.msv-chart { position:relative; min-height: 260px; }
+.msv-chart svg text { font-size: var(--cds-font-size-caption); fill: var(--cds-text-secondary); }
+.msv-chart .lbl { fill: var(--color-fg); font-variant-numeric: tabular-nums; }
+.msv-tip { position:absolute; pointer-events:none; background: var(--cds-surface-popover); border:1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: var(--cds-pad-sm) var(--cds-pad-md); font-size: var(--cds-font-size-caption); line-height:1.5; white-space:nowrap; z-index:5; }
+.msv-tip b { color: var(--color-fg); }
+.msv-toggle { display:flex; gap: var(--cds-gap-xs); flex-wrap:wrap; }
+.msv-toggle button { appearance:none; font: inherit; font-size: var(--cds-font-size-caption); border:1px solid var(--color-border-line); background: var(--color-bg); color: var(--color-fg-muted); border-radius: 999px; padding: 4px 12px; cursor:pointer; }
+.msv-toggle button[aria-pressed="true"] { background: var(--msv-blau); color: #fff; border-color: var(--msv-blau); }
+.msv-panel-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap: var(--cds-gap-sm); }
+.msv-tablewrap { overflow-x:auto; }
+.msv-table { border-collapse:collapse; width:100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.msv-table th, .msv-table td { padding: 6px 8px; border-bottom:1px solid var(--color-border-line); text-align:right; white-space:nowrap; }
+.msv-table th:first-child, .msv-table td:first-child, .msv-table th:nth-child(2), .msv-table td:nth-child(2) { text-align:left; }
+.msv-table th { color: #fff; background: var(--msv-blau); font-weight: var(--cds-font-weight-medium); border-bottom: 0; }
+.msv-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--msv-blau) 9%, transparent); }
+.msv-table tbody tr:hover td { background: color-mix(in srgb, var(--msv-blau) 18%, transparent); }
+.msv-soon { position:relative; overflow:hidden; padding: var(--cds-pad-xl); padding-top: calc(var(--cds-pad-xl) + 6px); text-align:center; color: var(--color-fg-muted); }
+.msv-soon::before { content:""; position:absolute; left:0; right:0; top:0; height:6px; background: var(--msv-zebra); }
+.msv-soon h2 { border-left:0; padding-left:0; }
+.msv-foot { height:10px; border-radius: var(--cds-radius); background: var(--msv-zebra); opacity:.9; margin-top: var(--cds-gap-lg); }
+.msv-soon h2 { color: var(--color-fg); font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+[data-dash-source-state=refreshing] { opacity:.5; }
+.msv-matchline { margin: calc(-1 * var(--cds-gap-md)) 0 var(--cds-gap-lg); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.msv-legend { display:flex; flex-wrap:wrap; align-items:center; gap: 6px 10px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-bottom: var(--cds-gap-sm); }
+.msv-key { display:inline-block; width:12px; height:12px; border-radius:2px; margin-left:6px; }
+.msv-key:first-child { margin-left:0; }
+.msv-key-msv { background: var(--msv-blau-chart); }
+.msv-key-geg { background: color-mix(in srgb, var(--color-fg) 30%, var(--color-bg)); }
+.msv-chart-sm { min-height: 200px; }
+.msv-toggle-row { margin-top: var(--cds-gap-sm); }
+.msv-subtabs { display:inline-flex; gap:4px; padding:4px; border-radius:999px; background: color-mix(in srgb, var(--msv-blau) 10%, transparent); margin-bottom: var(--cds-gap-lg); flex-wrap:wrap; }
+.msv-subtab { appearance:none; border:0; background:transparent; font:inherit; font-size: var(--cds-font-size-caption); color: var(--msv-blau-text); padding:6px 16px; border-radius:999px; cursor:pointer; }
+.msv-subtab[aria-selected="true"] { background: var(--msv-blau); color:#fff; font-weight: var(--cds-font-weight-medium); }
+.msv-picker { display:flex; flex-wrap:wrap; align-items:center; gap: var(--cds-gap-sm); margin-bottom: var(--cds-gap-lg); padding: var(--cds-pad-md); border:1px solid var(--color-border-line); border-left:4px solid var(--msv-blau); border-radius: var(--cds-radius); background: var(--color-panel); }
+.msv-picker-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
+.msv-select { min-width: 240px; max-width:100%; }
+.t-tief { color: var(--msv-blau-text); }
+.msv-mehr { appearance:none; background:none; border:0; padding:4px 2px; font:inherit; font-size: var(--cds-font-size-caption); color: var(--msv-blau-text); cursor:pointer; text-decoration: underline; text-underline-offset: 3px; }
+.msv-mehr:hover { color: var(--msv-blau); }
+.msv-table td.msv-mehr-zelle { text-align:center; background: color-mix(in srgb, var(--msv-blau) 6%, transparent) !important; }
+.p-key-spiel { background: color-mix(in srgb, #e08a00 85%, var(--color-fg)); }
+.msv-table.p-links th:nth-child(3), .msv-table.p-links td:nth-child(3) { text-align:left; }
+.msv-table tr.p-spiel td:first-child { box-shadow: inset 4px 0 0 color-mix(in srgb, #e08a00 85%, var(--color-fg)); }
+.msv-table td.msv-bad, .msv-table td.t-tief { font-weight: var(--cds-font-weight-medium); }
+.msv-fail { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: var(--cds-pad-md); }
+</style>
+
+<div class="msv">
+  <header class="msv-head" id="kopf">
+    <div class="msv-logo" id="wappen"><img alt="Wappen MSV Duisburg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAADSBAMAAACx0Z+oAAAAMFBMVEUAAAArMmn09Pf8/PxhZZGQk7Owssr9/f39/f5ESXs8QnZ9gaWysre+wNSsrNhubm4qBHM5AAAAEHRSTlMA/vsM/v7+Xp/+/v4E/wcCT8uhewAAGM5JREFUeNqdm3t8VFWW77919qlUFY+kAkKQV4pHIwQqOSHaYAtYPBQcxYktas9Mo3HudM9tbTWftl92A1023vvRFm/Hy/R8Zq460h8f49XuMQ224hXwKChRDB4sAlF5VISQgiTkBJJUJXUe949TVanwSEidf6i9qfplrXX2Xnut31pbcIlHzC+KZQZKYE0iPVJiDO8RFQpC6R/9zxkVqc8V4pePiuFheWc/qmTAhHfa91K/F/zkW7N3D/LDi6fKxicOWZMidmp0d93DTY7KZdrPHn47L3FZPaVLzFW2dRTHg45gQmzlp6sdDSPfKQuLbcNSUcwsLCwcdw2Ko+L9hVfNEIBQfjKzsLBwxuUNJl9iygSMR77aDBCUlFrTDaA0dLcD7stLcQkdXSGAX8ccLdeEoeSoghj1q8kAv2tXhiFXXxSA3d4oiEgXoFcCnzS3A0Q3DEOuoFIJQE9xUAE5LwxaCJSSKQCEQ8PRMRR2/o2cF+CaWwOyH8xKzVHEPxzbpx/jpucISu0ucL8UdZQF7GHZPvO8/pACEKI3/XYB+yUtFyxpm2AFRDAzbxfciFywzJs08gNYIDMq9XZJ5KYjrwfZooJCiGmptzuYhS+BpYYz/1kp8oAonUB4yN13KblqM0q2aAsCIKiCFeSAFTkUyHz+WubzEC5+F6Qgs1SG4b8kqT1j3/YfNUe/9oieq/ukunhqzqfbV66j0Y8v/0XH1A2qFmNe3nleHssM/mPmc7ykCiT4ybaGtHfwrA0Ox/Z/6n9le6rBDI0YXVyip2aS+nD8fevZcY3pzxaA76QvZh9Lzfz+P4ldOZZU+lV8ILjtFWfTg94Pi2JXrqNp3nvBRA2utNqigcvubdcl5irsYjX1y3ExAJcfqT31/cmSNhz/pXEu9WmJHUsJX1rg7IbK/cM6a7HLVjn2dXceciaSnsOnZ8cAd+uJpmFh0VpPHODGWQ++44A95T3YGwfvyNs6Y8PDsoOriIHoq/+0x5nZPv/AwkCUYPf2luHpmBFMWng25eVpLK3vjD/7tq8oNlxfaM7JD0GoSysCEHeCdTopecOrIhrD9quRAw1gL/ZoAObZsZiLmJx0bQ4OGolcetoue2F7vLnzjDM6kefvukdvKNMDn+eAReu+VdrfWinj2IaYvfV874++EC0MX0dMwYi6jHGMwIme28zRy0xywcLcRpYQX1ihV0K1leSEJQ7LPYCoAdiMqR/0RPTq3LCU5EKA+dVsgYdD2IsXTtVCQ0SUl5kvujqhL4rS1yPsRuTzPRw5982yqY2xnOz1D9pjOiNsXCrYRiVGcJ79UiQXucTEPfahr9m0K2F7E0ieE3FO9jZ6dTsXubTFvT2ZE9yNBYa1Ws7J9uZ1UX8An6agAElQEHwUygVLiLMNaCTR8YdgA4AkjNzWhJycJ8AL+ME5Lebd5M1xrYYOAt1UoYJQAU6+voCcsAySxRCmWqAjgayJubA0JyxFpR6Q8aCzCQSmmoeeE1ZDDU4omHRMNgGIk5OOwZI/bBGVYGNQSTWSVj5ZYXdfTnKFllW76pBtIOyFKXK0+wQujirDx9I++LVYb2CDIpNE0laD5XNVVeYiV71y7+YpqZxFYopbBeZSk5OOFaY+GcV247cxJO02pBkcZQiwy8mFrGl+EmCiBN2qaP/sPBbVufl7A6EB/hB+dRGTwQiYOe4h/NgCUKMUCU3SgC9C4VBuWDKmC6DS21jKFADz3UHy0MvFhQBKdxtLPxytF3ZAYSoofOXegqg5fLlExIZKQgiQmeLspz+ZOdorD356HdjwjNCg/NkwKO7csOKy4i7UAWoXgYgSQK0O5XIOSfLqe7b3VHRFR8S97RqEYjTGfK4v8yfEcpBLVwXv64ApgVsDP/y/3Ozl0jWXOwkwLwij0ns+lMuZhqAsgcbNBFTcInWI4M9Frj5J3okLDvs+hEWTFVDJza+iMFkGF2h9QURE23MlzNllsDTUIhEKAW4VyyAJvlyxRJ6sbdBOONyGAlTTB3m5vUc7SU11nfM5IMNvAeKDn2rS5d1XhqdQTQUz5PJl2KzhrlWR8SBeiIListFrc4qZgve7qEpl6yBgo5F0uL4c5Oo05Op0JOek8EA4p7XKjnAaIAFswYUHLbf3GEE1s7iix9hEn4y8JZeYXDrbHUi7lwM69Lzr/fXeHsn3lZ0DljQmzW5w2ouVkD2nOuOuQSPpy9prnpX9HZFeHTnZvqH/oDAV8tyP4zcfM+Vc7FV296p+J9PkFRX/4Y3R6z9/1h72+SiUc21Zo3yJqVFu/KD41BFz+Do2ZFN5ZmiZGYXz+F2D6TjQABVOjANBqSB7YUYDM45B5+AuegBWhVnvAJoaobIB8dGeNj88VK2+M/fKsCrqqViBodYjFPwDoCr/d6UK1UMEc3IW1IJbt7wBzL51ZyT48oUELit2XLGPFvULW0/M7ujoODflvkTwwl1sIf565f4+6DlT/Ke9gPnZjVPPbbiICZ7cNwR7348lIr8uzgizr/flC9ldobmuWK7gI3+bpVfPuYFW9jNvEO74gnUv5KltA+bL7WyTFdKByw923hWs++CDk7P2D6BFs77kzXgIY2gdxeGtGsCTgMjXACl70ycpcvj7K4mjgw9OAbiuDlhiA5jWAMeoOZyAzpCxb0os95FacGsBgD+SlZJtCqQEEmv1obCCc6cAYpQEjPlvGlBePSPLYNss3Qm99EG1lAEhEhqwZNYn7bj+4XlAjpapV2VnRx3paHFIezV8G3AfsDS4+zcB8I6WVCfXSPleKRUSrlaHwgo+UAuM8r8BYvtGDeawHvoNZrEYJy4cMp4QYivg+vHnAdgw9nkQUbsadzSQSZhRUgdD3qCcqACp/YYoFL3ys7fhUIMSI7SwDjFabkol/qLDtw0kD4jph+zB5Qo+oIL7exXbYETvExqiYTssuUuemlKylG+nN9vIIXR0VPzuxobZEB/7HJSOLMJ94OlrvmhWALEoSggwAVsdIoeR2m9tRDQHxmlwz3uLo/T9/ZuMG/mj1+yVB65a2eJpRXoTKNdBfL8jNijW/HGJGIplr/kY0TxFw3XvicbHx74TjYsWcf2u5Z5RemkUmBMD6xtpovO0XNrnKHc/DeOPcE0LroflZ1g58UVv/pGyYrU8Wqyl/A1QCOQ19h9+5sVv1CWY1o77gW0H/76W8s6zuihwtT9+TL37aQrlVmCU29YBkQ/cX7VmqR9sfUc9Qqm/GEueqFPeiV2gMb7pes31gzO144+4r9ZFvq0DS7VHwk755Ad64f/JZKq3rvdXXAgmpOCEGNahcUu3I/KmNFJ+KHH6nzrurgNvIAaiQ3oHYOnZ7/a+Ub/c9cO3Eoma4zNONL54358rLigMuBTpOPJE2bxrE657x21izJ3P3fOcPKWdIqsVeLymWAOua6ocuWVZMBPf++Ye5f71YuDZJybctJ/f10lfNHdR/tX+Llm+/tPmKff0xNz/fV8COCAdB/7Hu4X7IlPfVwEqfrEdjFP84cnxmcaI9Fr9L/g4oskJaD64APPOF6zVh7dqLHqjhjQHID97x5llbRo8UTiRY6ooVCBx34xkPFgxQK7Woi7viUCnvTgq8s6PjpX/efXV9xX0xGR9VRgoO3ccxFWFny7YBvA5xuxpdUZelQqcklxWpKIlO0mPY641u0p0rLUlGs2uaMPKbRqr/e8CIjoFfLsKzizcnlrY86t0YYgwiOvp6U1urFeydVTYtA2FKpRtKxBGScSYuwj3Bw09wAZJg9mvtK58BwXIY/8XWzQUGXz5jVvoOf/iuiNZWC6dt7/UCFUzqz4faS3W6mQtY0Y/EABqguBuSkqv+ZY2KRB/FCMqS4GFYKA8Ckbg1Zn9JpNKYF8cZHhfvIBxfnnNv3VR/r3IVg3cQsU3Ztxb7d6FGgGgtljxWoYahXVij4saPlfimtKvoybWBqEAYcghlJ322w9Ui+ZwWRC47U8w+9YzkzC1MnTg6Ekt4UbWoNZt2O7HQ3yYXB/ptz3WecDGWuuKckqjYGu41Ce6VJBVDdFsS5piIaMDAVOuToQswL9AcRscwOx6LZgWTLoRRQW2UKOX4LMp/GCx3KSV3QAslqopraxtFydN6mkGGqe3hnnTYbCir9nFhEiW3JkWTNywv2xXizhTGD992NVo5xXP26fd2NPh2w9yh5UQiW8VNYZOx+d0TT07Mo7xq9Yb5s6dWNjC/f+XOv2f906IcvLQ1BTJI/nZ5yScs7QVSGsxJPmA9uBkYDEBSte8VfusFq7UjMNMYeMdG47u2LGj/ti45b9RpAbf/0IHQzmfEkws+9Q7JSYxtqu1/W8+tkuOz8n3WHrLcZA7iGLNGBf9yNu6r9dzbWPna7+Kgjx/VhSrZdSheAEr/HuBk3nTilKlWNfaGgBhYKPsBKU5MrEdWL3Ch6vyrdoECe3nN6GLVT8AFrS+92YAMMcpAVp3AjWGstoJsMQ3fc3bYxJjewrbm+JzPiya89Q/lXui8OzL398Vv2d3d9Lu9drX1Z7Vb1MBrwbE5uhgda/9uz/OjiE+jZ885hybYkx3ATGJ/L77PizqWrC/5cQ1r8YOg9hrNsXjzYlwLJH0yHtXHlxcB9DqcGNuwPrs1VtUCLXMPnXzkkQMEGOCkSYkCruv+XRkovWslN/z4BIVbr6u7sbGxNT4m9c3zSrsEJ+WNwLYTjeE0esF7JH7Qe6gt+vLb76ynXO7P9TzGrA8+WIYyidthdBd3wmyghMRJstONJYOMRwXaIVgNTMNJFsBkKoK4mAGQZVJosiWrIO76V8W877Y8ZaqPIz1/HxtdZp+ykSwAAdq/qBK+40aU1msAFIqNL4fwLUW1BtAHjN6bi3GrrtkuXkD/HTn42p/8lSRFU9v/DEPWVSjbosAku7khJ2psG+eXIsY7eVOfOT1FZlGjR2QRU2/auLYWOCpVGRWRsQvQHI7/isVb4QBQ+VgEpG/NhJ5Hpv7ajUvBL6YUJqVzrmwFEQ4xd7FqndhiFvMkocUkD5Y2w6wo9ZZb3MD3H7748r7AZL8RSLexQnzyygPzkwnKTKcoBSA4jp6ixC9S/ahbhMgGejAkUN+QOHPd2rl0zZXmHs08PUtFi8lFUtJ4A3vm5myUiKAdW0UGFmsxcP8Mr5uoebCJ2sgHaISiNt+E/IiM54XzeuD2uHngDWVypJf8KGsVfLPsO9RnLT2IBwF5Ks0+AXuxE81JtGTjIJkO2G2oQJ+3MoSX4UWnBsAFy9v1Cx59CShSmFg3aNO7OssB3mSBiQCRugZirV/p+YZBclQHe6sCgMo+fRApF5EzmngiluSiAWFtiEVnq97lAjgFD0maSk6qhFJG7GOqloQ9gQNYMKX9pmCefsmT7SKYmVXz4qCfbYn7ou3e3sKT6ZYol29ngSw2wPpvNW65WjtiN6R1uw231e2lFrLkUMgbG5ujmgi0qUCCgEsxbCFKvfnfiHADNCfAoeYb+YjqmR3Vr49l2AVxA2FYPcNAOMrNYkmv2lRlOH0AxFHsX7O4zGOhhBt1Ym+oJLGMus1OnX8q01x7He1AAUvYyoQUNCANTUAESsMGErEaZIBehixdX6bWE4glMUpKLiAzZpS8iKAT7W87L12vhaVAPfOJ2oAI1QDsMcKg8g3QkAgbu58In8/lf5+zsqOTTg+Q1uqn5m50tlVP/qse9z0j48Lj5WAMt3e83MVvhzdA1i+uoTIh9Y4nPbOvvodePKx5gMiu49JPxs8fqblSALAbuuec7bz1nv25AVi0Ctsu35WDOH+t1rgqT29+aC0JEB49E7kKVtkqSObs7JhsxYscRzet19X7oRd2iaqQGbeRoxmBTPwKMBPzHzk4j0oYOJVlrVq2HI2lyaYeSQYuaHFIRfGFBRo3uCRss6TreDydyDyoVhzj+oAuEOVJ2k+r63DHbu7+/JuaNOKGqVs3hg0PnHcnHttqEo8ue9cKGABIQFmFzQpSSodUmaSRlwRQNSM376pPkbfAL5w0q0f2/PHOQf6TXuVcOVLfXf862krAZ2eLijTQ9HOhV+29QCyR0/A/ft64LQ32XJMp+cWO9te5vtgrtEA5H31LwvVul0VhECwAAiIrSEOLDMVwEAGnjDCIKMIvKZTB+8vTHwWFOI5AO4cvch2CVQbdPAQBaHa5tYQ+4kChMwwWNSCDXZlEvTQAO7R1HB67B6fFNmLy1DEQy50SFIJLvIw3wmlTpAoKrgJgM0sqwZxIb8q7LLxGiAffGN+zN89qmXqayLPH8P2bgfbm0xg+HTnwL1ajyUwfNEEkufrpdHybzU+FpcuqDB9FxBjfRUaYNLk91AFNfKAfswwUIkAQl7Ig21iZy3VF/Cr4uAL4Lt9VaQe2dGlm2rQ7QyfUJnCckZ6EuLw+7Ynn7yYq3UFYOG0miDgTiambw5kN3t6gY0Zs3ggXZb5j8KnnlIuxFJKNMob1lc4ri5ef19W/OAnCRgK8xymri+btrsEh2x+F3fzvztJpuvZVWNLAxdxeO87PX4DM+QKOXQhhywind4C7/JU4KOPdGnHswqSqYBIS1Ek2elehxW9SC63MmdVJNUv1hf+6EJWMcSA3sr+Z/rFWErJ7ubNqVzVgIQr7Jyvlak32N82FHKa1FOG0ndcXAsoWnH7VX2fp+xYGPdZdd7ePEXlg5E98IEX+8ntaYoHjARM6+jC66bJO7Pz2LMdA7AmaZ9tb06/kwldXrB782Ix3HICZA/sTtFFoRgoUehMJrA9JH75ag+nC6QB3O78W9LNdebIPsHy+bNs/GCjOLa2HItdp6XXVgggNOJT5UIdR5Pob0WcY3QlDh0/6fLMbsTlCUSxfcDp0BF85Uec3Y3wEEN4/G0nO289/NSL2XJNL/m7nf2j78PSwrFuVMhDSwe+n4y7y3skvTBdVIHJeWAXtQPf482bQtnrya1hJRAQDwknWAKMHWk/AM/I1RBmvzh3rUCtkbJX6sgBLTjKPCpQFBcQdV1U/gkAtRZQK2Ob760jb6Av/HN2W6Pqx94R8OsmoJk1kMhuqJE1QDOBqBtreU21sLP/mG23tmSfvN2FyqjjsSbv7BiyR49Cc1btN68LZE8ghvCIhKflo1mt7gFnLRd0W1Z9cBQhCIBBJBMRppY18AwauFhoKBh+0xxohGzaSLLGvOlFnnzacyIOczoSwJwM7SuOAb5v4vB71bfg7XllsceK9cs3+QeNXs/8g63B8hM90J63MAqtnvT/lkZBtCxphN5YtHnk0cbY6YLo5Xso+b7xyE6RH4gaCiSJOBFhSiwV2EAteDUJrN1Qo3L5iogiFWjyaOzuUbbuRBQppg8oU0m1tLhH2fof1nHj9oKvzcu3rbfGkEYgekyPiINP9ibAdiwmHQbceVNjUKYH5jW0WdGEW7cvjyW5x3XliXXd+dNaZscw5nT3pDNapsaAG1uPga+L5vbY4qZAyw87YoPcfTBMS7RVE1WJAl8YlUDiPFCmAbI2D0jgWQd7ZE3RB7tHYQZvW9/GXaos4Qbm8xGAMZNlKsBiDoYhxITfdARMi+hubbA2/0lRojd9eE3HrGmnFkb/+CrWqkbg1NydAHIHdv2stg65aU1eQ17piVGH7EHeI0Ke3uZf/1vL0z4qRVg+0h8H3KEChFS7XKOjot410VM/6PWD0oQpvjmLfM7ntKizL+NHHn/N4Yc43xGKrnqfpeXHY4PJhbLsc9dJQ+5YdEdanjI1XQxOTXhOj2kvlNp9+V+bg16LoHW/edLNlKKv/yvda3L6l2rm7ADgx53lepsv7pJ1e3AsqdTo8q18P17qb0t/7bMegPI0X+55a85e0e2Lly2JxwbHsotWMvY9pcvTrN+SqjzZI+Mgp80mn6E5rzi+JJr8z0cG6SVzzOKeFvP6hCm6+9IGYuVrGWNRpsKao9EOV2HUHPwaCUilXYlnVBvL/fPTadd19IbMlQrpMHCod+XBO0rjsaHkQpHK/jpKBOXPirU/XtQPKNLVT3mMU+Ec/ApiV6yz6/q8L2d9c5x3r72gbCL/OF2VKbvtXAtDyoWy7Lgqj6ZYA+/1A8n6yemhuOprZ1sMgSXkqW3PhlPaXJfFPS9bnNG5vMlfz9A6Is1d5X/OU+qsiFNPp8tD8rfe2575c/H81BYbAsue9Ne+rnkfp0bvRJ9umj638LHjX57s/8qWq19vGbxXMctibw5awJTHbk/dzhsaS1BcPMDovgFBh897++76K7mf5rjX8ScHyOEdmz2c7d5scqVYROpWZ//6Bays8r77lK+/rjP0dVm74i8FC/uLyh+AnhmJ0bdua+HK5aI++MqBS/cfi/z7s2+PXAEWkevHNylZkb2egXKvz65cXQmWWVE3vmlVBktoGahPKrQr6IUd+FTULzyTviX1nR4ttaN+cP1yk+E/FSz47fQ1hf3Pv/zj9I1ZN6CHIRdU1Iufvc6y5jqAjX85St6qmooLaqOuK5bM1BYsfT09+mHrM1xUy3Rd+T1lpR5xbabGWsFFNdb/Dz+e1nr7ctXqAAAAAElFTkSuQmCC"></div>
+    <div class="msv-head-text">
+      <p class="msv-kicker">Die Zebras · Leistungsdaten</p>
+      <h1 class="msv-title">MSV Dashboard</h1>
+      <p class="msv-sub">Saison 2026/27 · Daten: SkillCorner, Polar Team Pro</p>
+    </div>
+  </header>
+
+  <nav class="msv-tabs" role="tablist" id="reiter">
+    <button class="msv-tab" role="tab" data-tab="physis" aria-selected="true">Spieldaten</button>
+    <button class="msv-tab" role="tab" data-tab="training" aria-selected="false">Training</button>
+    <button class="msv-tab" role="tab" data-tab="spieler" aria-selected="false">Spieler</button>
+  </nav>
+
+  <section id="physis" data-panel="physis">
+    <div class="msv-subtabs" role="tablist" id="unterreiter" aria-label="Ansicht wählen">
+      <button class="msv-subtab" role="tab" data-sub="spiel" aria-selected="true">Spielanalyse</button>
+      <button class="msv-subtab" role="tab" data-sub="saison" aria-selected="false">Saisonübersicht</button>
+    </div>
+
+    <div id="spiel" data-subpanel="spiel">
+      <div class="msv-picker" id="spielauswahl">
+        <label class="msv-picker-label" for="msv-spielwahl">Spiel / Gegner</label>
+        <select class="dash-select msv-select" id="msv-spielwahl" data-draw="spielwahl" aria-label="Spiel wählen" data-source="spiele"></select>
+      </div>
+
+      <p class="msv-lede" id="kernaussage">Gegen <b data-draw="kGegner" data-source="kpis" data-field="gegner">—</b> lief der MSV <b data-draw="kMsvKm" data-source="kpis" data-field="msv_km">—</b> km, <b data-draw="kDiffKmAbs" data-source="kpis" data-field="diff_km_abs">—</b> km <span data-draw="kMehrWeniger">—</span> als der Gegner. Bei den intensiven Läufen über 20 km/h lag der MSV <b data-draw="kDiffHiAbs" data-source="kpis" data-field="diff_hi_abs">—</b> m <span data-draw="kHiVorne">—</span>.</p>
+      <p class="msv-matchline" id="spielinfo"><span data-draw="kSpiel" data-source="kpis" data-field="spiel">—</span> · <span data-draw="kDatum" data-source="kpis" data-field="datum">—</span> · <span data-draw="kWettbewerb" data-source="kpis" data-field="wettbewerb">—</span> · Quelle: SkillCorner</p>
+
+      <div class="msv-cards">
+        <div class="msv-card" id="karte-km">
+          <h3>Laufdistanz Team</h3>
+          <div class="msv-big"><span data-draw="kMsvKm2" data-source="kpis" data-field="msv_km">—</span><span class="msv-unit">km</span></div>
+          <div class="msv-delta">Gegner: <span data-draw="kGegKm" data-source="kpis" data-field="gegner_km">—</span> km (<span data-draw="kDiffKm" data-source="kpis" data-field="diff_km">—</span>)</div>
+        </div>
+        <div class="msv-card" id="karte-hi">
+          <h3>Intensive Läufe (über 20 km/h)</h3>
+          <div class="msv-big"><span data-draw="kMsvHi" data-source="kpis" data-field="msv_hi">—</span><span class="msv-unit">m</span></div>
+          <div class="msv-delta">Gegner: <span data-draw="kGegHi" data-source="kpis" data-field="gegner_hi">—</span> m (<span data-draw="kDiffHi" data-source="kpis" data-field="diff_hi">—</span>)</div>
+        </div>
+        <div class="msv-card" id="karte-sprints">
+          <h3>Sprints (über 25 km/h)</h3>
+          <div class="msv-big"><span data-draw="kMsvSp" data-source="kpis" data-field="msv_sprints">—</span></div>
+          <div class="msv-delta">Gegner: <span data-draw="kGegSp" data-source="kpis" data-field="gegner_sprints">—</span> (<span data-draw="kDiffSp" data-source="kpis" data-field="diff_sprints">—</span>)</div>
+        </div>
+        <div class="msv-card" id="karte-speed">
+          <h3>Topspeed MSV (PSV-99)</h3>
+          <div class="msv-big"><span data-draw="kTop" data-source="kpis" data-field="msv_top">—</span><span class="msv-unit">km/h</span></div>
+          <div class="msv-delta"><span data-draw="kTopSp" data-source="kpis" data-field="msv_top_spieler">—</span></div>
+        </div>
+      </div>
+
+      <div class="msv-panel" id="duell">
+        <h2>Teamvergleich</h2>
+        <p class="msv-note">Summe aller eingesetzten Spieler. Beschleunigungen = hohe Beschleunigungen und Abbremsungen.</p>
+        <div class="msv-legend"><span class="msv-key msv-key-msv"></span>MSV Duisburg <span class="msv-key msv-key-geg"></span><span data-draw="legGegner">—</span></div>
+        <div class="msv-chart msv-chart-sm" data-draw="duellChart" data-source="team_spiel"></div>
+      </div>
+
+      <div class="msv-panel" id="phasen">
+        <h2>Laufintensität nach Spielphase</h2>
+        <p class="msv-note">Meter pro Minute je Spieler. Bei "mit Ball" und "gegen Ball" zählt nur die Zeit, in der der Ball im Spiel war, deshalb liegen diese Werte höher.</p>
+        <div class="msv-legend"><span class="msv-key msv-key-msv"></span>MSV Duisburg <span class="msv-key msv-key-geg"></span><span data-draw="legGegner2">—</span></div>
+        <div class="msv-chart" data-draw="phasenChart" data-source="phasen"></div>
+      </div>
+
+      <div class="msv-panel" id="rangliste">
+        <div class="msv-panel-head">
+          <h2>Spieler-Rangliste</h2>
+          <div class="msv-toggle" role="group" aria-label="Team wählen">
+            <button data-team="MSV" aria-pressed="true">MSV</button>
+            <button data-team="Gegner" aria-pressed="false">Gegner</button>
+          </div>
+        </div>
+        <div class="msv-toggle msv-toggle-row" role="group" aria-label="Kennzahl wählen">
+          <button data-metric="distanz_km" aria-pressed="true">Distanz</button>
+          <button data-metric="m_pro_min" aria-pressed="false">Meter/Minute</button>
+          <button data-metric="hi_m" aria-pressed="false">Intensive Meter</button>
+          <button data-metric="sprints" aria-pressed="false">Sprints</button>
+          <button data-metric="psv99" aria-pressed="false">Topspeed</button>
+        </div>
+        <p class="msv-note">Werte im ganzen Spiel. Spieler unter 45 Minuten Einsatzzeit sind hell dargestellt.</p>
+        <div class="msv-chart" data-draw="ranking" data-source="spieler_spiel"></div>
+      </div>
+
+      <div class="msv-panel" id="spielertabelle">
+        <h2>Alle Spieler im Überblick</h2>
+        <p class="msv-note">Team oben bei der Rangliste umschalten. Intensiv = alle Läufe über 20 km/h.</p>
+        <div class="msv-tablewrap">
+          <table class="msv-table" data-source="spieler_spiel" data-row-key="match_id,spieler">
+            <thead><tr>
+              <th data-field="spieler">Spieler</th>
+              <th data-field="position">Pos.</th>
+              <th data-field="minuten">Min.</th>
+              <th data-field="distanz_km">km</th>
+              <th data-field="m_pro_min">m/Min.</th>
+              <th data-field="hi_m">Intensiv m</th>
+              <th data-field="sprints">Sprints</th>
+              <th data-field="beschl">Beschl.</th>
+              <th data-field="psv99">PSV-99 km/h</th>
+            </tr></thead>
+            <tbody data-draw="tabelle"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="saison" data-subpanel="saison" hidden>
+      <p class="msv-lede" id="saisonfazit">In <b data-draw="sAnzahl" data-source="saison_kpis" data-field="spiele" data-row="0">—</b> Spielen lief der MSV im Schnitt <b data-draw="sMsvKm" data-source="saison_kpis" data-field="msv_km" data-row="0">—</b> km pro Spiel, die Gegner <b data-draw="sGegKm" data-source="saison_kpis" data-field="gegner_km" data-row="0">—</b> km.</p>
+
+      <div class="msv-cards">
+        <div class="msv-card" id="s-karte-km">
+          <h3>Ø Laufdistanz pro Spiel</h3>
+          <div class="msv-big"><span data-draw="sMsvKm2" data-source="saison_kpis" data-field="msv_km" data-row="0">—</span><span class="msv-unit">km</span></div>
+          <div class="msv-delta">Gegner Ø: <span data-draw="sGegKm2" data-source="saison_kpis" data-field="gegner_km" data-row="0">—</span> km</div>
+        </div>
+        <div class="msv-card" id="s-karte-hi">
+          <h3>Ø Intensive Meter pro Spiel</h3>
+          <div class="msv-big"><span data-draw="sMsvHi" data-source="saison_kpis" data-field="msv_hi" data-row="0">—</span><span class="msv-unit">m</span></div>
+          <div class="msv-delta">Gegner Ø: <span data-draw="sGegHi" data-source="saison_kpis" data-field="gegner_hi" data-row="0">—</span> m</div>
+        </div>
+        <div class="msv-card" id="s-karte-sprints">
+          <h3>Ø Sprints pro Spiel</h3>
+          <div class="msv-big"><span data-draw="sMsvSp" data-source="saison_kpis" data-field="msv_sprints" data-row="0">—</span></div>
+          <div class="msv-delta">Gegner Ø: <span data-draw="sGegSp" data-source="saison_kpis" data-field="gegner_sprints" data-row="0">—</span></div>
+        </div>
+        <div class="msv-card" id="s-karte-speed">
+          <h3>Topspeed MSV Saison (PSV-99)</h3>
+          <div class="msv-big"><span data-draw="sTop" data-source="saison_kpis" data-field="msv_top" data-row="0">—</span><span class="msv-unit">km/h</span></div>
+          <div class="msv-delta"><span data-draw="sTopSp" data-source="saison_kpis" data-field="msv_top_spieler" data-row="0">—</span></div>
+        </div>
+      </div>
+
+      <div class="msv-panel" id="verlauf">
+        <div class="msv-panel-head">
+          <h2>Verlauf pro Spiel</h2>
+          <div class="msv-toggle" role="group" aria-label="Kennzahl für den Verlauf wählen">
+            <button data-smetric="distanz_km" aria-pressed="true">Distanz</button>
+            <button data-smetric="hi_m" aria-pressed="false">Intensive Meter</button>
+            <button data-smetric="sprints" aria-pressed="false">Sprints</button>
+            <button data-smetric="beschl" aria-pressed="false">Beschleunigungen</button>
+          </div>
+        </div>
+        <p class="msv-note">Teamsummen je Spiel. H = Heimspiel, A = Auswärtsspiel.</p>
+        <div class="msv-legend"><span class="msv-key msv-key-msv"></span>MSV Duisburg <span class="msv-key msv-key-geg"></span>Gegner</div>
+        <div class="msv-chart" data-draw="verlaufChart" data-source="team_spiel"></div>
+      </div>
+
+      <div class="msv-panel" id="saisontabelle">
+        <h2>MSV-Spieler über alle Spiele</h2>
+        <p class="msv-note">Werte pro 90 Minuten, damit Einwechselspieler vergleichbar sind. Topspeed = höchster PSV-99-Wert.</p>
+        <div class="msv-tablewrap">
+          <table class="msv-table" data-source="saison_spieler" data-row-key="spieler">
+            <thead><tr>
+              <th data-field="spieler">Spieler</th>
+              <th data-field="position">Pos.</th>
+              <th data-field="spiele">Spiele</th>
+              <th data-field="minuten">Min.</th>
+              <th data-field="km_90">km/90</th>
+              <th data-field="hi_90">Intensiv m/90</th>
+              <th data-field="sprints_90">Sprints/90</th>
+              <th data-field="psv99_max">PSV-99 km/h</th>
+            </tr></thead>
+            <tbody data-draw="saisonTabelle"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="training" data-panel="training" hidden>
+    <div class="msv-subtabs" role="tablist" aria-label="Trainingsansicht wählen">
+      <button class="msv-subtab" role="tab" data-sub="einheit" aria-selected="true">Einheit</button>
+      <button class="msv-subtab" role="tab" data-sub="woche" aria-selected="false">Woche</button>
+      <button class="msv-subtab" role="tab" data-sub="belastung" aria-selected="false">Belastung</button>
+    </div>
+
+    <div id="einheit" data-subpanel="einheit">
+      <div class="msv-picker">
+        <label class="msv-picker-label" for="msv-einheitwahl">Trainingseinheit</label>
+        <select class="dash-select msv-select" id="msv-einheitwahl" data-draw="tEinheitWahl" aria-label="Trainingseinheit wählen"></select>
+        <button class="msv-mehr" type="button" data-mehrwahl="tEinheitWahl"></button>
+      </div>
+      <p class="msv-lede" data-draw="tLede">—</p>
+      <p class="msv-matchline" data-draw="tInfo">—</p>
+
+      <div class="msv-cards">
+        <div class="msv-card">
+          <h3>Distanz pro Spieler (Ø)</h3>
+          <div class="msv-big"><span data-draw="tKmAvg">—</span><span class="msv-unit">km</span></div>
+          <div class="msv-delta"><span data-draw="tMpm">—</span> m/Min. · Spitze: <span data-draw="tKmTop">—</span></div>
+        </div>
+        <div class="msv-card">
+          <h3>Intensive Meter (über 19,8 km/h, Ø)</h3>
+          <div class="msv-big"><span data-draw="tHiAvg">—</span><span class="msv-unit">m</span></div>
+          <div class="msv-delta">Spitze: <span data-draw="tHiTop">—</span></div>
+        </div>
+        <div class="msv-card">
+          <h3>Sprints (Team gesamt)</h3>
+          <div class="msv-big"><span data-draw="tSprints">—</span></div>
+          <div class="msv-delta">Meiste: <span data-draw="tSprintTop">—</span></div>
+        </div>
+        <div class="msv-card">
+          <h3>Topspeed</h3>
+          <div class="msv-big"><span data-draw="tSpeed">—</span><span class="msv-unit">km/h</span></div>
+          <div class="msv-delta"><span data-draw="tSpeedSp">—</span></div>
+        </div>
+      </div>
+
+      <div class="msv-panel">
+        <div class="msv-panel-head">
+          <h2>Drills der Einheit</h2>
+        </div>
+        <div class="msv-toggle msv-toggle-row" role="group" aria-label="Kennzahl für die Drills wählen">
+          <button data-dmetric="m_pro_min" aria-pressed="true">Meter/Minute</button>
+          <button data-dmetric="hi_pro_min" aria-pressed="false">Intensiv m/Min.</button>
+          <button data-dmetric="hf_avg" aria-pressed="false">Ø Herzfrequenz</button>
+          <button data-dmetric="speed_max_kmh" aria-pressed="false">Topspeed</button>
+        </div>
+        <p class="msv-note">Durchschnitt aller Spieler im jeweiligen Drill. Intensiv = über 19,8 km/h. Die Dauer steht hinter dem Namen.</p>
+        <div class="msv-chart" style="min-height:0" data-draw="tDrillChart"></div>
+      </div>
+
+      <div class="msv-panel">
+        <h2>Spieler-Rangliste</h2>
+        <div class="msv-toggle msv-toggle-row" role="group" aria-label="Kennzahl wählen">
+          <button data-tmetric="distanz_km" aria-pressed="true">Distanz</button>
+          <button data-tmetric="m_pro_min" aria-pressed="false">Meter/Minute</button>
+          <button data-tmetric="hi_m" aria-pressed="false">Intensive Meter</button>
+          <button data-tmetric="sprints" aria-pressed="false">Sprints</button>
+          <button data-tmetric="speed_max_kmh" aria-pressed="false">Topspeed</button>
+          <button data-tmetric="hf_avg" aria-pressed="false">Ø HF</button>
+          <button data-tmetric="cardio_load" aria-pressed="false">Cardio Load*</button>
+        </div>
+        <p class="msv-note">Werte in der ganzen Einheit. Fahre über einen Balken für alle Werte des Spielers.</p>
+        <div class="msv-chart" style="min-height:0" data-draw="tRanking"></div>
+      </div>
+
+      <div class="msv-panel">
+        <h2>Alle Spieler im Überblick</h2>
+        <p class="msv-note">Geschwindigkeitszonen wie in Polar Team Pro. * Cardio Load gilt für die ganze Aufzeichnung inklusive Vor- und Nachlauf und liegt deshalb meist etwas über dem Wert in Team Pro.</p>
+        <div class="msv-tablewrap">
+          <table class="msv-table">
+            <thead><tr>
+              <th>Spieler</th><th>Pos.</th><th>Min.</th><th>km</th><th>m/Min.</th><th>14,4–19,8</th><th>&gt;19,8 m</th><th>&gt;25,2 m</th><th>Sprints</th><th>Top km/h</th><th>Ø HF</th><th>HRV</th><th>Cardio*</th>
+            </tr></thead>
+            <tbody data-draw="tTabelle"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="woche" data-subpanel="woche" hidden>
+      <div class="msv-picker">
+        <label class="msv-picker-label" for="msv-wochewahl">Trainingswoche</label>
+        <select class="dash-select msv-select" id="msv-wochewahl" data-draw="wWahl" aria-label="Woche wählen"></select>
+        <button class="msv-mehr" type="button" data-mehrwahl="wWahl"></button>
+      </div>
+      <p class="msv-lede" data-draw="wLede">—</p>
+
+      <div class="msv-cards">
+        <div class="msv-card">
+          <h3>Einheiten</h3>
+          <div class="msv-big"><span data-draw="wEinheiten">—</span></div>
+          <div class="msv-delta"><span data-draw="wMinuten">—</span> Minuten Training</div>
+        </div>
+        <div class="msv-card">
+          <h3>Distanz pro Spieler (Woche)</h3>
+          <div class="msv-big"><span data-draw="wKm">—</span><span class="msv-unit">km</span></div>
+          <div class="msv-delta">Ø pro Einheit: <span data-draw="wKmE">—</span> km</div>
+        </div>
+        <div class="msv-card">
+          <h3>Intensive Meter pro Spieler (Woche)</h3>
+          <div class="msv-big"><span data-draw="wHi">—</span><span class="msv-unit">m</span></div>
+          <div class="msv-delta">Ø pro Einheit: <span data-draw="wHiE">—</span> m</div>
+        </div>
+        <div class="msv-card">
+          <h3>Sprints pro Spieler (Woche)</h3>
+          <div class="msv-big"><span data-draw="wSp">—</span></div>
+          <div class="msv-delta">Ø pro Einheit: <span data-draw="wSpE">—</span></div>
+        </div>
+      </div>
+
+      <div class="msv-panel">
+        <div class="msv-panel-head">
+          <h2>Spieler in der Woche</h2>
+          <div class="msv-toggle" role="group" aria-label="Summe oder Durchschnitt">
+            <button data-wmodus="summe" aria-pressed="true">Summe Woche</button>
+            <button data-wmodus="schnitt" aria-pressed="false">Ø pro Einheit</button>
+          </div>
+        </div>
+        <p class="msv-note">Nur Team-Einheiten aus Polar, ohne Spiele. Topspeed ist der Höchstwert der Woche, m/Min. und Ø HF sind immer Durchschnitte. * Cardio Load für die ganze Aufzeichnung.</p>
+        <div class="msv-tablewrap">
+          <table class="msv-table">
+            <thead><tr>
+              <th>Spieler</th><th>Pos.</th><th>Einh.</th><th>Min.</th><th>km</th><th>m/Min.</th><th>14,4–19,8</th><th>&gt;19,8 m</th><th>&gt;25,2 m</th><th>Sprints</th><th>Top km/h</th><th>Ø HF</th><th>Cardio*</th>
+            </tr></thead>
+            <tbody data-draw="wTabelle"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="msv-panel">
+        <h2>Wochen im Vergleich</h2>
+        <div class="msv-toggle msv-toggle-row" role="group" aria-label="Kennzahl für den Wochenvergleich">
+          <button data-wmetric="km" aria-pressed="true">Distanz</button>
+          <button data-wmetric="hi_m" aria-pressed="false">Intensive Meter</button>
+          <button data-wmetric="sprints" aria-pressed="false">Sprints</button>
+          <button data-wmetric="einheiten" aria-pressed="false">Einheiten</button>
+        </div>
+        <div class="msv-toggle msv-toggle-row" role="group" aria-label="Zeitraum"><button data-zeit="wVerlauf" aria-pressed="false">Ganze Saison anzeigen</button></div>
+        <p class="msv-note">Wochensumme pro Spieler im Durchschnitt, letzte 6 Wochen. Klick auf eine Woche zeigt sie oben an.</p>
+        <div class="msv-chart" data-draw="wVerlauf"></div>
+      </div>
+    </div>
+
+    <div id="belastung" data-subpanel="belastung" hidden>
+      <p class="msv-lede" data-draw="bLede">—</p>
+
+      <div class="msv-panel">
+        <h2 data-draw="bTitel">Belastung der aktuellen Woche</h2>
+        <p class="msv-note">Summen aus allen Team-Einheiten der aktuellen Kalenderwoche, ab Montag mit der ersten Einheit bis zur letzten Einheit. Verhältnis = Distanz dieser Woche geteilt durch den Schnitt der vier Wochen davor, jeweils von Montag bis zum selben Wochentag gezählt. So ist auch eine angefangene Woche fair vergleichbar. Unter 0,8 heißt deutlich weniger als üblich, über 1,3 deutlich mehr. Spiele sind noch nicht eingerechnet.</p>
+        <div class="msv-tablewrap">
+          <table class="msv-table">
+            <thead><tr>
+              <th>Spieler</th><th>Pos.</th><th>Einheiten</th><th>Min.</th><th>km</th><th>&gt;19,8 m</th><th>Sprints</th><th>Cardio*</th><th>Verhältnis</th>
+            </tr></thead>
+            <tbody data-draw="bTabelle"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="msv-panel">
+        <div class="msv-panel-head">
+          <h2>Verlauf pro Einheit</h2>
+        </div>
+        <div class="msv-toggle msv-toggle-row" role="group" aria-label="Kennzahl für den Verlauf wählen">
+          <button data-bmetric="distanz_km" aria-pressed="true">Distanz</button>
+          <button data-bmetric="hi_m" aria-pressed="false">Intensive Meter</button>
+          <button data-bmetric="sprints" aria-pressed="false">Sprints</button>
+          <button data-bmetric="hf_avg" aria-pressed="false">Ø HF</button>
+        </div>
+        <div class="msv-toggle msv-toggle-row" role="group" aria-label="Zeitraum"><button data-zeit="bVerlauf" aria-pressed="false">Ganze Saison anzeigen</button></div>
+        <p class="msv-note">Durchschnitt pro Spieler je Team-Einheit (ab 5 Spielern), letzte 6 Wochen. Fahre über einen Balken für Details.</p>
+        <div class="msv-chart" data-draw="bVerlauf"></div>
+      </div>
+    </div>
+  </section>
+  <section id="spieler" data-panel="spieler" hidden>
+    <div class="msv-picker">
+      <label class="msv-picker-label" for="msv-spielerwahl">Spieler</label>
+      <select class="dash-select msv-select" id="msv-spielerwahl" data-draw="pWahl" aria-label="Spieler wählen"></select>
+    </div>
+    <p class="msv-lede" data-draw="pLede">—</p>
+
+    <div class="msv-cards">
+      <div class="msv-card">
+        <h3>Trainings</h3>
+        <div class="msv-big"><span data-draw="pTrN">—</span></div>
+        <div class="msv-delta">Ø <span data-draw="pTrKm">—</span> km pro Einheit</div>
+      </div>
+      <div class="msv-card">
+        <h3>Spiele</h3>
+        <div class="msv-big"><span data-draw="pSpN">—</span></div>
+        <div class="msv-delta"><span data-draw="pSpMin">—</span> Minuten · <span data-draw="pSpKm90">—</span> km/90</div>
+      </div>
+      <div class="msv-card">
+        <h3>Distanz gesamt</h3>
+        <div class="msv-big"><span data-draw="pKmGes">—</span><span class="msv-unit">km</span></div>
+        <div class="msv-delta">Training <span data-draw="pKmTr">—</span> · Spiel <span data-draw="pKmSp">—</span></div>
+      </div>
+      <div class="msv-card">
+        <h3>Topspeed</h3>
+        <div class="msv-big"><span data-draw="pTop">—</span><span class="msv-unit">km/h</span></div>
+        <div class="msv-delta"><span data-draw="pTopWo">—</span></div>
+      </div>
+    </div>
+
+    <div class="msv-panel">
+      <h2>Training und Spiel im Verlauf</h2>
+      <div class="msv-toggle msv-toggle-row" role="group" aria-label="Kennzahl wählen">
+        <button data-pmetric="km" aria-pressed="true">Distanz</button>
+        <button data-pmetric="hi_m" aria-pressed="false">Intensive Meter</button>
+        <button data-pmetric="sprints" aria-pressed="false">Sprints</button>
+        <button data-pmetric="top" aria-pressed="false">Topspeed</button>
+      </div>
+      <div class="msv-toggle msv-toggle-row" role="group" aria-label="Zeitraum"><button data-zeit="pVerlauf" aria-pressed="false">Ganze Saison anzeigen</button></div>
+      <div class="msv-legend"><span class="msv-key msv-key-msv"></span>Training (Polar) <span class="msv-key p-key-spiel"></span>Spiel (SkillCorner)</div>
+      <p class="msv-note">Intensiv: Training über 19,8 km/h, Spiel über 20 km/h. Sprints: Training laut Polar, Spiel Läufe über 25 km/h. Die Messsysteme unterscheiden sich, Werte sind deshalb nur ungefähr vergleichbar.</p>
+      <div class="msv-chart" data-draw="pVerlauf"></div>
+    </div>
+
+    <div class="msv-panel">
+      <h2>Wochenübersicht</h2>
+      <p class="msv-note">Summe aus Training und Spiel je Kalenderwoche (Montag bis Sonntag). Ältere Wochen lassen sich unten aufklappen.</p>
+      <div class="msv-tablewrap">
+        <table class="msv-table">
+          <thead><tr>
+            <th>Woche</th><th>Zeitraum</th><th>Trainings</th><th>Training km</th><th>Spiele</th><th>Spiel Min.</th><th>Spiel km</th><th>Gesamt km</th><th>Intensiv m</th><th>Sprints</th>
+          </tr></thead>
+          <tbody data-draw="pWochen"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="msv-panel">
+      <h2>Alle Einheiten und Spiele</h2>
+      <div class="msv-tablewrap">
+        <table class="msv-table p-links">
+          <thead><tr>
+            <th>Datum</th><th>Art</th><th>Einheit / Gegner</th><th>Min.</th><th>km</th><th>m/Min.</th><th>Intensiv m</th><th>Sprints</th><th>Top km/h</th><th>Ø HF</th>
+          </tr></thead>
+          <tbody data-draw="pListe"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <div class="msv-foot" aria-hidden="true"></div>
+</div>
+
+<script>
+// Rechnungen aus den SkillCorner-Daten (alle Spiele in der Datei)
+const MSV_TEAM = 'MSV Duisburg';
+
+dash.calc('spiele', {
+  title: 'Spiele in den Daten',
+  description: 'Ein Eintrag je Spiel: Datum, Gegner, Heim oder Auswärts.',
+  inputs: ['physis'],
+  fn: (spieler) => {
+    const rows = spieler.filter((r) => r.player_short_name);
+    return d3.groups(rows, (r) => r.match_id).map(([id, R]) => {
+      const gegner = (R.find((r) => r.team_name !== MSV_TEAM) || {}).team_name || '?';
+      const heim = String(R[0].match_name).indexOf(MSV_TEAM) === 0 ? 'H' : 'A';
+      return { match_id: id, datum: R[0].match_date, spiel: R[0].match_name, gegner: gegner, ort: heim, wettbewerb: R[0].competition_name };
+    }).sort((a, b) => (a.datum < b.datum ? -1 : 1));
+  }
+});
+
+dash.calc('team_spiel', {
+  title: 'Teamwerte je Spiel',
+  description: 'Summen je Team und Spiel (MSV und Gegner).',
+  inputs: ['physis'],
+  fn: (spieler) => {
+    const num = (v) => (v === null || v === undefined || v === '' ? 0 : +v);
+    const rows = spieler.filter((r) => r.player_short_name);
+    const out = [];
+    d3.groups(rows, (r) => r.match_id).forEach(([id, M]) => {
+      d3.groups(M, (r) => r.team_name).forEach(([team, R]) => {
+        const s = (k) => d3.sum(R, (r) => num(r[k]));
+        const top = d3.greatest(R, (r) => num(r.psv99));
+        const rolle = team === MSV_TEAM ? 'MSV' : 'Gegner';
+        out.push({
+          id: id + '-' + rolle, match_id: id, rolle: rolle, team: team, datum: R[0].match_date,
+          distanz_km: Math.round(s('total_distance_full_all') / 100) / 10,
+          hi_m: s('hi_distance_full_all'),
+          sprints: s('sprint_count_full_all'),
+          beschl: s('highaccel_count_full_all') + s('highdecel_count_full_all'),
+          mpm_h1: Math.round(s('total_distance_h1_all') / s('minutes_h1_all') * 10) / 10,
+          mpm_h2: Math.round(s('total_distance_h2_all') / s('minutes_h2_all') * 10) / 10,
+          mpm_mit_ball: Math.round(s('total_distance_full_tip') / s('minutes_full_tip') * 10) / 10,
+          mpm_gegen_ball: Math.round(s('total_distance_full_otip') / s('minutes_full_otip') * 10) / 10,
+          top_speed: top ? num(top.psv99) : null,
+          top_speed_spieler: top ? top.player_short_name : null
+        });
+      });
+    });
+    return out.sort((a, b) => (a.datum < b.datum ? -1 : a.datum > b.datum ? 1 : a.rolle === 'MSV' ? -1 : 1));
+  }
+});
+
+dash.calc('kpis', {
+  title: 'Kennzahlen MSV gegen Gegner je Spiel',
+  description: 'MSV-Werte, Gegnerwerte und Abstand, eine Zeile je Spiel.',
+  inputs: ['team_spiel', 'spiele'],
+  fn: (teams, spiele) => {
+    const r1 = (v) => Math.round(v * 10) / 10;
+    return (spiele || []).map((sp) => {
+      const m = teams.find((t) => t.match_id === sp.match_id && t.rolle === 'MSV');
+      const g = teams.find((t) => t.match_id === sp.match_id && t.rolle === 'Gegner');
+      if (!m || !g) return null;
+      return {
+        match_id: sp.match_id, spiel: sp.spiel, datum: sp.datum, wettbewerb: sp.wettbewerb, gegner: g.team,
+        msv_km: m.distanz_km, gegner_km: g.distanz_km,
+        diff_km: r1(m.distanz_km - g.distanz_km), diff_km_abs: r1(Math.abs(m.distanz_km - g.distanz_km)),
+        msv_hi: m.hi_m, gegner_hi: g.hi_m, diff_hi: m.hi_m - g.hi_m, diff_hi_abs: Math.abs(m.hi_m - g.hi_m),
+        msv_sprints: m.sprints, gegner_sprints: g.sprints, diff_sprints: m.sprints - g.sprints,
+        msv_top: m.top_speed, msv_top_spieler: m.top_speed_spieler
+      };
+    }).filter(Boolean);
+  }
+});
+
+dash.calc('phasen', {
+  title: 'Meter pro Minute nach Spielphase je Spiel',
+  description: 'Laufmeter je Spielerminute: 1. und 2. Halbzeit, mit Ball und gegen Ball.',
+  inputs: ['team_spiel'],
+  fn: (teams) => {
+    const out = [];
+    d3.groups(teams, (t) => t.match_id).forEach(([id, T]) => {
+      const m = T.find((t) => t.rolle === 'MSV'), g = T.find((t) => t.rolle === 'Gegner');
+      if (!m || !g) return;
+      [['1. Halbzeit', 'mpm_h1'], ['2. Halbzeit', 'mpm_h2'], ['Mit Ball', 'mpm_mit_ball'], ['Gegen Ball', 'mpm_gegen_ball']]
+        .forEach(([phase, k]) => out.push({ match_id: id, phase: phase, msv: m[k], gegner: g[k] }));
+    });
+    return out;
+  }
+});
+
+dash.calc('spieler_spiel', {
+  title: 'Spielerwerte je Spiel',
+  description: 'Je Spieler und Spiel: Minuten, Distanz, intensive Meter, Sprints, Beschleunigungen und Topspeed.',
+  inputs: ['physis'],
+  fn: (spieler) => {
+    const num = (v) => (v === null || v === undefined || v === '' ? 0 : +v);
+    return spieler.filter((r) => r.player_short_name).map((r) => ({
+      match_id: r.match_id,
+      spieler: r.player_short_name,
+      rolle: r.team_name === MSV_TEAM ? 'MSV' : 'Gegner',
+      position: r.position,
+      minuten: Math.round(num(r.minutes_full_all)),
+      distanz_km: Math.round(num(r.total_distance_full_all) / 10) / 100,
+      m_pro_min: Math.round(num(r.total_metersperminute_full_all)),
+      hi_m: num(r.hi_distance_full_all),
+      sprints: num(r.sprint_count_full_all),
+      beschl: num(r.highaccel_count_full_all) + num(r.highdecel_count_full_all),
+      psv99: num(r.psv99)
+    })).sort((a, b) => b.minuten - a.minuten || b.distanz_km - a.distanz_km);
+  }
+});
+
+dash.calc('saison_kpis', {
+  title: 'Saisonschnitt MSV und Gegner',
+  description: 'Durchschnitt pro Spiel über alle Spiele in der Datei.',
+  inputs: ['team_spiel'],
+  fn: (teams) => {
+    const m = teams.filter((t) => t.rolle === 'MSV'), g = teams.filter((t) => t.rolle === 'Gegner');
+    if (!m.length) return [];
+    const r1 = (v) => Math.round(v * 10) / 10;
+    const top = d3.greatest(m, (t) => t.top_speed);
+    return [{
+      spiele: m.length,
+      msv_km: r1(d3.mean(m, (t) => t.distanz_km)), gegner_km: r1(d3.mean(g, (t) => t.distanz_km)),
+      msv_hi: Math.round(d3.mean(m, (t) => t.hi_m)), gegner_hi: Math.round(d3.mean(g, (t) => t.hi_m)),
+      msv_sprints: Math.round(d3.mean(m, (t) => t.sprints)), gegner_sprints: Math.round(d3.mean(g, (t) => t.sprints)),
+      msv_top: top ? top.top_speed : null, msv_top_spieler: top ? top.top_speed_spieler + ', ' + top.datum.split('-').reverse().join('.') : null
+    }];
+  }
+});
+
+dash.calc('saison_spieler', {
+  title: 'MSV-Spieler über alle Spiele',
+  description: 'Je MSV-Spieler: Spiele, Minuten und Laufwerte pro 90 Minuten.',
+  inputs: ['physis'],
+  fn: (spieler) => {
+    const num = (v) => (v === null || v === undefined || v === '' ? 0 : +v);
+    const r1 = (v) => Math.round(v * 10) / 10;
+    const rows = spieler.filter((r) => r.player_short_name && r.team_name === MSV_TEAM);
+    return d3.groups(rows, (r) => r.player_short_name).map(([name, R]) => {
+      const min = d3.sum(R, (r) => num(r.minutes_full_all));
+      const p90 = (k) => (min > 0 ? d3.sum(R, (r) => num(r[k])) / min * 90 : 0);
+      const letzte = d3.greatest(R, (r) => r.match_date);
+      return {
+        spieler: name, position: letzte.position, spiele: R.length, minuten: Math.round(min),
+        km_90: r1(p90('total_distance_full_all') / 1000),
+        hi_90: Math.round(p90('hi_distance_full_all')),
+        sprints_90: r1(p90('sprint_count_full_all')),
+        psv99_max: d3.max(R, (r) => num(r.psv99))
+      };
+    }).sort((a, b) => b.minuten - a.minuten);
+  }
+});
+</script>
+
+<script>
+// Formatierung, Reiter, Unterreiter und Auswahl
+const de = d3.formatLocale({ decimal: ',', thousands: '.', grouping: [3], currency: ['', ' €'] });
+window.msvFmt = {
+  f1: de.format(',.1f'), f2: de.format(',.2f'), f0: de.format(',.0f'),
+  s1: de.format('+,.1f'), s0: de.format('+,.0f')
+};
+window.msvDatum = (s) => { const p = String(s).split('-'); return p.length === 3 ? p[2] + '.' + p[1] + '.' + p[0] : s; };
+window.msvMetric = 'distanz_km';
+window.msvSMetric = 'distanz_km';
+window.msvTeam = 'MSV';
+window.msvSpiel = null;
+window.msvSpielDraws = [];
+window.msvAktuellesSpiel = function () {
+  const s = dash.data('spiele');
+  if (s.status !== 'ok' || !s.data || !s.data.length) return null;
+  if (window.msvSpiel && s.data.some((d) => d.match_id === window.msvSpiel)) return window.msvSpiel;
+  return s.data[s.data.length - 1].match_id;
+};
+window.msvNeuZeichnen = function () { window.msvSpielDraws.forEach((n) => dash.draw(n)); };
+
+function zeigeReiter(name) {
+  document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+  document.querySelectorAll('[data-panel]').forEach((s) => { s.hidden = s.dataset.panel !== name; });
+  const offen = document.querySelector('[data-panel="' + name + '"] [data-subpanel]:not([hidden])');
+  dash.setLink(offen ? offen.dataset.subpanel : name);
+}
+function zeigeUnter(name) {
+  const panel = document.querySelector('[data-subpanel="' + name + '"]');
+  const bereich = panel ? panel.closest('[data-panel]') : null;
+  if (bereich && bereich.hidden) zeigeReiter(bereich.dataset.panel);
+  const scope = bereich || document;
+  scope.querySelectorAll('[data-sub]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.sub === name)));
+  scope.querySelectorAll('[data-subpanel]').forEach((s) => { s.hidden = s.dataset.subpanel !== name; });
+  dash.setLink(name);
+}
+document.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => zeigeReiter(b.dataset.tab)));
+document.querySelectorAll('[data-sub]').forEach((b) => b.addEventListener('click', () => zeigeUnter(b.dataset.sub)));
+const startLink = (location.hash || '').slice(1);
+if (startLink && document.querySelector('[data-subpanel="' + startLink + '"]')) zeigeUnter(startLink);
+
+document.querySelectorAll('[data-metric]').forEach((b) => b.addEventListener('click', () => {
+  window.msvMetric = b.dataset.metric;
+  document.querySelectorAll('[data-metric]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  dash.draw('ranking');
+}));
+document.querySelectorAll('[data-smetric]').forEach((b) => b.addEventListener('click', () => {
+  window.msvSMetric = b.dataset.smetric;
+  document.querySelectorAll('[data-smetric]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  dash.draw('verlaufChart');
+}));
+document.querySelectorAll('[data-team]').forEach((b) => b.addEventListener('click', () => {
+  window.msvTeam = b.dataset.team;
+  document.querySelectorAll('[data-team]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  dash.draw('ranking');
+  dash.draw('tabelle');
+}));
+
+dash.draw('spielwahl', (sel) => {
+  const s = dash.data('spiele');
+  const list = s.status === 'ok' && s.data ? s.data.slice().reverse() : [];
+  sel.replaceChildren(...list.map((d) => new Option(window.msvDatum(d.datum) + ' · ' + d.gegner + ' (' + d.ort + ')', d.match_id)));
+  const cur = window.msvAktuellesSpiel();
+  if (cur) sel.value = cur;
+  sel.onchange = () => { window.msvSpiel = sel.value; window.msvNeuZeichnen(); };
+});
+</script>
+
+<script>
+// Kennzahlen des gewählten Spiels
+function kpiText(name, field, fmt, cls) {
+  window.msvSpielDraws.push(name);
+  dash.draw(name, (el) => {
+    const k = dash.data('kpis');
+    el.classList.toggle('dash-skeleton', !k.data || k.status === 'loading');
+    const id = window.msvAktuellesSpiel();
+    const row = k.status === 'ok' && k.data ? k.data.find((d) => d.match_id === id) : null;
+    if (!row) { el.textContent = '—'; return; }
+    el.setAttribute('data-where', 'match_id=' + encodeURIComponent(id));
+    const v = row[field];
+    el.textContent = v == null ? '—' : (fmt ? fmt(v) : v);
+    if (cls) { el.classList.toggle('msv-good', v > 0); el.classList.toggle('msv-bad', v < 0); }
+  });
+}
+function kpiWort(name, fn) {
+  window.msvSpielDraws.push(name);
+  dash.draw(name, (el) => {
+    const k = dash.data('kpis');
+    const id = window.msvAktuellesSpiel();
+    const row = k.status === 'ok' && k.data ? k.data.find((d) => d.match_id === id) : null;
+    el.textContent = row ? fn(row) : '—';
+  });
+}
+const F = window.msvFmt;
+kpiText('kGegner', 'gegner');
+kpiText('kMsvKm', 'msv_km', F.f1);
+kpiText('kDiffKmAbs', 'diff_km_abs', F.f1);
+kpiText('kDiffHiAbs', 'diff_hi_abs', F.f0);
+kpiText('kSpiel', 'spiel');
+kpiText('kDatum', 'datum', window.msvDatum);
+kpiText('kWettbewerb', 'wettbewerb');
+kpiText('kMsvKm2', 'msv_km', F.f1);
+kpiText('kGegKm', 'gegner_km', F.f1);
+kpiText('kDiffKm', 'diff_km', F.s1, true);
+kpiText('kMsvHi', 'msv_hi', F.f0);
+kpiText('kGegHi', 'gegner_hi', F.f0);
+kpiText('kDiffHi', 'diff_hi', F.s0, true);
+kpiText('kMsvSp', 'msv_sprints', F.f0);
+kpiText('kGegSp', 'gegner_sprints', F.f0);
+kpiText('kDiffSp', 'diff_sprints', F.s0, true);
+kpiText('kTop', 'msv_top', F.f1);
+kpiText('kTopSp', 'msv_top_spieler');
+kpiWort('legGegner', (r) => r.gegner);
+kpiWort('legGegner2', (r) => r.gegner);
+kpiWort('kMehrWeniger', (r) => (r.diff_km >= 0 ? 'mehr' : 'weniger'));
+kpiWort('kHiVorne', (r) => (r.diff_hi >= 0 ? 'vorne' : 'hinten'));
+
+// Saisonkennzahlen
+function saisonText(name, field, fmt) {
+  dash.draw(name, (el) => {
+    const k = dash.data('saison_kpis');
+    el.classList.toggle('dash-skeleton', !k.data || k.status === 'loading');
+    if (k.status !== 'ok' || !k.data || !k.data.length) { el.textContent = '—'; return; }
+    const v = k.data[0][field];
+    el.textContent = v == null ? '—' : (fmt ? fmt(v) : v);
+  });
+}
+saisonText('sAnzahl', 'spiele', F.f0);
+saisonText('sMsvKm', 'msv_km', F.f1);
+saisonText('sGegKm', 'gegner_km', F.f1);
+saisonText('sMsvKm2', 'msv_km', F.f1);
+saisonText('sGegKm2', 'gegner_km', F.f1);
+saisonText('sMsvHi', 'msv_hi', F.f0);
+saisonText('sGegHi', 'gegner_hi', F.f0);
+saisonText('sMsvSp', 'msv_sprints', F.f0);
+saisonText('sGegSp', 'gegner_sprints', F.f0);
+saisonText('sTop', 'msv_top', F.f1);
+saisonText('sTopSp', 'msv_top_spieler');
+</script>
+
+<script>
+// Hilfen
+window.msvTip = function (box) {
+  let tip = box.querySelector('.msv-tip');
+  if (!tip) { tip = document.createElement('div'); tip.className = 'msv-tip'; tip.hidden = true; box.appendChild(tip); }
+  return {
+    show(ev, lines) {
+      tip.replaceChildren(...lines.map((l, i) => { const d = document.createElement('div'); if (i === 0) { const b = document.createElement('b'); b.textContent = l; d.appendChild(b); } else d.textContent = l; return d; }));
+      tip.hidden = false;
+      const r = box.getBoundingClientRect();
+      let x = ev.clientX - r.left + 12, y = ev.clientY - r.top - 10;
+      if (x + tip.offsetWidth > box.clientWidth) x = ev.clientX - r.left - tip.offsetWidth - 12;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y) + 'px';
+    },
+    hide() { tip.hidden = true; }
+  };
+};
+window.msvFail = function (el) { const p = document.createElement('div'); p.className = 'msv-fail'; p.textContent = 'Daten konnten nicht geladen werden.'; el.appendChild(p); };
+window.MSV_FARBE = 'var(--msv-blau-chart)';
+window.GEG_FARBE = 'color-mix(in srgb, var(--color-fg) 30%, var(--color-bg))';
+</script>
+
+<script>
+// Teamvergleich im gewählten Spiel
+window.msvSpielDraws.push('duellChart');
+dash.draw('duellChart', (el) => {
+  const t = dash.data('team_spiel');
+  el.replaceChildren();
+  if (t.status === 'error' || t.status === 'missing') { window.msvFail(el); return; }
+  const id = window.msvAktuellesSpiel();
+  if (t.status !== 'ok' || !t.data || !id) { el.textContent = '—'; return; }
+  const m = t.data.find((d) => d.match_id === id && d.rolle === 'MSV'), g = t.data.find((d) => d.match_id === id && d.rolle === 'Gegner');
+  if (!m || !g) { el.textContent = '—'; return; }
+  const F = window.msvFmt;
+  const metrics = [
+    { k: 'distanz_km', label: 'Distanz', unit: ' km', fmt: F.f1 },
+    { k: 'hi_m', label: 'Intensive Meter', unit: ' m', fmt: F.f0 },
+    { k: 'sprints', label: 'Sprints', unit: '', fmt: F.f0 },
+    { k: 'beschl', label: 'Beschleunigungen', unit: '', fmt: F.f0 }
+  ];
+  const W = el.clientWidth || 600, bar = 14, gap = 4, block = bar * 2 + gap + 22;
+  const H = metrics.length * block + 4;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', 'Teamvergleich MSV gegen Gegner: Distanz, intensive Meter, Sprints und Beschleunigungen');
+  const labels = svg.append('g').selectAll('text').data(metrics).join('text').text((d) => d.label);
+  const lw = d3.max(labels.nodes(), (n) => n.getComputedTextLength()) || 110;
+  const l = Math.min(lw + 12, W * 0.4), r = 70;
+  labels.attr('x', l - 10).attr('y', (d, i) => i * block + bar + gap / 2).attr('dy', '.35em').attr('text-anchor', 'end');
+  const tip = window.msvTip(el);
+  metrics.forEach((mt, i) => {
+    const max = Math.max(m[mt.k], g[mt.k]) || 1;
+    const x = d3.scaleLinear().domain([0, max]).range([0, W - l - r]);
+    [[m, window.MSV_FARBE, 0], [g, window.GEG_FARBE, 1]].forEach(([d, col, j]) => {
+      const y = i * block + j * (bar + gap);
+      svg.append('rect').attr('x', l).attr('y', y).attr('height', bar).attr('width', Math.max(0, x(d[mt.k]))).attr('rx', 2).style('fill', col);
+      svg.append('text').attr('class', 'lbl').attr('x', l + x(d[mt.k]) + 6).attr('y', y + bar / 2).attr('dy', '.35em').text(mt.fmt(d[mt.k]) + mt.unit);
+    });
+    svg.append('rect').attr('x', 0).attr('y', i * block).attr('width', W).attr('height', bar * 2 + gap).style('fill', 'transparent')
+      .on('pointermove', (ev) => tip.show(ev, [mt.label, 'MSV Duisburg: ' + mt.fmt(m[mt.k]) + mt.unit, g.team + ': ' + mt.fmt(g[mt.k]) + mt.unit]))
+      .on('pointerleave', () => tip.hide());
+  });
+});
+</script>
+
+<script>
+// Spielphasen im gewählten Spiel
+window.msvSpielDraws.push('phasenChart');
+dash.draw('phasenChart', (el) => {
+  const p = dash.data('phasen'), k = dash.data('kpis');
+  el.replaceChildren();
+  if (p.status === 'error' || p.status === 'missing') { window.msvFail(el); return; }
+  const id = window.msvAktuellesSpiel();
+  const data = p.status === 'ok' && p.data ? p.data.filter((d) => d.match_id === id) : [];
+  if (!data.length) { el.textContent = '—'; return; }
+  const F = window.msvFmt;
+  const kr = k.data ? k.data.find((d) => d.match_id === id) : null;
+  const gegner = kr ? kr.gegner : 'Gegner';
+  const W = el.clientWidth || 600, H = 260, m = { t: 22, r: 8, b: 28, l: 36 };
+  const x0 = d3.scaleBand().domain(data.map((d) => d.phase)).range([m.l, W - m.r]).padding(0.28);
+  const x1 = d3.scaleBand().domain(['msv', 'gegner']).range([0, x0.bandwidth()]).padding(0.08);
+  const lo = d3.min(data, (d) => Math.min(d.msv, d.gegner)), hi = d3.max(data, (d) => Math.max(d.msv, d.gegner));
+  const y = d3.scaleLinear().domain([Math.max(0, Math.floor((lo - 20) / 10) * 10), Math.ceil(hi / 10) * 10 + 5]).range([H - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', 'Meter pro Minute nach Spielphase, MSV und Gegner');
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(F.f0))
+    .call((g) => { g.select('.domain').remove(); g.selectAll('line').style('stroke', 'var(--cds-chart-grid)'); });
+  svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x0).tickSize(0))
+    .call((g) => { g.select('.domain').style('stroke', 'var(--cds-chart-axis)'); g.selectAll('text').attr('dy', '1em'); });
+  const narrow = x1.bandwidth() < 30;
+  const tip = window.msvTip(el);
+  data.forEach((d) => {
+    [['msv', window.MSV_FARBE], ['gegner', window.GEG_FARBE]].forEach(([key, col]) => {
+      const bx = x0(d.phase) + x1(key);
+      svg.append('rect').attr('x', bx).attr('width', x1.bandwidth()).attr('y', y(d[key])).attr('height', y.range()[0] - y(d[key])).attr('rx', 2).style('fill', col);
+      if (!narrow) svg.append('text').attr('class', 'lbl').attr('x', bx + x1.bandwidth() / 2).attr('y', y(d[key]) - 5).attr('text-anchor', 'middle').text(F.f0(d[key]));
+    });
+    svg.append('rect').attr('x', x0(d.phase) - x0.step() * x0.paddingInner() / 2).attr('width', x0.step()).attr('y', m.t).attr('height', H - m.t - m.b)
+      .style('fill', 'transparent')
+      .on('pointermove', (ev) => tip.show(ev, [d.phase, 'MSV Duisburg: ' + F.f1(d.msv) + ' m/Min.', gegner + ': ' + F.f1(d.gegner) + ' m/Min.']))
+      .on('pointerleave', () => tip.hide());
+  });
+});
+</script>
+
+<script>
+// Rangliste im gewählten Spiel
+window.msvSpielDraws.push('ranking');
+dash.draw('ranking', (el) => {
+  const s = dash.data('spieler_spiel');
+  el.replaceChildren();
+  if (s.status === 'error' || s.status === 'missing') { window.msvFail(el); return; }
+  const id = window.msvAktuellesSpiel();
+  if (s.status !== 'ok' || !s.data || !id) { el.textContent = '—'; return; }
+  const f = window.msvMetric, F = window.msvFmt;
+  const fmts = { distanz_km: [F.f2, ' km'], m_pro_min: [F.f0, ''], hi_m: [F.f0, ' m'], sprints: [F.f0, ''], psv99: [F.f1, ' km/h'] };
+  const [fmt, unit] = fmts[f];
+  const data = s.data.filter((d) => d.match_id === id && d.rolle === window.msvTeam).sort((a, b) => b[f] - a[f]);
+  if (!data.length) { el.textContent = '—'; return; }
+  const W = el.clientWidth || 600, row = 24, m = { t: 4, r: 76, b: 4 };
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('role', 'img').attr('aria-label', 'Rangliste der Spieler im gewählten Spiel');
+  const names = svg.append('g').selectAll('text').data(data).join('text').text((d) => d.spieler + ' (' + d.position + ')');
+  const lw = d3.max(names.nodes(), (n) => n.getComputedTextLength()) || 110;
+  const l = lw + 10, H = m.t + m.b + data.length * row;
+  svg.attr('height', H).attr('viewBox', `0 0 ${W} ${H}`);
+  const x = d3.scaleLinear().domain([0, d3.max(data, (d) => d[f]) || 1]).range([l, W - m.r]);
+  const y = (i) => m.t + i * row;
+  const farbe = window.msvTeam === 'MSV' ? window.MSV_FARBE : 'color-mix(in srgb, var(--color-fg) 45%, var(--color-bg))';
+  names.attr('x', l - 8).attr('y', (d, i) => y(i) + row / 2).attr('dy', '.35em').attr('text-anchor', 'end');
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', l).attr('y', (d, i) => y(i) + 4)
+    .attr('height', row - 8).attr('width', (d) => Math.max(0, x(d[f]) - l)).attr('rx', 2)
+    .style('fill', farbe).style('opacity', (d) => (d.minuten < 45 ? 0.4 : 1));
+  svg.append('g').selectAll('text').data(data).join('text').attr('class', 'lbl')
+    .attr('x', (d) => x(d[f]) + 6).attr('y', (d, i) => y(i) + row / 2).attr('dy', '.35em').text((d) => fmt(d[f]) + unit);
+  const tip = window.msvTip(el);
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', 0).attr('width', W).attr('y', (d, i) => y(i)).attr('height', row)
+    .style('fill', 'transparent')
+    .on('pointermove', (ev, d) => tip.show(ev, [
+      d.spieler + ' (' + d.position + ')',
+      d.minuten + ' Minuten · ' + F.f2(d.distanz_km) + ' km · ' + F.f0(d.m_pro_min) + ' m/Min.',
+      'Intensiv: ' + F.f0(d.hi_m) + ' m · Sprints: ' + F.f0(d.sprints) + ' · PSV-99: ' + F.f1(d.psv99) + ' km/h'
+    ]))
+    .on('pointerleave', () => tip.hide());
+});
+</script>
+
+<script>
+// Tabelle im gewählten Spiel
+window.msvSpielDraws.push('tabelle');
+dash.draw('tabelle', (tb) => {
+  const s = dash.data('spieler_spiel');
+  tb.replaceChildren();
+  const id = window.msvAktuellesSpiel();
+  if (s.status !== 'ok' || !s.data || !id) return;
+  const F = window.msvFmt;
+  const cols = [['spieler', null], ['position', null], ['minuten', F.f0], ['distanz_km', F.f2], ['m_pro_min', F.f0], ['hi_m', F.f0], ['sprints', F.f0], ['beschl', F.f0], ['psv99', F.f1]];
+  s.data.filter((d) => d.match_id === id && d.rolle === window.msvTeam).forEach((d) => {
+    const tr = document.createElement('tr');
+    tr.dataset.key = encodeURIComponent(d.match_id) + ',' + encodeURIComponent(d.spieler);
+    cols.forEach(([c, fmt]) => { const td = document.createElement('td'); td.textContent = fmt ? fmt(d[c]) : d[c]; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+});
+</script>
+
+<script>
+// Saison: Verlauf pro Spiel
+dash.draw('verlaufChart', (el) => {
+  const t = dash.data('team_spiel'), sp = dash.data('spiele');
+  el.replaceChildren();
+  if (t.status === 'error' || t.status === 'missing') { window.msvFail(el); return; }
+  if (t.status !== 'ok' || sp.status !== 'ok' || !sp.data || !sp.data.length) { el.textContent = '—'; return; }
+  const f = window.msvSMetric, F = window.msvFmt;
+  const fmt = f === 'distanz_km' ? F.f1 : F.f0;
+  const unit = { distanz_km: ' km', hi_m: ' m', sprints: '', beschl: '' }[f];
+  const data = sp.data.map((s) => ({
+    s: s,
+    msv: (t.data.find((d) => d.match_id === s.match_id && d.rolle === 'MSV') || {})[f] || 0,
+    gegner: (t.data.find((d) => d.match_id === s.match_id && d.rolle === 'Gegner') || {})[f] || 0
+  }));
+  const W = el.clientWidth || 600, H = 280, m = { t: 22, r: 8, b: 44, l: 44 };
+  const x0 = d3.scaleBand().domain(data.map((d) => d.s.match_id)).range([m.l, W - m.r]).padding(0.3);
+  const x1 = d3.scaleBand().domain(['msv', 'gegner']).range([0, x0.bandwidth()]).padding(0.08);
+  const hi = d3.max(data, (d) => Math.max(d.msv, d.gegner)) || 1;
+  const lo = f === 'distanz_km' ? Math.max(0, Math.floor((d3.min(data, (d) => Math.min(d.msv, d.gegner)) - 10) / 10) * 10) : 0;
+  const y = d3.scaleLinear().domain([lo, hi * 1.08]).nice().range([H - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', 'Verlauf pro Spiel, MSV und Gegner');
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(F.f0))
+    .call((g) => { g.select('.domain').remove(); g.selectAll('line').style('stroke', 'var(--cds-chart-grid)'); });
+  const kurz = x0.bandwidth() < 90;
+  svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x0).tickSize(0)
+      .tickFormat((id) => { const s = sp.data.find((d) => d.match_id === id); return window.msvDatum(s.datum).slice(0, 6) + ' (' + s.ort + ')'; }))
+    .call((g) => { g.select('.domain').style('stroke', 'var(--cds-chart-axis)'); g.selectAll('text').attr('dy', '1em'); });
+  if (!kurz) svg.append('g').selectAll('text').data(data).join('text').attr('x', (d) => x0(d.s.match_id) + x0.bandwidth() / 2).attr('y', H - m.b + 32)
+    .attr('text-anchor', 'middle').text((d) => d.s.gegner);
+  const narrow = x1.bandwidth() < 34;
+  const tip = window.msvTip(el);
+  data.forEach((d) => {
+    [['msv', window.MSV_FARBE], ['gegner', window.GEG_FARBE]].forEach(([key, col]) => {
+      const bx = x0(d.s.match_id) + x1(key);
+      svg.append('rect').attr('x', bx).attr('width', x1.bandwidth()).attr('y', y(d[key])).attr('height', y.range()[0] - y(d[key])).attr('rx', 2).style('fill', col);
+      if (!narrow) svg.append('text').attr('class', 'lbl').attr('x', bx + x1.bandwidth() / 2).attr('y', y(d[key]) - 5).attr('text-anchor', 'middle').text(fmt(d[key]));
+    });
+    svg.append('rect').attr('x', x0(d.s.match_id) - x0.step() * x0.paddingInner() / 2).attr('width', x0.step()).attr('y', m.t).attr('height', H - m.t - m.b)
+      .style('fill', 'transparent')
+      .on('pointermove', (ev) => tip.show(ev, [window.msvDatum(d.s.datum) + ' · ' + d.s.gegner + ' (' + (d.s.ort === 'H' ? 'Heim' : 'Auswärts') + ')',
+        'MSV Duisburg: ' + fmt(d.msv) + unit, d.s.gegner + ': ' + fmt(d.gegner) + unit]))
+      .on('pointerleave', () => tip.hide());
+  });
+});
+</script>
+
+<script>
+// Saison: Spielertabelle
+dash.draw('saisonTabelle', (tb) => {
+  const s = dash.data('saison_spieler');
+  tb.replaceChildren();
+  if (s.status !== 'ok' || !s.data) return;
+  const F = window.msvFmt;
+  const cols = [['spieler', null], ['position', null], ['spiele', F.f0], ['minuten', F.f0], ['km_90', F.f1], ['hi_90', F.f0], ['sprints_90', F.f1], ['psv99_max', F.f1]];
+  s.data.forEach((d) => {
+    const tr = document.createElement('tr');
+    tr.dataset.key = encodeURIComponent(d.spieler);
+    cols.forEach(([c, fmt]) => { const td = document.createElement('td'); td.textContent = fmt ? fmt(d[c]) : d[c]; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+});
+</script>
+
+<script>
+// ===== Training (Polar Team Pro) =====
+const tNum = (v) => (v === null || v === undefined || v === '' || isNaN(+v) ? null : +v);
+const tWT = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+window.tTag = (datum) => { const d = new Date(datum + 'T12:00:00'); return tWT[d.getDay()] + ' ' + window.msvDatum(datum).slice(0, 6); };
+window.tArt = (a) => ({ TRAINING: 'Training', GAME: 'Spiel', MATCH: 'Spiel', DRILL: 'Drill', TEST: 'Test', 'STRENGTH AND CONDITION': 'Athletik', OTHER: 'Sonstiges' }[a] || a || 'Einheit');
+window.T_MIN_SPIELER = 5;
+// Nur die letzten 6 Wochen zeigen, Älteres lässt sich aufklappen
+window.T_WOCHEN = 6;
+window.tAlt = {};      // aufgeklappte Bereiche
+window.tGrenze = function () {
+  const s = dash.data('t_spieler');
+  if (s.status !== 'ok' || !s.data || !s.data.length) return '0000-00-00';
+  const d = new Date(window.kwMontag(d3.max(s.data, (x) => x.datum)) + 'T12:00:00');
+  d.setDate(d.getDate() - 7 * (window.T_WOCHEN - 1));
+  return d.toISOString().slice(0, 10);
+};
+window.tMehrKnopf = function (name, anzahl, wort) {
+  document.querySelectorAll('[data-mehrwahl="' + name + '"]').forEach((b) => {
+    b.hidden = !anzahl;
+    b.textContent = window.tAlt[name] ? 'Nur letzte 6 Wochen' : 'Ältere ' + wort + ' anzeigen (' + anzahl + ')';
+  });
+};
+window.tMehrZeile = function (tb, name, anzahl, spalten, wort) {
+  if (!anzahl) return;
+  const tr = document.createElement('tr'), td = document.createElement('td');
+  td.colSpan = spalten; td.className = 'msv-mehr-zelle';
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'msv-mehr';
+  b.textContent = window.tAlt[name] ? '▴ Ältere ' + wort + ' ausblenden' : '▾ Ältere ' + wort + ' aufklappen (' + anzahl + ')';
+  b.onclick = () => { window.tAlt[name] = !window.tAlt[name]; dash.draw(name); };
+  td.appendChild(b); tr.appendChild(td); tb.appendChild(tr);
+};   // kleinere Einheiten (Reha, Nachholen) zählen nicht als Team-Einheit
+window.tPos = (r) => ({ Torwart: 'TW', Torhüter: 'TW', Verteidiger: 'V', Mittelfeldspieler: 'M', 'Stürmer': 'S' }[r] || r || '');
+// ===== Kalenderwochen (Montag bis Sonntag) =====
+window.kwMontag = (datum) => {
+  const d = new Date(datum + 'T12:00:00'); const wt = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - wt); return d.toISOString().slice(0, 10);
+};
+window.kwNummer = (montag) => {
+  const d = new Date(montag + 'T12:00:00'); d.setDate(d.getDate() + 3);
+  const j = new Date(d.getFullYear(), 0, 4, 12);
+  return 1 + Math.round(((d - j) / 864e5 - 3 + ((j.getDay() + 6) % 7)) / 7);
+};
+window.kwText = (montag) => {
+  const s = new Date(montag + 'T12:00:00'); s.setDate(s.getDate() + 6);
+  return window.msvDatum(montag).slice(0, 6) + '–' + window.msvDatum(s.toISOString().slice(0, 10)).slice(0, 6);
+};
+
+
+dash.calc('t_spieler', {
+  title: 'Trainingswerte je Spieler und Einheit',
+  description: 'Polar Team Pro, auf die Einheit zugeschnitten. Cardio Load für die ganze Aufzeichnung.',
+  inputs: ['training_spieler'],
+  fn: (rows) => (rows || []).filter((r) => r.spieler && r.einheit_id).map((r) => {
+    const z = (k) => tNum(r[k]) || 0;
+    return {
+      einheit_id: r.einheit_id, datum: r.datum, beginn: r.beginn, art: r.art,
+      spieler: r.spieler, nummer: r.nummer, pos: window.tPos(r.rolle), rolle: r.rolle,
+      dauer_min: tNum(r.dauer_min), distanz_km: tNum(r.distanz_m) == null ? null : tNum(r.distanz_m) / 1000,
+      m_pro_min: tNum(r.m_pro_min), sprints: tNum(r.sprints), speed_max_kmh: tNum(r.speed_max_kmh),
+      hf_avg: tNum(r.hf_avg), hrv: tNum(r.hrv_rmssd), cardio_load: tNum(r.cardio_load_gesamt),
+      z2_m: z('zone2_m'), hi_m: z('zone3_m') + z('zone4_m') + z('zone5_m'), sprint_m: z('zone4_m') + z('zone5_m')
+    };
+  })
+});
+
+dash.calc('t_einheiten', {
+  title: 'Trainingseinheiten',
+  description: 'Eine Zeile je Team-Einheit mit Drills und Teilnehmern.',
+  inputs: ['training_team', 't_spieler'],
+  fn: (team, sp) => (team || []).map((t) => {
+    const S = (sp || []).filter((s) => s.einheit_id === t.einheit_id);
+    return {
+      einheit_id: t.einheit_id, datum: t.datum, beginn: t.beginn, art: t.art, name: t.einheit,
+      drills: t.drills ? t.drills.split(' | ').filter(Boolean) : [], spieler: S.length,
+      dauer_min: d3.max(S, (s) => s.dauer_min)
+    };
+  }).filter((e) => e.spieler > 0).sort((a, b) => (a.datum + a.beginn < b.datum + b.beginn ? -1 : 1))
+});
+
+dash.calc('t_drills', {
+  title: 'Drills je Einheit',
+  description: 'Durchschnitt aller Spieler je Drill.',
+  inputs: ['training_drills'],
+  fn: (rows) => {
+    const R = (rows || []).filter((r) => r.einheit_id && r.drill);
+    const out = [];
+    d3.groups(R, (r) => r.einheit_id, (r) => r.drill).forEach(([id, G]) => {
+      G.forEach(([drill, D]) => {
+        const m = (f) => d3.mean(D, f);
+        const dauer = d3.median(D, (r) => tNum(r.dauer_min));
+        const hi = m((r) => (tNum(r.zone3_m) || 0) + (tNum(r.zone4_m) || 0) + (tNum(r.zone5_m) || 0));
+        out.push({
+          einheit_id: id, drill: drill, spieler: D.length, dauer_min: dauer,
+          m_pro_min: m((r) => tNum(r.m_pro_min)), distanz_m: m((r) => tNum(r.distanz_m)),
+          hi_m: hi, hi_pro_min: dauer ? hi / dauer : null,
+          hf_avg: m((r) => tNum(r.hf_avg)), speed_max_kmh: d3.max(D, (r) => tNum(r.speed_max_kmh))
+        });
+      });
+    });
+    return out;
+  }
+});
+
+window.tMetric = 'distanz_km';
+window.tDMetric = 'm_pro_min';
+window.tBMetric = 'distanz_km';
+window.tEinheit = null;
+window.tDraws = [];
+window.tAktuell = function () {
+  const e = dash.data('t_einheiten');
+  if (e.status !== 'ok' || !e.data || !e.data.length) return null;
+  if (window.tEinheit && e.data.some((d) => d.einheit_id === window.tEinheit)) return e.data.find((d) => d.einheit_id === window.tEinheit);
+  return e.data[e.data.length - 1];
+};
+window.tSpielerDerEinheit = function () {
+  const e = window.tAktuell(), s = dash.data('t_spieler');
+  if (!e || s.status !== 'ok' || !s.data) return [];
+  return s.data.filter((d) => d.einheit_id === e.einheit_id);
+};
+window.tNeu = function () { window.tDraws.forEach((n) => dash.draw(n)); };
+function tReg(name, fn) { window.tDraws.push(name); dash.draw(name, fn); }
+
+dash.draw('tEinheitWahl', (sel) => {
+  const e = dash.data('t_einheiten');
+  const alle = e.status === 'ok' && e.data ? e.data.slice().reverse() : [];
+  const g = window.tGrenze(), cur = window.tAktuell();
+  const alt = alle.filter((d) => d.datum < g).length;
+  const list = window.tAlt.tEinheitWahl ? alle : alle.filter((d) => d.datum >= g || (cur && d.einheit_id === cur.einheit_id));
+  sel.replaceChildren(...list.map((d) => new Option(window.tTag(d.datum) + ' · ' + d.beginn + ' Uhr · ' + window.tArt(d.art) + ' (' + d.spieler + ' Spieler)', d.einheit_id)));
+  window.tMehrKnopf('tEinheitWahl', alt, 'Einheiten');
+  if (cur) sel.value = cur.einheit_id;
+  sel.onchange = () => { window.tEinheit = sel.value; window.tNeu(); };
+});
+
+const TF = window.msvFmt;
+tReg('tLede', (el) => {
+  const e = window.tAktuell(), S = window.tSpielerDerEinheit();
+  if (!e || !S.length) { el.textContent = 'Noch keine Trainingsdaten vorhanden.'; return; }
+  const km = d3.mean(S, (s) => s.distanz_km), hi = d3.mean(S, (s) => s.hi_m);
+  const b = (t) => { const x = document.createElement('b'); x.textContent = t; return x; };
+  el.replaceChildren(window.tTag(e.datum) + ': ', b(String(S.length)), ' Spieler, ', b(TF.f0(e.dauer_min || 0)), ' Minuten. Im Schnitt lief jeder ',
+    b(TF.f1(km || 0)), ' km, davon ', b(TF.f0(hi || 0)), ' m über 19,8 km/h.');
+});
+tReg('tInfo', (el) => {
+  const e = window.tAktuell();
+  if (!e) { el.textContent = '—'; return; }
+  el.textContent = window.msvDatum(e.datum) + ' · ' + e.beginn + ' Uhr · ' + window.tArt(e.art) + (e.drills.length ? ' · ' + e.drills.length + ' Drills' : '') + ' · Quelle: Polar Team Pro';
+});
+function tKarte(name, fn) { tReg(name, (el) => { const S = window.tSpielerDerEinheit(); el.textContent = S.length ? fn(S) : '—'; }); }
+const tBest = (S, k) => d3.greatest(S.filter((s) => s[k] != null), (s) => s[k]);
+tKarte('tKmAvg', (S) => TF.f1(d3.mean(S, (s) => s.distanz_km)));
+tKarte('tMpm', (S) => TF.f0(d3.mean(S, (s) => s.m_pro_min)));
+tKarte('tKmTop', (S) => { const b = tBest(S, 'distanz_km'); return b ? b.spieler + ', ' + TF.f2(b.distanz_km) + ' km' : '—'; });
+tKarte('tHiAvg', (S) => TF.f0(d3.mean(S, (s) => s.hi_m)));
+tKarte('tHiTop', (S) => { const b = tBest(S, 'hi_m'); return b ? b.spieler + ', ' + TF.f0(b.hi_m) + ' m' : '—'; });
+tKarte('tSprints', (S) => TF.f0(d3.sum(S, (s) => s.sprints || 0)));
+tKarte('tSprintTop', (S) => { const b = tBest(S, 'sprints'); return b && b.sprints > 0 ? b.spieler + ' (' + b.sprints + ')' : '—'; });
+tKarte('tSpeed', (S) => { const b = tBest(S, 'speed_max_kmh'); return b ? TF.f1(b.speed_max_kmh) : '—'; });
+tKarte('tSpeedSp', (S) => { const b = tBest(S, 'speed_max_kmh'); return b ? b.spieler : '—'; });
+
+function tToggle(attr, varName, draw) {
+  document.querySelectorAll('[data-' + attr + ']').forEach((b) => b.addEventListener('click', () => {
+    window[varName] = b.dataset[attr];
+    document.querySelectorAll('[data-' + attr + ']').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    dash.draw(draw);
+  }));
+}
+tToggle('tmetric', 'tMetric', 'tRanking');
+tToggle('dmetric', 'tDMetric', 'tDrillChart');
+tToggle('bmetric', 'tBMetric', 'bVerlauf');
+</script>
+
+<script>
+// Training: waagerechte Balken (Rangliste und Drills)
+window.tBalken = function (el, data, opt) {
+  el.replaceChildren();
+  if (!data.length) { el.textContent = 'Keine Werte für diese Auswahl.'; return; }
+  const W = el.clientWidth || 600, row = 26, m = { t: 4, r: opt.rechts || 80, b: 4 };
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('role', 'img').attr('aria-label', opt.aria);
+  const names = svg.append('g').selectAll('text').data(data).join('text').text(opt.name);
+  const maxL = W * 0.48;
+  names.each(function () {   // zu lange Namen kürzen, damit nichts abgeschnitten wird
+    let t = this.textContent;
+    while (this.getComputedTextLength() > maxL && t.length > 6) {
+      const p = t.lastIndexOf(' · ');
+      const kopf = p > 0 ? t.slice(0, p) : t, fuss = p > 0 ? t.slice(p) : '';
+      t = kopf.replace(/…$/, '').slice(0, -2) + '…' + fuss;
+      this.textContent = t;
+    }
+  });
+  const lw = Math.min(d3.max(names.nodes(), (n) => n.getComputedTextLength()) || 110, maxL);
+  const l = lw + 10, H = m.t + m.b + data.length * row;
+  svg.attr('height', H).attr('viewBox', `0 0 ${W} ${H}`);
+  const x = d3.scaleLinear().domain([0, d3.max(data, opt.wert) || 1]).range([l, W - m.r]);
+  const y = (i) => m.t + i * row;
+  names.attr('x', l - 8).attr('y', (d, i) => y(i) + row / 2).attr('dy', '.35em').attr('text-anchor', 'end');
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', l).attr('y', (d, i) => y(i) + 5)
+    .attr('height', row - 10).attr('width', (d) => Math.max(0, x(opt.wert(d) || 0) - l)).attr('rx', 2)
+    .style('fill', window.MSV_FARBE).style('opacity', (d) => (opt.hell && opt.hell(d) ? 0.4 : 1));
+  svg.append('g').selectAll('text').data(data).join('text').attr('class', 'lbl')
+    .attr('x', (d) => x(opt.wert(d) || 0) + 6).attr('y', (d, i) => y(i) + row / 2).attr('dy', '.35em').text(opt.label);
+  const tip = window.msvTip(el);
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', 0).attr('width', W).attr('y', (d, i) => y(i)).attr('height', row)
+    .style('fill', 'transparent').on('pointermove', (ev, d) => tip.show(ev, opt.tip(d))).on('pointerleave', () => tip.hide());
+};
+
+const tFmts = {
+  distanz_km: [(v) => TF.f2(v), ' km', 'Distanz'], m_pro_min: [(v) => TF.f0(v), ' m/Min.', 'Meter/Minute'], hi_m: [(v) => TF.f0(v), ' m', 'Intensive Meter'],
+  sprints: [(v) => TF.f1(v).replace(',0', ''), '', 'Sprints'], speed_max_kmh: [(v) => TF.f1(v), ' km/h', 'Topspeed'], hf_avg: [(v) => TF.f0(v), ' S/Min.', 'Ø HF'],
+  cardio_load: [(v) => TF.f0(v), '', 'Cardio Load*'], hi_pro_min: [(v) => TF.f1(v), ' m/Min.', 'Intensiv m/Min.']
+};
+window.tSpielerTip = (d) => [
+  d.spieler + (d.nummer ? ' #' + d.nummer : '') + (d.pos ? ' (' + d.pos + ')' : ''),
+  TF.f0(d.dauer_min || 0) + ' Min. · ' + TF.f2(d.distanz_km || 0) + ' km · ' + TF.f0(d.m_pro_min || 0) + ' m/Min.',
+  'Über 19,8 km/h: ' + TF.f0(d.hi_m) + ' m · Sprints: ' + (d.sprints == null ? '—' : d.sprints) + ' · Top: ' + (d.speed_max_kmh == null ? '—' : TF.f1(d.speed_max_kmh) + ' km/h'),
+  'Ø HF: ' + (d.hf_avg == null ? '—' : d.hf_avg) + ' · HRV: ' + (d.hrv == null ? '—' : d.hrv) + ' · Cardio Load*: ' + (d.cardio_load == null ? '—' : d.cardio_load)
+];
+
+tReg('tRanking', (el) => {
+  const S = window.tSpielerDerEinheit(), f = window.tMetric, [fmt, unit] = tFmts[f];
+  const e = window.tAktuell();
+  const data = S.filter((d) => d[f] != null).sort((a, b) => b[f] - a[f]);
+  window.tBalken(el, data, {
+    aria: 'Rangliste der Spieler in der gewählten Einheit: ' + tFmts[f][2],
+    name: (d) => d.spieler + (d.pos ? ' (' + d.pos + ')' : ''), wert: (d) => d[f], label: (d) => fmt(d[f]) + unit,
+    tip: window.tSpielerTip
+  });
+});
+
+tReg('tDrillChart', (el) => {
+  const e = window.tAktuell(), dr = dash.data('t_drills'), f = window.tDMetric, [fmt, unit] = tFmts[f];
+  el.replaceChildren();
+  if (!e || dr.status !== 'ok' || !dr.data) { el.textContent = '—'; return; }
+  const reihen = e.drills;
+  const data = dr.data.filter((d) => d.einheit_id === e.einheit_id && d[f] != null)
+    .sort((a, b) => reihen.indexOf(a.drill) - reihen.indexOf(b.drill));
+  if (!data.length) { el.textContent = 'Für diese Einheit sind in Team Pro keine Drills markiert.'; return; }
+  const mmss = (m) => { const s = Math.round((m || 0) * 60); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const kurz = (t) => (t.length > 34 ? t.slice(0, 33) + '…' : t);
+  window.tBalken(el, data, {
+    aria: 'Drills der gewählten Einheit: ' + tFmts[f][2], rechts: 90,
+    name: (d) => kurz(d.drill) + ' · ' + mmss(d.dauer_min), wert: (d) => d[f], label: (d) => fmt(d[f]) + unit,
+    tip: (d) => [d.drill, 'Dauer ' + mmss(d.dauer_min) + ' · ' + d.spieler + ' Spieler',
+      'Ø ' + TF.f0(d.distanz_m || 0) + ' m · ' + TF.f0(d.m_pro_min || 0) + ' m/Min.',
+      'Ø über 19,8 km/h: ' + TF.f0(d.hi_m || 0) + ' m · Ø HF: ' + (d.hf_avg == null ? '—' : TF.f0(d.hf_avg)) + ' · Top: ' + (d.speed_max_kmh == null ? '—' : TF.f1(d.speed_max_kmh) + ' km/h')]
+  });
+});
+
+tReg('tTabelle', (tb) => {
+  tb.replaceChildren();
+  const S = window.tSpielerDerEinheit().slice().sort((a, b) => (b.distanz_km || 0) - (a.distanz_km || 0));
+  const v = (x, f) => (x == null ? '—' : f(x));
+  S.forEach((d) => {
+    const tr = document.createElement('tr');
+    [d.spieler, d.pos, v(d.dauer_min, TF.f0), v(d.distanz_km, TF.f2), v(d.m_pro_min, TF.f0), TF.f0(d.z2_m), TF.f0(d.hi_m), TF.f0(d.sprint_m),
+      v(d.sprints, TF.f0), v(d.speed_max_kmh, TF.f1), v(d.hf_avg, TF.f0), v(d.hrv, TF.f0), v(d.cardio_load, TF.f0)]
+      .forEach((t) => { const td = document.createElement('td'); td.textContent = t; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+});
+</script>
+
+<script>
+// Training: Belastung über 7 und 28 Tage
+dash.calc('t_belastung', {
+  title: 'Belastung je Spieler in der aktuellen Woche',
+  description: 'Summen seit Montag der Woche mit der letzten Einheit und Verhältnis zum Schnitt der vier Wochen davor (jeweils Montag bis zum selben Wochentag, Distanz).',
+  inputs: ['t_spieler'],
+  fn: (S) => {
+    if (!S || !S.length) return [];
+    const ende = d3.max(S, (s) => s.datum), montag = window.kwMontag(ende);
+    const tagNr = Math.round((new Date(ende + 'T12:00:00') - new Date(montag + 'T12:00:00')) / 864e5);
+    const vorWochen = [1, 2, 3, 4].map((k) => { const d = new Date(montag + 'T12:00:00'); d.setDate(d.getDate() - 7 * k); return d.toISOString().slice(0, 10); });
+    const imFenster = (datum, mo) => { const t = Math.round((new Date(datum + 'T12:00:00') - new Date(mo + 'T12:00:00')) / 864e5); return t >= 0 && t <= tagNr; };
+    const ersteWoche = window.kwMontag(d3.min(S, (s) => s.datum));
+    const vergleich = vorWochen.filter((w) => w >= ersteWoche);
+    return d3.groups(S, (s) => s.spieler).map(([name, R]) => {
+      const w = R.filter((r) => window.kwMontag(r.datum) === montag);
+      const km = d3.sum(w, (r) => r.distanz_km || 0);
+      const vor = vergleich.map((mo) => d3.sum(R.filter((r) => window.kwMontag(r.datum) === mo && imFenster(r.datum, mo)), (r) => r.distanz_km || 0));
+      const schnitt = vor.length ? d3.mean(vor) : 0;
+      const letzte = d3.greatest(R, (r) => r.datum + r.beginn);
+      return {
+        spieler: name, pos: letzte.pos, einheiten: w.length, minuten: d3.sum(w, (r) => r.dauer_min || 0),
+        km: km, hi_m: d3.sum(w, (r) => r.hi_m || 0), sprints: d3.sum(w, (r) => r.sprints || 0),
+        cardio: d3.sum(w, (r) => r.cardio_load || 0),
+        verhaeltnis: vergleich.length >= 3 && schnitt > 0 ? km / schnitt : null
+      };
+    }).filter((r) => r.einheiten > 0).sort((a, b) => b.km - a.km);
+  }
+});
+
+dash.draw('bTitel', (el) => {
+  const s = dash.data('t_spieler');
+  if (s.status !== 'ok' || !s.data || !s.data.length) { el.textContent = 'Belastung der aktuellen Woche'; return; }
+  const mo = window.kwMontag(d3.max(s.data, (x) => x.datum));
+  el.textContent = 'Belastung KW ' + window.kwNummer(mo) + ' (ab Montag ' + window.msvDatum(mo).slice(0, 6) + ')';
+});
+
+dash.draw('bLede', (el) => {
+  const s = dash.data('t_spieler'), b = dash.data('t_belastung');
+  if (s.status !== 'ok' || !s.data || !s.data.length) { el.textContent = 'Noch keine Trainingsdaten vorhanden.'; return; }
+  const ende = d3.max(s.data, (x) => x.datum), mo = window.kwMontag(ende);
+  const W = s.data.filter((x) => window.kwMontag(x.datum) === mo);
+  const n = Array.from(d3.group(W, (x) => x.einheit_id).values()).filter((g) => g.length >= window.T_MIN_SPIELER).length;
+  const erste = d3.min(W, (x) => x.datum + ' ' + x.beginn).split(' ');
+  const B = b.data || [];
+  const hoch = B.filter((r) => r.verhaeltnis != null && r.verhaeltnis > 1.3).length;
+  const tief = B.filter((r) => r.verhaeltnis != null && r.verhaeltnis < 0.8).length;
+  const bb = (t) => { const x = document.createElement('b'); x.textContent = t; return x; };
+  el.replaceChildren('KW ' + window.kwNummer(mo) + ': Seit der ersten Einheit am ' + window.tTag(erste[0]) + ' um ' + erste[1] + ' Uhr gab es bis ' + window.tTag(ende) + ' ',
+    bb(String(n)), n === 1 ? ' Team-Einheit. ' : ' Team-Einheiten. ');
+  if (B.some((r) => r.verhaeltnis != null)) el.append(bb(String(hoch)), ' Spieler liegen deutlich über ihrem üblichen Pensum bis zu diesem Wochentag, ', bb(String(tief)), ' deutlich darunter.');
+  else el.append('Für den Vergleich mit den Vorwochen braucht es Daten aus mindestens drei Wochen davor.');
+});
+
+dash.draw('bTabelle', (tb) => {
+  const b = dash.data('t_belastung');
+  tb.replaceChildren();
+  if (b.status !== 'ok' || !b.data) return;
+  b.data.forEach((d) => {
+    const tr = document.createElement('tr');
+    [d.spieler, d.pos, TF.f0(d.einheiten), TF.f0(d.minuten), TF.f1(d.km), TF.f0(d.hi_m), TF.f0(d.sprints), TF.f0(d.cardio)]
+      .forEach((t) => { const td = document.createElement('td'); td.textContent = t; tr.appendChild(td); });
+    const td = document.createElement('td');
+    if (d.verhaeltnis == null) td.textContent = '—';
+    else {
+      td.textContent = TF.f2(d.verhaeltnis) + (d.verhaeltnis > 1.3 ? ' ▲' : d.verhaeltnis < 0.8 ? ' ▼' : '');
+      td.classList.toggle('msv-bad', d.verhaeltnis > 1.3);
+      td.classList.toggle('t-tief', d.verhaeltnis < 0.8);
+    }
+    tr.appendChild(td);
+    tb.appendChild(tr);
+  });
+});
+
+dash.draw('bVerlauf', (el) => {
+  const s = dash.data('t_spieler'), e = dash.data('t_einheiten');
+  el.replaceChildren();
+  if (s.status !== 'ok' || e.status !== 'ok' || !s.data || !e.data || !e.data.length) { el.textContent = '—'; return; }
+  const f = window.tBMetric, [fmt, unit, label] = tFmts[f];
+  const data = e.data.map((x) => {
+    const S = s.data.filter((d) => d.einheit_id === x.einheit_id && d[f] != null);
+    return Object.assign({}, x, { wert: S.length ? d3.mean(S, (d) => d[f]) : null, n: S.length });
+  }).filter((d) => d.wert != null && d.n >= window.T_MIN_SPIELER && (window.tAlt.bVerlauf || d.datum >= window.tGrenze()));
+  const W = el.clientWidth || 600, H = 260, m = { t: 18, r: 8, b: 30, l: 44 };
+  const breite = Math.min(W - m.l - m.r, data.length * 90);
+  const x = d3.scaleBand().domain(data.map((d) => d.einheit_id)).range([m.l, m.l + breite]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, (d3.max(data, (d) => d.wert) || 1) * 1.1]).nice().range([H - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', 'Verlauf pro Einheit: ' + label + ', Durchschnitt pro Spieler');
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat((v) => TF.f1(v).replace(',0', '')))
+    .call((g) => { g.select('.domain').remove(); g.selectAll('line').style('stroke', 'var(--cds-chart-grid)'); });
+  const jede = Math.max(1, Math.ceil(data.length / Math.max(1, Math.floor((W - m.l) / 64))));
+  svg.append('g').attr('transform', `translate(0,${H - m.b})`)
+    .call(d3.axisBottom(x).tickSize(0).tickValues(data.filter((d, i) => i % jede === 0).map((d) => d.einheit_id))
+      .tickFormat((id) => window.msvDatum(data.find((z) => z.einheit_id === id).datum).slice(0, 6)))
+    .call((g) => { g.select('.domain').style('stroke', 'var(--cds-chart-axis)'); g.selectAll('text').attr('dy', '1em'); });
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (d) => x(d.einheit_id)).attr('width', x.bandwidth())
+    .attr('y', (d) => y(d.wert)).attr('height', (d) => Math.max(0, y(0) - y(d.wert))).attr('rx', 2)
+    .style('fill', window.MSV_FARBE).style('opacity', (d) => (d.einheit_id === (window.tAktuell() || {}).einheit_id ? 1 : 0.75));
+  if (data.length <= 14) {
+    svg.append('g').selectAll('text').data(data).join('text').attr('class', 'lbl').attr('text-anchor', 'middle')
+      .attr('x', (d) => x(d.einheit_id) + x.bandwidth() / 2).attr('y', (d) => y(d.wert) - 5).text((d) => fmt(d.wert));
+  }
+  const tip = window.msvTip(el);
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (d) => x(d.einheit_id) - (x.step() - x.bandwidth()) / 2)
+    .attr('width', x.step()).attr('y', m.t).attr('height', H - m.t - m.b).style('fill', 'transparent').style('cursor', 'pointer')
+    .on('pointermove', (ev, d) => tip.show(ev, [window.tTag(d.datum) + ' · ' + d.beginn + ' Uhr', window.tArt(d.art) + ' · ' + d.n + ' Spieler',
+      label + ': ' + fmt(d.wert) + unit + ' (Ø pro Spieler)', 'Klicken für Details zur Einheit']))
+    .on('pointerleave', () => tip.hide())
+    .on('click', (ev, d) => {
+      window.tEinheit = d.einheit_id;
+      const sel = document.getElementById('msv-einheitwahl'); if (sel) sel.value = d.einheit_id;
+      zeigeUnter('einheit');
+    });
+});
+</script>
+
+<script>
+// Training: Wochenwerte je Spieler
+dash.calc('t_wochen_spieler', {
+  title: 'Trainingswochen je Spieler',
+  description: 'Summen und Durchschnitte je Spieler und Kalenderwoche, nur Team-Einheiten aus Polar.',
+  inputs: ['t_spieler'],
+  fn: (S) => {
+    const out = [];
+    d3.groups(S || [], (s) => window.kwMontag(s.datum), (s) => s.spieler).forEach(([woche, G]) => {
+      G.forEach(([name, R]) => {
+        const n = R.length, sum = (k) => d3.sum(R, (r) => r[k] || 0);
+        const letzte = d3.greatest(R, (r) => r.datum + r.beginn);
+        out.push({
+          woche: woche, spieler: name, pos: letzte.pos, einheiten: n, minuten: sum('dauer_min'),
+          km: sum('distanz_km'), z2_m: sum('z2_m'), hi_m: sum('hi_m'), sprint_m: sum('sprint_m'), sprints: sum('sprints'),
+          cardio: sum('cardio_load'), mpm: d3.mean(R, (r) => r.m_pro_min), hf: d3.mean(R, (r) => r.hf_avg),
+          top: d3.max(R, (r) => r.speed_max_kmh)
+        });
+      });
+    });
+    return out;
+  }
+});
+
+dash.calc('t_wochen', {
+  title: 'Trainingswochen',
+  description: 'Je Kalenderwoche: Anzahl Einheiten und Wochensumme pro Spieler im Durchschnitt.',
+  inputs: ['t_wochen_spieler', 't_einheiten'],
+  fn: (WS, E) => d3.groups(WS || [], (w) => w.woche).map(([woche, R]) => {
+    const EW = (E || []).filter((e) => window.kwMontag(e.datum) === woche && e.spieler >= window.T_MIN_SPIELER);
+    return {
+      woche: woche, kw: window.kwNummer(woche), einheiten: EW.length, minuten: d3.sum(EW, (e) => e.dauer_min || 0), spieler: R.length,
+      km: d3.mean(R, (r) => r.km), hi_m: d3.mean(R, (r) => r.hi_m), sprints: d3.mean(R, (r) => r.sprints),
+      km_e: d3.mean(R, (r) => r.km / r.einheiten), hi_e: d3.mean(R, (r) => r.hi_m / r.einheiten), sp_e: d3.mean(R, (r) => r.sprints / r.einheiten)
+    };
+  }).sort((a, b) => (a.woche < b.woche ? -1 : 1))
+});
+
+window.wWoche = null; window.wModus = 'summe'; window.wMetric = 'km'; window.wDraws = [];
+window.wAktuell = () => {
+  const w = dash.data('t_wochen');
+  if (w.status !== 'ok' || !w.data || !w.data.length) return null;
+  return w.data.find((d) => d.woche === window.wWoche) || w.data[w.data.length - 1];
+};
+function wReg(name, fn) { window.wDraws.push(name); dash.draw(name, fn); }
+window.wNeu = () => window.wDraws.forEach((n) => dash.draw(n));
+
+dash.draw('wWahl', (sel) => {
+  const w = dash.data('t_wochen');
+  const alle = w.status === 'ok' && w.data ? w.data.slice().reverse() : [];
+  const g = window.tGrenze(), aktW = window.wAktuell();
+  const list = window.tAlt.wWahl ? alle : alle.filter((d) => d.woche >= g || (aktW && d.woche === aktW.woche));
+  window.tMehrKnopf('wWahl', alle.filter((d) => d.woche < g).length, 'Wochen');
+  sel.replaceChildren(...list.map((d) => new Option('KW ' + d.kw + ' · ' + window.kwText(d.woche) + ' (' + d.einheiten + ' Einheiten)', d.woche)));
+  const cur = window.wAktuell(); if (cur) sel.value = cur.woche;
+  sel.onchange = () => { window.wWoche = sel.value; window.wNeu(); };
+});
+wReg('wLede', (el) => {
+  const w = window.wAktuell();
+  if (!w) { el.textContent = 'Noch keine Trainingsdaten vorhanden.'; return; }
+  const b = (t) => { const x = document.createElement('b'); x.textContent = t; return x; };
+  el.replaceChildren('KW ' + w.kw + ' (' + window.kwText(w.woche) + '): ', b(String(w.einheiten)), w.einheiten === 1 ? ' Einheit mit ' : ' Einheiten mit ', b(String(w.spieler)),
+    ' Spielern. Jeder lief im Schnitt ', b(TF.f1(w.km)), ' km in der Woche, davon ', b(TF.f0(w.hi_m)), ' m über 19,8 km/h.');
+});
+function wKarte(name, fn) { wReg(name, (el) => { const w = window.wAktuell(); el.textContent = w ? fn(w) : '—'; }); }
+wKarte('wEinheiten', (w) => TF.f0(w.einheiten));
+wKarte('wMinuten', (w) => TF.f0(w.minuten));
+wKarte('wKm', (w) => TF.f1(w.km));
+wKarte('wKmE', (w) => TF.f1(w.km_e));
+wKarte('wHi', (w) => TF.f0(w.hi_m));
+wKarte('wHiE', (w) => TF.f0(w.hi_e));
+wKarte('wSp', (w) => TF.f1(w.sprints));
+wKarte('wSpE', (w) => TF.f1(w.sp_e));
+
+wReg('wTabelle', (tb) => {
+  tb.replaceChildren();
+  const w = window.wAktuell(), s = dash.data('t_wochen_spieler');
+  if (!w || s.status !== 'ok' || !s.data) return;
+  const schnitt = window.wModus === 'schnitt';
+  const R = s.data.filter((r) => r.woche === w.woche).sort((a, b) => b.km - a.km);
+  const v = (x, f) => (x == null || isNaN(x) ? '—' : f(x));
+  R.forEach((d) => {
+    const q = (x) => (schnitt ? x / d.einheiten : x);
+    const tr = document.createElement('tr');
+    [d.spieler, d.pos, TF.f0(d.einheiten), TF.f0(q(d.minuten)), (schnitt ? TF.f2 : TF.f1)(q(d.km)), v(d.mpm, TF.f0), TF.f0(q(d.z2_m)), TF.f0(q(d.hi_m)), TF.f0(q(d.sprint_m)),
+      (schnitt ? TF.f1 : TF.f0)(q(d.sprints)), v(d.top, TF.f1), v(d.hf, TF.f0), TF.f0(q(d.cardio))]
+      .forEach((t) => { const td = document.createElement('td'); td.textContent = t; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+});
+
+wReg('wVerlauf', (el) => {
+  el.replaceChildren();
+  const w = dash.data('t_wochen');
+  if (w.status !== 'ok' || !w.data || !w.data.length) { el.textContent = '—'; return; }
+  const f = window.wMetric, data = window.tAlt.wVerlauf ? w.data : w.data.filter((d) => d.woche >= window.tGrenze());
+  const fmt = f === 'km' ? TF.f1 : f === 'sprints' ? TF.f1 : TF.f0;
+  const label = { km: 'Distanz (km)', hi_m: 'Intensive Meter', sprints: 'Sprints', einheiten: 'Einheiten' }[f];
+  const W = el.clientWidth || 600, H = 240, m = { t: 18, r: 8, b: 30, l: 44 };
+  const x = d3.scaleBand().domain(data.map((d) => d.woche)).range([m.l, m.l + Math.min(W - m.l - m.r, data.length * 80)]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, (d3.max(data, (d) => d[f]) || 1) * 1.1]).nice().range([H - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', 'Wochen im Vergleich: ' + label);
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat((v) => TF.f1(v).replace(',0', '')))
+    .call((g) => { g.select('.domain').remove(); g.selectAll('line').style('stroke', 'var(--cds-chart-grid)'); });
+  const jede = Math.max(1, Math.ceil(data.length / Math.max(1, Math.floor((W - m.l) / 50))));
+  svg.append('g').attr('transform', `translate(0,${H - m.b})`)
+    .call(d3.axisBottom(x).tickSize(0).tickValues(data.filter((d, i) => i % jede === 0).map((d) => d.woche)).tickFormat((wo) => 'KW ' + window.kwNummer(wo)))
+    .call((g) => { g.select('.domain').style('stroke', 'var(--cds-chart-axis)'); g.selectAll('text').attr('dy', '1em'); });
+  const cur = (window.wAktuell() || {}).woche;
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (d) => x(d.woche)).attr('width', x.bandwidth())
+    .attr('y', (d) => y(d[f])).attr('height', (d) => Math.max(0, y(0) - y(d[f]))).attr('rx', 2)
+    .style('fill', window.MSV_FARBE).style('opacity', (d) => (d.woche === cur ? 1 : 0.6));
+  if (data.length <= 16) svg.append('g').selectAll('text').data(data).join('text').attr('class', 'lbl').attr('text-anchor', 'middle')
+    .attr('x', (d) => x(d.woche) + x.bandwidth() / 2).attr('y', (d) => y(d[f]) - 5).text((d) => fmt(d[f]));
+  const tip = window.msvTip(el);
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (d) => x(d.woche) - (x.step() - x.bandwidth()) / 2).attr('width', x.step())
+    .attr('y', m.t).attr('height', H - m.t - m.b).style('fill', 'transparent').style('cursor', 'pointer')
+    .on('pointermove', (ev, d) => tip.show(ev, ['KW ' + d.kw + ' · ' + window.kwText(d.woche), d.einheiten + ' Einheiten · ' + d.spieler + ' Spieler',
+      'Pro Spieler: ' + TF.f1(d.km) + ' km · ' + TF.f0(d.hi_m) + ' m intensiv · ' + TF.f1(d.sprints) + ' Sprints']))
+    .on('pointerleave', () => tip.hide())
+    .on('click', (ev, d) => { window.wWoche = d.woche; const s = document.getElementById('msv-wochewahl'); if (s) s.value = d.woche; window.wNeu(); });
+});
+
+tToggle('wmodus', 'wModus', 'wTabelle');
+tToggle('wmetric', 'wMetric', 'wVerlauf');
+</script>
+
+<script>
+// ===== Spieler: Training (Polar) und Spiel (SkillCorner) zusammen =====
+window.pNorm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').toLowerCase().trim();
+window.pNachname = (name) => { const t = String(name).replace(/^[A-ZÄÖÜ]\.\s*/, '').trim().split(/\s+/); return window.pNorm(t[t.length - 1]); };
+
+dash.calc('p_alles', {
+  title: 'Training und Spiel je Spieler',
+  description: 'Jede Trainingseinheit (Polar) und jedes Spiel (SkillCorner) eines MSV-Spielers als eine Zeile. Namen werden über den Nachnamen zugeordnet.',
+  inputs: ['t_spieler', 'physis'],
+  fn: (T, P) => {
+    const num = (v) => (v === null || v === undefined || v === '' ? null : +v);
+    const polarNamen = Array.from(new Set((T || []).map((t) => t.spieler)));
+    const proNach = d3.group(polarNamen, window.pNachname);
+    const zuordnen = (kurz) => {
+      const kand = proNach.get(window.pNachname(kurz)) || [];
+      if (kand.length === 1) return kand[0];
+      const ini = window.pNorm(kurz).charAt(0);
+      return kand.find((k) => window.pNorm(k).charAt(0) === ini) || kurz;
+    };
+    const out = (T || []).map((t) => ({
+      spieler: t.spieler, pos: t.pos, datum: t.datum, quelle: 'Training', titel: window.tArt(t.art) + ' ' + t.beginn + ' Uhr', id: t.einheit_id,
+      minuten: t.dauer_min, km: t.distanz_km, mpm: t.m_pro_min, hi_m: t.hi_m, sprints: t.sprints, top: t.speed_max_kmh, hf: t.hf_avg
+    }));
+    (P || []).filter((r) => r.player_short_name && r.team_name === MSV_TEAM).forEach((r) => {
+      const teams = String(r.match_name).split(' v ');
+      const gegner = teams[0] === MSV_TEAM ? teams[1] : teams[0];
+      out.push({
+        spieler: zuordnen(r.player_short_name), pos: '', datum: r.match_date, quelle: 'Spiel',
+        titel: (teams[0] === MSV_TEAM ? 'H' : 'A') + ' · ' + (gegner || r.match_name), id: r.match_id,
+        minuten: num(r.minutes_full_all), km: num(r.total_distance_full_all) == null ? null : num(r.total_distance_full_all) / 1000,
+        mpm: num(r.total_metersperminute_full_all), hi_m: num(r.hi_distance_full_all), sprints: num(r.sprint_count_full_all), top: num(r.psv99), hf: null
+      });
+    });
+    return out.sort((a, b) => (a.datum < b.datum ? -1 : a.datum > b.datum ? 1 : a.quelle === 'Spiel' ? 1 : -1));
+  }
+});
+
+window.pName = null; window.pMetric = 'km';
+window.pAktuell = () => {
+  const a = dash.data('p_alles');
+  if (a.status !== 'ok' || !a.data || !a.data.length) return null;
+  const namen = Array.from(new Set(a.data.map((d) => d.spieler)));
+  return namen.includes(window.pName) ? window.pName : namen.sort((x, y) => window.pNachname(x).localeCompare(window.pNachname(y)))[0];
+};
+window.pZeilen = () => { const a = dash.data('p_alles'), n = window.pAktuell(); return n && a.data ? a.data.filter((d) => d.spieler === n) : []; };
+window.pDraws = [];
+function pReg(name, fn) { window.pDraws.push(name); dash.draw(name, fn); }
+window.pNeu = () => window.pDraws.forEach((n) => dash.draw(n));
+
+dash.draw('pWahl', (sel) => {
+  const a = dash.data('p_alles');
+  if (a.status !== 'ok' || !a.data) return;
+  const namen = Array.from(new Set(a.data.map((d) => d.spieler))).sort((x, y) => window.pNachname(x).localeCompare(window.pNachname(y)));
+  sel.replaceChildren(...namen.map((n) => {
+    const R = a.data.filter((d) => d.spieler === n);
+    const t = R.filter((d) => d.quelle === 'Training').length, s = R.filter((d) => d.quelle === 'Spiel').length;
+    return new Option(n + ' (' + t + (t === 1 ? ' Training, ' : ' Trainings, ') + s + (s === 1 ? ' Spiel)' : ' Spiele)'), n);
+  }));
+  sel.value = window.pAktuell();
+  sel.onchange = () => { window.pName = sel.value; window.pNeu(); };
+});
+
+pReg('pLede', (el) => {
+  const R = window.pZeilen(), n = window.pAktuell();
+  if (!R.length) { el.textContent = 'Keine Daten.'; return; }
+  const tr = R.filter((d) => d.quelle === 'Training'), sp = R.filter((d) => d.quelle === 'Spiel');
+  const pos = (tr.find((d) => d.pos) || {}).pos;
+  const b = (t) => { const x = document.createElement('b'); x.textContent = t; return x; };
+  const posText = { V: 'Verteidiger', M: 'Mittelfeld', S: 'Sturm', TW: 'Torwart' }[pos];
+  el.replaceChildren(b(n), posText ? ' (' + posText + ')' : '', ': ', b(String(tr.length)), tr.length === 1 ? ' Training und ' : ' Trainings und ', b(String(sp.length)), sp.length === 1 ? ' Spiel mit ' : ' Spiele mit ',
+    b(TF.f0(d3.sum(sp, (d) => d.minuten || 0))), ' Minuten. Zusammen ', b(TF.f1(d3.sum(R, (d) => d.km || 0))), ' km.');
+});
+function pKarte(name, fn) { pReg(name, (el) => { const R = window.pZeilen(); el.textContent = R.length ? fn(R.filter((d) => d.quelle === 'Training'), R.filter((d) => d.quelle === 'Spiel'), R) : '—'; }); }
+pKarte('pTrN', (t) => TF.f0(t.length));
+pKarte('pTrKm', (t) => (t.length ? TF.f1(d3.mean(t, (d) => d.km)) : '—'));
+pKarte('pSpN', (t, s) => TF.f0(s.length));
+pKarte('pSpMin', (t, s) => TF.f0(d3.sum(s, (d) => d.minuten || 0)));
+pKarte('pSpKm90', (t, s) => { const min = d3.sum(s, (d) => d.minuten || 0); return min > 0 ? TF.f1(d3.sum(s, (d) => d.km || 0) / min * 90) : '—'; });
+pKarte('pKmGes', (t, s, R) => TF.f1(d3.sum(R, (d) => d.km || 0)));
+pKarte('pKmTr', (t) => TF.f1(d3.sum(t, (d) => d.km || 0)) + ' km');
+pKarte('pKmSp', (t, s) => TF.f1(d3.sum(s, (d) => d.km || 0)) + ' km');
+pKarte('pTop', (t, s, R) => { const b = d3.greatest(R.filter((d) => d.top != null), (d) => d.top); return b ? TF.f1(b.top) : '—'; });
+pKarte('pTopWo', (t, s, R) => { const b = d3.greatest(R.filter((d) => d.top != null), (d) => d.top); return b ? b.quelle + ', ' + window.msvDatum(b.datum) : '—'; });
+
+window.SPIEL_FARBE = 'color-mix(in srgb, #e08a00 85%, var(--color-fg))';
+pReg('pVerlauf', (el) => {
+  el.replaceChildren();
+  const f = window.pMetric, R = window.pZeilen().filter((d) => d[f] != null && (window.tAlt.pVerlauf || d.datum >= window.tGrenze()));
+  if (!R.length) { el.textContent = 'Keine Werte.'; return; }
+  const fmt = { km: TF.f1, hi_m: TF.f0, sprints: TF.f0, top: TF.f1 }[f], unit = { km: ' km', hi_m: ' m', sprints: '', top: ' km/h' }[f];
+  const t0 = new Date(R[0].datum + 'T00:00:00'), t1 = new Date(R[R.length - 1].datum + 'T00:00:00');
+  t1.setDate(t1.getDate() + 1);
+  const W = el.clientWidth || 600, H = 260, m = { t: 14, r: 10, b: 30, l: 44 };
+  const x = d3.scaleTime().domain([t0, t1]).range([m.l, W - m.r]);
+  const tage = Math.max(1, (t1 - t0) / 864e5), bw = Math.max(2, Math.min(18, (W - m.l - m.r) / tage * 0.8));
+  const y = d3.scaleLinear().domain([0, (d3.max(R, (d) => d[f]) || 1) * 1.1]).nice().range([H - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', 'Verlauf Training und Spiel für ' + window.pAktuell());
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat((v) => TF.f1(v).replace(',0', '')))
+    .call((g) => { g.select('.domain').remove(); g.selectAll('line').style('stroke', 'var(--cds-chart-grid)'); });
+  svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.max(2, Math.floor((W - m.l) / 80))).tickSize(0)
+    .tickFormat((d) => String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.'))
+    .call((g) => { g.select('.domain').style('stroke', 'var(--cds-chart-axis)'); g.selectAll('text').attr('dy', '1em'); });
+  // Mehrere Einheiten am selben Tag nebeneinander
+  const proTag = d3.group(R, (d) => d.datum);
+  const xPos = (d) => { const g = proTag.get(d.datum), i = g.indexOf(d); return x(new Date(d.datum + 'T12:00:00')) - (g.length * bw) / 2 + i * bw; };
+  svg.append('g').selectAll('rect').data(R).join('rect').attr('x', xPos).attr('width', Math.max(1, bw - 1))
+    .attr('y', (d) => y(d[f])).attr('height', (d) => Math.max(0, y(0) - y(d[f]))).attr('rx', 1)
+    .style('fill', (d) => (d.quelle === 'Spiel' ? window.SPIEL_FARBE : window.MSV_FARBE));
+  const tip = window.msvTip(el);
+  svg.append('g').selectAll('rect').data(R).join('rect').attr('x', (d) => xPos(d) - 2).attr('width', bw + 3).attr('y', m.t).attr('height', H - m.t - m.b)
+    .style('fill', 'transparent')
+    .on('pointermove', (ev, d) => tip.show(ev, [window.tTag(d.datum) + ' · ' + d.quelle, d.titel,
+      TF.f0(d.minuten || 0) + ' Min. · ' + (d.km == null ? '—' : TF.f2(d.km) + ' km') + ' · ' + (d.hi_m == null ? '—' : TF.f0(d.hi_m) + ' m intensiv'),
+      'Sprints: ' + (d.sprints == null ? '—' : d.sprints) + ' · Top: ' + (d.top == null ? '—' : TF.f1(d.top) + ' km/h') + (d.hf ? ' · Ø HF ' + d.hf : '')]))
+    .on('pointerleave', () => tip.hide());
+});
+
+pReg('pWochen', (tb) => {
+  tb.replaceChildren();
+  const R = window.pZeilen(), grenze = window.tGrenze();
+  const wochen = d3.groups(R, (d) => window.kwMontag(d.datum)).sort((a, b) => (a[0] < b[0] ? 1 : -1));
+  const neu = wochen.filter((w) => w[0] >= grenze), alt = wochen.filter((w) => w[0] < grenze);
+  const zeile = ([wo, G]) => {
+    const t = G.filter((d) => d.quelle === 'Training'), s = G.filter((d) => d.quelle === 'Spiel');
+    const sum = (A, k) => d3.sum(A, (d) => d[k] || 0);
+    const tr = document.createElement('tr');
+    ['KW ' + window.kwNummer(wo), window.kwText(wo), TF.f0(t.length), TF.f1(sum(t, 'km')), TF.f0(s.length), TF.f0(sum(s, 'minuten')), TF.f1(sum(s, 'km')),
+      TF.f1(sum(G, 'km')), TF.f0(sum(G, 'hi_m')), TF.f0(sum(G, 'sprints'))]
+      .forEach((x) => { const td = document.createElement('td'); td.textContent = x; tr.appendChild(td); });
+    tb.appendChild(tr);
+  };
+  neu.forEach(zeile);
+  window.tMehrZeile(tb, 'pWochen', alt.length, 10, 'Wochen');
+  if (window.tAlt.pWochen) alt.forEach(zeile);
+});
+
+pReg('pListe', (tb) => {
+  tb.replaceChildren();
+  const v = (x, f) => (x == null ? '—' : f(x));
+  const grenze = window.tGrenze(), alle = window.pZeilen().slice().reverse();
+  const neu = alle.filter((d) => d.datum >= grenze), alt = alle.filter((d) => d.datum < grenze);
+  const zeile = (d) => {
+    const tr = document.createElement('tr');
+    if (d.quelle === 'Spiel') tr.className = 'p-spiel';
+    [window.tTag(d.datum), d.quelle, d.titel, v(d.minuten, TF.f0), v(d.km, TF.f2), v(d.mpm, TF.f0), v(d.hi_m, TF.f0), v(d.sprints, TF.f0), v(d.top, TF.f1), v(d.hf, TF.f0)]
+      .forEach((x) => { const td = document.createElement('td'); td.textContent = x; tr.appendChild(td); });
+    tb.appendChild(tr);
+  };
+  neu.forEach(zeile);
+  window.tMehrZeile(tb, 'pListe', alt.length, 10, 'Einheiten und Spiele');
+  if (window.tAlt.pListe) alt.forEach(zeile);
+});
+
+tToggle('pmetric', 'pMetric', 'pVerlauf');
+</script>
+
+<script>
+// Aufklappen: Auswahllisten und "Ganze Saison" in den Grafiken
+document.querySelectorAll('[data-mehrwahl]').forEach((b) => b.addEventListener('click', () => {
+  const n = b.dataset.mehrwahl; window.tAlt[n] = !window.tAlt[n]; dash.draw(n);
+}));
+document.querySelectorAll('[data-zeit]').forEach((b) => b.addEventListener('click', () => {
+  const n = b.dataset.zeit; window.tAlt[n] = !window.tAlt[n];
+  b.setAttribute('aria-pressed', String(!!window.tAlt[n]));
+  b.textContent = window.tAlt[n] ? 'Nur letzte 6 Wochen' : 'Ganze Saison anzeigen';
+  dash.draw(n);
+}));
+</script>
