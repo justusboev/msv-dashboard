@@ -43,6 +43,9 @@ jobs:
       - name: Datenstand entschluesseln
         run: python 03_Skripte/zustand.py auspacken
 
+              - name: Kader und Spielerfotos entschluesseln
+        run: python 03_Skripte/zustand.py stammdaten-auspacken
+
       - name: Trainings von Polar holen
         id: polar
         run: |
