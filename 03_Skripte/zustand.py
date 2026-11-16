@@ -75,5 +75,54 @@ def auspacken():
     print("Datenstand entschluesselt: %d Dateien." % anzahl)
 
 
+# ---- Stammdaten (Kader und Spielerfotos), verschluesselt mit dem Dashboard-Passwort ----
+STAMM = os.path.join(ORDNER, "daten", "stammdaten.enc")
+STAMM_INHALT = ["kader.csv", "spielerfotos"]
+
+
+def stamm_schluessel(salz):
+    from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+    from cryptography.hazmat.primitives import hashes
+    return PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salz, iterations=600000).derive(os.environ["MSV_PW"].encode("utf-8"))
+
+
+def stammdaten_einpacken():
+    roh = io.BytesIO()
+    with tarfile.open(fileobj=roh, mode="w", format=tarfile.PAX_FORMAT) as tar:
+        for name in STAMM_INHALT:
+            pfad = os.path.join(DATEN, name)
+            liste = [name + "/" + f for f in sorted(os.listdir(pfad))] if os.path.isdir(pfad) else ([name] if os.path.isfile(pfad) else [])
+            for rel in liste:
+                daten = open(os.path.join(DATEN, rel), "rb").read()
+                info = tarfile.TarInfo(rel)
+                info.size, info.mtime, info.mode = len(daten), 0, 0o644
+                tar.addfile(info, io.BytesIO(daten))
+    salz, nonce = os.urandom(16), os.urandom(12)
+    gz = gzip.compress(roh.getvalue(), mtime=0)
+    open(STAMM, "wb").write(b"MSS1" + salz + nonce + AESGCM(stamm_schluessel(salz)).encrypt(nonce, gz, b"msv-stammdaten-v1"))
+    print("Stammdaten verschluesselt (%d KB)." % (os.path.getsize(STAMM) // 1024))
+
+
+def stammdaten_auspacken():
+    if not os.path.exists(STAMM):
+        print("Keine Stammdaten vorhanden.")
+        return
+    d = open(STAMM, "rb").read()
+    if d[:4] != b"MSS1":
+        sys.exit("stammdaten.enc hat ein unbekanntes Format.")
+    gz = AESGCM(stamm_schluessel(d[4:20])).decrypt(d[20:32], d[32:], b"msv-stammdaten-v1")
+    n = 0
+    with tarfile.open(fileobj=io.BytesIO(gzip.decompress(gz)), mode="r") as tar:
+        for m in tar.getmembers():
+            if not m.isfile() or m.name.startswith("/") or ".." in m.name.split("/"):
+                continue
+            ziel = os.path.join(DATEN, m.name)
+            os.makedirs(os.path.dirname(ziel), exist_ok=True)
+            open(ziel, "wb").write(tar.extractfile(m).read())
+            n += 1
+    print("Stammdaten entschluesselt: %d Dateien." % n)
+
+
 if __name__ == "__main__":
-    {"einpacken": einpacken, "auspacken": auspacken}[sys.argv[1]]()
+    {"einpacken": einpacken, "auspacken": auspacken,
+     "stammdaten-einpacken": stammdaten_einpacken, "stammdaten-auspacken": stammdaten_auspacken}[sys.argv[1]]()

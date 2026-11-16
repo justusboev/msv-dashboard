@@ -68,6 +68,35 @@
 .msv-picker-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
 .msv-select { min-width: 240px; max-width:100%; }
 .t-tief { color: var(--msv-blau-text); }
+.p-kopfzeile { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap: var(--cds-gap-sm); margin-bottom: var(--cds-gap-md); }
+.p-suche { min-width: 240px; flex: 0 1 320px; }
+.p-legende { margin:0; }
+.p-gruppe { margin: var(--cds-gap-lg) 0 var(--cds-gap-sm); font-size: var(--cds-font-size-caption); letter-spacing:.12em; text-transform:uppercase; color: var(--msv-blau-text); font-weight: var(--cds-font-weight-medium); }
+.p-zeile { appearance:none; width:100%; display:grid; grid-template-columns: 64px minmax(160px,1.3fr) minmax(110px,.8fr) minmax(0,2.4fr) 16px; align-items:center; gap: var(--cds-gap-md);
+  text-align:left; font:inherit; color: var(--color-fg); background: var(--color-panel); border:1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 8px 14px 8px 8px; margin-bottom: 8px; cursor:pointer; }
+.p-zeile:hover { border-color: var(--msv-blau); box-shadow: 0 2px 10px rgba(0,88,168,.12); }
+.p-foto { width:64px; height:80px; border-radius:8px; object-fit:cover; display:block; background: color-mix(in srgb, var(--msv-blau) 12%, var(--color-bg)); }
+.p-ini { display:flex; align-items:center; justify-content:center; font-weight:600; color: var(--msv-blau-text); font-size:18px; }
+.p-name { font-weight:700; font-size: 16px; margin-bottom:6px; }
+.p-chips { display:flex; gap:6px; flex-wrap:wrap; }
+.p-chip { font-size: var(--cds-font-size-caption); background: color-mix(in srgb, var(--color-fg) 7%, var(--color-bg)); border-radius:999px; padding:3px 10px; font-variant-numeric: tabular-nums; }
+.p-pos { color: var(--color-fg-muted); }
+.p-werte { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--cds-gap-sm); }
+.p-werte div { display:flex; flex-direction:column; }
+.p-werte b { font-family: var(--font-anthropic-serif); font-weight:400; font-size: 20px; color: var(--msv-blau-text); font-variant-numeric: tabular-nums; }
+.p-werte span { font-size: 11.5px; color: var(--color-fg-muted); }
+.p-ampel { display:inline-block; width:12px; height:12px; border-radius:50%; background: color-mix(in srgb, var(--color-fg) 22%, var(--color-bg)); }
+.p-ampel.p-ok { background: var(--color-ok); } .p-ampel.p-hoch { background: var(--color-bad); } .p-ampel.p-tief { background: var(--msv-blau); }
+.p-zurueck { margin-bottom: var(--cds-gap-md); font-size: var(--cds-font-size-body); text-decoration:none; }
+.p-detailkopf { display:flex; align-items:center; gap: var(--cds-gap-lg); margin-bottom: var(--cds-gap-lg); }
+.p-detailkopf .p-foto { width:96px; height:120px; border-radius:12px; }
+.p-detailkopf .p-name { font-family: var(--font-anthropic-serif); font-weight:400; font-size: 28px; }
+@media (max-width: 720px) {
+  .p-zeile { grid-template-columns: 56px 1fr 16px; }
+  .p-foto { width:56px; height:70px; }
+  .p-pos { display:none; }
+  .p-werte { grid-column: 1 / -1; grid-row: 2; grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
 .msv-mehr { appearance:none; background:none; border:0; padding:4px 2px; font:inherit; font-size: var(--cds-font-size-caption); color: var(--msv-blau-text); cursor:pointer; text-decoration: underline; text-underline-offset: 3px; }
 .msv-mehr:hover { color: var(--msv-blau); }
 .msv-table td.msv-mehr-zelle { text-align:center; background: color-mix(in srgb, var(--msv-blau) 6%, transparent) !important; }
@@ -428,7 +457,18 @@
     </div>
   </section>
   <section id="spieler" data-panel="spieler" hidden>
-    <div class="msv-picker">
+    <div id="p-uebersicht">
+      <div class="p-kopfzeile">
+        <input class="dash-select p-suche" id="p-suche" type="search" placeholder="Spieler suchen …" aria-label="Spieler suchen">
+        <div class="msv-legend p-legende"><span class="p-ampel p-ok"></span>Belastung normal <span class="p-ampel p-hoch"></span>deutlich mehr als üblich <span class="p-ampel p-tief"></span>deutlich weniger <span class="p-ampel"></span>keine Angabe</div>
+      </div>
+      <div data-draw="pUebersicht"></div>
+    </div>
+
+    <div id="p-detail" hidden>
+    <button class="msv-mehr p-zurueck" type="button" id="p-zurueck">← Zurück zur Übersicht</button>
+    <div class="p-detailkopf" data-draw="pKopf"></div>
+    <div class="msv-picker" style="display:none">
       <label class="msv-picker-label" for="msv-spielerwahl">Spieler</label>
       <select class="dash-select msv-select" id="msv-spielerwahl" data-draw="pWahl" aria-label="Spieler wählen"></select>
     </div>
@@ -494,6 +534,7 @@
           <tbody data-draw="pListe"></tbody>
         </table>
       </div>
+    </div>
     </div>
   </section>
   <div class="msv-foot" aria-hidden="true"></div>
@@ -1571,7 +1612,8 @@ window.pAktuell = () => {
   const a = dash.data('p_alles');
   if (a.status !== 'ok' || !a.data || !a.data.length) return null;
   const namen = Array.from(new Set(a.data.map((d) => d.spieler)));
-  return namen.includes(window.pName) ? window.pName : namen.sort((x, y) => window.pNachname(x).localeCompare(window.pNachname(y)))[0];
+  if (window.pName) return window.pName;
+  return namen.sort((x, y) => window.pNachname(x).localeCompare(window.pNachname(y)))[0];
 };
 window.pZeilen = () => { const a = dash.data('p_alles'), n = window.pAktuell(); return n && a.data ? a.data.filter((d) => d.spieler === n) : []; };
 window.pDraws = [];
@@ -1697,4 +1739,126 @@ document.querySelectorAll('[data-zeit]').forEach((b) => b.addEventListener('clic
   b.textContent = window.tAlt[n] ? 'Nur letzte 6 Wochen' : 'Ganze Saison anzeigen';
   dash.draw(n);
 }));
+</script>
+
+<script>
+// ===== Spieler-Übersicht mit Fotos (Kader aus kader.csv) =====
+window.pAlter = (geb) => {
+  if (!geb) return null;
+  let j, m, t;
+  if (/^\d{4}-\d{2}-\d{2}/.test(geb)) { [j, m, t] = geb.slice(0, 10).split('-').map(Number); }
+  else { const p = geb.split('.').map(Number); if (p.length !== 3) return null; [t, m, j] = p; }
+  const h = new Date(); let a = h.getFullYear() - j;
+  if (h.getMonth() + 1 < m || (h.getMonth() + 1 === m && h.getDate() < t)) a -= 1;
+  return a > 10 && a < 60 ? a : null;
+};
+window.pGruppe = (pos) => {
+  const p = String(pos || '').toLowerCase();
+  if (p.includes('tor')) return 0;
+  if (p.includes('vert') || p.includes('abwehr') || p.includes('innen') || p.includes('außen')) return 1;
+  if (p.includes('mittel')) return 2;
+  if (p.includes('stürm') || p.includes('sturm') || p.includes('angriff')) return 3;
+  return 4;
+};
+window.P_GRUPPEN = ['Torwart', 'Abwehr', 'Mittelfeld', 'Sturm', 'Weitere'];
+
+dash.calc('p_uebersicht', {
+  title: 'Spielerübersicht',
+  description: 'Kader mit Foto, Alter, Nummer, Position sowie Trainingswoche, Saisonspielen und Belastung.',
+  inputs: ['kader', 'p_alles', 't_belastung', 't_spieler'],
+  fn: (K, A, B, T) => {
+    const namen = Array.from(new Set((A || []).map((a) => a.spieler)));
+    const montag = T && T.length ? window.kwMontag(d3.max(T, (t) => t.datum)) : null;
+    return (K || []).map((k) => {
+      const nach = window.pNachname(k.name), ini = window.pNorm(k.name).charAt(0);
+      const kand = namen.filter((n) => window.pNachname(n) === nach);
+      const daten = kand.length > 1 ? (kand.find((n) => window.pNorm(n).charAt(0) === ini) || kand[0]) : (kand[0] || k.name);
+      const R = (A || []).filter((a) => a.spieler === daten);
+      const tw = R.filter((r) => r.quelle === 'Training' && montag && window.kwMontag(r.datum) === montag);
+      const sp = R.filter((r) => r.quelle === 'Spiel');
+      const b = (B || []).find((x) => x.spieler === daten);
+      return {
+        name: k.name, daten: daten, nummer: k.nummer, position: k.position, alter: window.pAlter(k.geburtsdatum), foto: k.foto,
+        gruppe: window.pGruppe(k.position), kw: montag ? window.kwNummer(montag) : null,
+        trainings_woche: tw.length, km_woche: d3.sum(tw, (r) => r.km || 0),
+        spiele: sp.length, minuten: d3.sum(sp, (r) => r.minuten || 0),
+        verhaeltnis: b ? b.verhaeltnis : null
+      };
+    }).sort((a, b) => a.gruppe - b.gruppe || (+a.nummer || 99) - (+b.nummer || 99));
+  }
+});
+
+window.pSuche = '';
+window.pFoto = (d, gross) => {
+  if (d.foto) { const i = document.createElement('img'); i.className = 'p-foto'; i.src = d.foto; i.alt = 'Foto ' + d.name; i.loading = 'lazy'; return i; }
+  const x = document.createElement('div'); x.className = 'p-foto p-ini';
+  x.textContent = d.name.split(/\s+/).map((w) => w.charAt(0)).join('').slice(0, 2).toUpperCase(); return x;
+};
+window.pChips = (d) => {
+  const c = document.createElement('div'); c.className = 'p-chips';
+  [d.alter != null ? d.alter + ' Jahre' : null, d.nummer ? '#' + d.nummer : null].filter(Boolean)
+    .forEach((t) => { const s = document.createElement('span'); s.className = 'p-chip'; s.textContent = t; c.appendChild(s); });
+  return c;
+};
+window.pAmpel = (v) => {
+  const a = document.createElement('span');
+  a.className = 'p-ampel' + (v == null ? '' : v > 1.3 ? ' p-hoch' : v < 0.8 ? ' p-tief' : ' p-ok');
+  a.title = v == null ? 'Belastung: keine Angabe' : 'Belastung diese Woche: ' + TF.f2(v) + ' × üblich';
+  return a;
+};
+
+dash.draw('pUebersicht', (el) => {
+  const u = dash.data('p_uebersicht');
+  el.replaceChildren();
+  if (u.status !== 'ok' || !u.data || !u.data.length) { el.textContent = 'Kein Kader hinterlegt.'; return; }
+  const q = window.pNorm(window.pSuche);
+  const L = u.data.filter((d) => !q || window.pNorm(d.name).includes(q));
+  if (!L.length) { el.textContent = 'Kein Spieler gefunden.'; return; }
+  d3.groups(L, (d) => d.gruppe).forEach(([g, G]) => {
+    const h = document.createElement('div'); h.className = 'p-gruppe'; h.textContent = window.P_GRUPPEN[g] + ' (' + G.length + ')'; el.appendChild(h);
+    G.forEach((d) => {
+      const z = document.createElement('button'); z.type = 'button'; z.className = 'p-zeile';
+      const info = document.createElement('div');
+      const n = document.createElement('div'); n.className = 'p-name'; n.textContent = d.name;
+      info.append(n, window.pChips(d));
+      const pos = document.createElement('div'); pos.className = 'p-pos'; pos.textContent = d.position || '';
+      const w = document.createElement('div'); w.className = 'p-werte';
+      [[TF.f0(d.trainings_woche), 'Trainings KW ' + (d.kw || '')], [TF.f1(d.km_woche), 'km Training KW ' + (d.kw || '')],
+        [TF.f0(d.spiele), 'Spiele Saison'], [TF.f0(d.minuten), 'Spielminuten']].forEach(([v, l]) => {
+        const x = document.createElement('div'); const b = document.createElement('b'); b.textContent = v; const s = document.createElement('span'); s.textContent = l;
+        x.append(b, s); w.appendChild(x);
+      });
+      z.append(window.pFoto(d), info, pos, w, window.pAmpel(d.verhaeltnis));
+      z.onclick = () => window.pOeffnen(d);
+      el.appendChild(z);
+    });
+  });
+});
+
+window.pOeffnen = (d) => {
+  window.pName = d.daten; window.pKader = d;
+  const sel = document.getElementById('msv-spielerwahl'); if (sel) sel.value = d.daten;
+  document.getElementById('p-uebersicht').hidden = true;
+  document.getElementById('p-detail').hidden = false;
+  window.pNeu(); dash.draw('pKopf');
+  const k = document.getElementById('spieler'); if (k) k.scrollIntoView({ block: 'start' });
+};
+document.getElementById('p-zurueck').addEventListener('click', () => {
+  document.getElementById('p-detail').hidden = true;
+  document.getElementById('p-uebersicht').hidden = false;
+  dash.draw('pUebersicht');
+});
+document.getElementById('p-suche').addEventListener('input', (e) => { window.pSuche = e.target.value; dash.draw('pUebersicht'); });
+
+dash.draw('pKopf', (el) => {
+  const d = window.pKader;
+  el.replaceChildren();
+  if (!d) return;
+  const info = document.createElement('div');
+  const n = document.createElement('div'); n.className = 'p-name'; n.textContent = d.name;
+  const pos = document.createElement('div'); pos.className = 'p-pos'; pos.textContent = d.position || '';
+  pos.style.margin = '6px 0 8px';
+  info.append(n, pos, window.pChips(d));
+  el.append(window.pFoto(d), info);
+});
 </script>

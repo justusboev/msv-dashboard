@@ -17,7 +17,27 @@ DATEN_ORDNER = os.path.join(os.path.dirname(HIER), '02_Daten')
 def lies(name):
     f = os.path.join(DATEN_ORDNER, name)
     return list(csv.DictReader(open(f, encoding='utf-8'))) if os.path.exists(f) else []
+def kader_laden():
+    """Kader (02_Daten/kader.csv) mit Spielerfotos (02_Daten/spielerfotos/<Name>.jpg)."""
+    import base64
+    f = os.path.join(DATEN_ORDNER, 'kader.csv')
+    if not os.path.exists(f):
+        return []
+    roh = open(f, encoding='utf-8-sig').read()
+    kopf = roh.split('\n')[0]
+    trenner = ';' if kopf.count(';') >= kopf.count(',') else ','
+    aus = []
+    for r in csv.DictReader(roh.splitlines(), delimiter=trenner):
+        n = (r.get('name') or '').strip()
+        if not n:
+            continue
+        foto = os.path.join(DATEN_ORDNER, 'spielerfotos', n + '.jpg')
+        aus.append({'name': n, 'nummer': (r.get('nummer') or '').strip(), 'position': (r.get('position') or '').strip(),
+                    'geburtsdatum': (r.get('geburtsdatum') or '').strip(),
+                    'foto': ('data:image/jpeg;base64,' + base64.b64encode(open(foto, 'rb').read()).decode()) if os.path.exists(foto) else ''})
+    return aus
 daten = {'physis': rows, 'training_spieler': lies('polar_spieler_einheiten.csv'), 'training_drills': lies('polar_drills.csv'), 'training_team': lies('polar_team_einheiten.csv')}
+daten['kader'] = kader_laden()
 if daten['training_team']:
     stand += ' · Training: ' + '.'.join(reversed(max(r['datum'] for r in daten['training_team']).split('-')))
 salt, iv = os.urandom(16), os.urandom(12)
