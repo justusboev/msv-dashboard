@@ -1,31 +1,29 @@
 <meta name="dash-one-writer">
 <style>
-.msv { --msv-blau: #0058a8; --msv-blau-dunkel: #003d7a; --msv-blau-text: color-mix(in srgb, var(--msv-blau) 70%, var(--color-fg)); --msv-blau-chart: color-mix(in srgb, var(--msv-blau) 85%, var(--color-fg)); --msv-zebra: repeating-linear-gradient(90deg, var(--msv-blau) 0 10px, #ffffff 10px 18px); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
-.msv-head { position:relative; overflow:hidden; display:flex; flex-direction:column; gap: var(--cds-gap-xs); padding: var(--cds-pad-xl) var(--cds-pad-lg); border-radius: var(--cds-radius); color:#fff;
-  background: linear-gradient(90deg, var(--msv-blau-dunkel) 0%, var(--msv-blau) 45%, rgba(0,88,168,0.15) 80%, rgba(0,88,168,0) 100%), repeating-linear-gradient(115deg, var(--msv-blau) 0 16px, #ffffff 16px 28px); }
-.msv-head { flex-direction:row; align-items:center; gap: var(--cds-gap-lg); }
-.msv-head-text { display:flex; flex-direction:column; gap: var(--cds-gap-xs); min-width:0; }
-.msv-logo { flex:none; width:84px; height:104px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius: 14px; padding:8px; box-shadow: 0 2px 10px rgba(0,0,0,.18); }
-.msv-logo img { max-width:100%; max-height:100%; display:block; }
-@media (max-width: 480px) { .msv-logo { width:64px; height:80px; padding:6px; } }
+.msv { --msv-blau: #4e8ac3; --msv-blau-dunkel: #24356e; --msv-navy: #1b2a5c; --msv-blau-text: #a9cdf2; --msv-blau-chart: #7fb8ee; --msv-zebra: repeating-linear-gradient(90deg, var(--msv-blau) 0 10px, #ffffff 10px 18px); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+.msv-head { position:relative; display:flex; flex-direction:row; align-items:center; flex-wrap:wrap; gap: var(--cds-gap-lg) var(--cds-gap-xl); padding: var(--cds-pad-xl) 0 var(--cds-pad-lg); color:#fff; }
+.msv-head-text { display:flex; flex-direction:column; gap: 2px; min-width:0; padding-left: var(--cds-gap-xl); border-left: 2px solid rgba(255,255,255,.35); }
+.msv-wort { display:block; width: 260px; max-width: 70vw; height:auto; }
+@media (max-width: 600px) { .msv-wort { width: 200px; } .msv-head-text { padding-left:0; border-left:0; } }
 .msv-kicker { margin:0; font-size: var(--cds-font-size-caption); letter-spacing:.14em; text-transform:uppercase; opacity:.85; }
-.msv-title { font-family: var(--font-anthropic-serif); font-weight:400; font-size: var(--cds-font-size-title); margin:0; color:#fff; }
+.msv-title { font-family: var(--font-anthropic-sans); font-weight:600; font-size: var(--cds-font-size-title); line-height:1.1; margin:0; color:#fff; }
 .msv-sub { color: rgba(255,255,255,.85); font-size: var(--cds-font-size-caption); margin:0; }
-.msv-tabs { display:flex; gap: var(--cds-gap-xs); border-bottom:2px solid var(--msv-blau); margin: var(--cds-gap-md) 0 var(--cds-gap-lg); overflow-x:auto; }
+.msv-tabs { display:flex; gap: var(--cds-gap-xs); border-bottom:2px solid rgba(255,255,255,.8); margin: var(--cds-gap-md) 0 var(--cds-gap-lg); overflow-x:auto; }
 .msv-tab { appearance:none; background:none; border:0; border-radius: var(--cds-radius) var(--cds-radius) 0 0; padding: var(--cds-pad-sm) var(--cds-pad-md); font: inherit; color: var(--color-fg-muted); cursor:pointer; white-space:nowrap; }
-.msv-tab:hover { color: var(--msv-blau-text); }
-.msv-tab[aria-selected="true"] { color:#fff; background: var(--msv-blau); font-weight: var(--cds-font-weight-medium); }
+.msv-tab:hover { color: #fff; }
+.msv-tab { font-size: 16px; padding-top: 10px; }
+.msv-tab[aria-selected="true"] { color: var(--msv-navy); background: #fff; font-weight: var(--cds-font-weight-medium); }
 .msv-lede { font-size: var(--cds-font-size-heading); line-height:1.4; margin: 0 0 var(--cds-gap-lg); max-width: 60ch; }
 .msv-lede b { font-variant-numeric: tabular-nums; }
 .msv-cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-lg); }
-.msv-card, .msv-panel { background: var(--color-panel); border:1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); }
+.msv-card, .msv-panel { background: var(--color-panel); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border:1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); }
 .msv-card { position:relative; overflow:hidden; padding-top: calc(var(--cds-pad-lg) + 6px); }
 .msv-card::before { content:""; position:absolute; left:0; right:0; top:0; height:6px; background: var(--msv-zebra); }
 .msv-card h3, .msv-panel h2 { margin:0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
-.msv-panel h2 { font-size: var(--cds-font-size-body); color: var(--msv-blau-text); padding-left: 12px; border-left: 4px solid var(--msv-blau); }
-.msv-card .msv-big { color: var(--msv-blau-text); }
+.msv-panel h2 { font-size: 17px; color: #fff; font-weight:600; padding-left: 12px; border-left: 4px solid #fff; }
+.msv-card .msv-big { color: #fff; }
 .msv-lede b { color: var(--msv-blau-text); }
-.msv-big { font-family: var(--font-anthropic-serif); font-weight:400; font-size: 2rem; font-variant-numeric: tabular-nums; margin: var(--cds-gap-xs) 0; }
+.msv-big { font-family: var(--font-anthropic-sans); font-weight:600; font-size: 2rem; font-variant-numeric: tabular-nums; margin: var(--cds-gap-xs) 0; }
 .msv-unit { font-size: var(--cds-font-size-body); color: var(--color-fg-muted); margin-left: .2em; }
 .msv-delta { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
 .msv-good { color: var(--color-ok); } .msv-bad { color: var(--color-bad); }
@@ -38,19 +36,19 @@
 .msv-tip b { color: var(--color-fg); }
 .msv-toggle { display:flex; gap: var(--cds-gap-xs); flex-wrap:wrap; }
 .msv-toggle button { appearance:none; font: inherit; font-size: var(--cds-font-size-caption); border:1px solid var(--color-border-line); background: var(--color-bg); color: var(--color-fg-muted); border-radius: 999px; padding: 4px 12px; cursor:pointer; }
-.msv-toggle button[aria-pressed="true"] { background: var(--msv-blau); color: #fff; border-color: var(--msv-blau); }
+.msv-toggle button[aria-pressed="true"] { background: #fff; color: var(--msv-navy); border-color: #fff; font-weight:600; }
 .msv-panel-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap: var(--cds-gap-sm); }
 .msv-tablewrap { overflow-x:auto; }
 .msv-table { border-collapse:collapse; width:100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
 .msv-table th, .msv-table td { padding: 6px 8px; border-bottom:1px solid var(--color-border-line); text-align:right; white-space:nowrap; }
 .msv-table th:first-child, .msv-table td:first-child, .msv-table th:nth-child(2), .msv-table td:nth-child(2) { text-align:left; }
-.msv-table th { color: #fff; background: var(--msv-blau); font-weight: var(--cds-font-weight-medium); border-bottom: 0; }
-.msv-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--msv-blau) 9%, transparent); }
-.msv-table tbody tr:hover td { background: color-mix(in srgb, var(--msv-blau) 18%, transparent); }
+.msv-table th { color: #fff; background: rgba(78,138,195,.55); font-weight: var(--cds-font-weight-medium); border-bottom: 0; }
+.msv-table tbody tr:nth-child(even) td { background: rgba(255,255,255,.04); }
+.msv-table tbody tr:hover td { background: rgba(255,255,255,.1); }
 .msv-soon { position:relative; overflow:hidden; padding: var(--cds-pad-xl); padding-top: calc(var(--cds-pad-xl) + 6px); text-align:center; color: var(--color-fg-muted); }
 .msv-soon::before { content:""; position:absolute; left:0; right:0; top:0; height:6px; background: var(--msv-zebra); }
 .msv-soon h2 { border-left:0; padding-left:0; }
-.msv-foot { height:10px; border-radius: var(--cds-radius); background: var(--msv-zebra); opacity:.9; margin-top: var(--cds-gap-lg); }
+.msv-foot { height:0; border-radius: var(--cds-radius); background: none; opacity:0; margin-top: var(--cds-gap-lg); }
 .msv-soon h2 { color: var(--color-fg); font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
 [data-dash-source-state=refreshing] { opacity:.5; }
 .msv-matchline { margin: calc(-1 * var(--cds-gap-md)) 0 var(--cds-gap-lg); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
@@ -61,20 +59,93 @@
 .msv-key-geg { background: color-mix(in srgb, var(--color-fg) 30%, var(--color-bg)); }
 .msv-chart-sm { min-height: 200px; }
 .msv-toggle-row { margin-top: var(--cds-gap-sm); }
-.msv-subtabs { display:inline-flex; gap:4px; padding:4px; border-radius:999px; background: color-mix(in srgb, var(--msv-blau) 10%, transparent); margin-bottom: var(--cds-gap-lg); flex-wrap:wrap; }
-.msv-subtab { appearance:none; border:0; background:transparent; font:inherit; font-size: var(--cds-font-size-caption); color: var(--msv-blau-text); padding:6px 16px; border-radius:999px; cursor:pointer; }
-.msv-subtab[aria-selected="true"] { background: var(--msv-blau); color:#fff; font-weight: var(--cds-font-weight-medium); }
-.msv-picker { display:flex; flex-wrap:wrap; align-items:center; gap: var(--cds-gap-sm); margin-bottom: var(--cds-gap-lg); padding: var(--cds-pad-md); border:1px solid var(--color-border-line); border-left:4px solid var(--msv-blau); border-radius: var(--cds-radius); background: var(--color-panel); }
+.msv-subtabs { display:inline-flex; gap:4px; padding:4px; border-radius:999px; background: rgba(255,255,255,.1); margin-bottom: var(--cds-gap-lg); flex-wrap:wrap; }
+.msv-subtab { appearance:none; border:0; background:transparent; font:inherit; font-size: var(--cds-font-size-caption); color: #fff; padding:6px 16px; border-radius:999px; cursor:pointer; }
+.msv-subtab[aria-selected="true"] { background: #fff; color: var(--msv-navy); font-weight: var(--cds-font-weight-medium); }
+.msv-picker { display:flex; flex-wrap:wrap; align-items:center; gap: var(--cds-gap-sm); margin-bottom: var(--cds-gap-lg); padding: var(--cds-pad-md); border:1px solid var(--color-border-line); border-left:4px solid #fff; border-radius: var(--cds-radius); background: var(--color-panel); }
 .msv-picker-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
 .msv-select { min-width: 240px; max-width:100%; }
 .t-tief { color: var(--msv-blau-text); }
+.r-zwei { display:grid; grid-template-columns: 1fr 1fr; gap: var(--cds-gap-lg); }
+.r-zwei > .msv-panel { margin-bottom: var(--cds-gap-lg); }
+.r-radar { position:relative; max-width: 460px; margin: 0 auto; }
+.r-key-g { background: color-mix(in srgb, #d9480f 85%, var(--color-fg)); }
+.r-tab td:nth-child(n+2), .r-tab th:nth-child(n+2) { text-align:right; }
+.r-tab td:first-child, .r-tab th:first-child { text-align:left; white-space: normal; }
+.r-tab tr.r-zwischen td { background: transparent !important; font-weight: 700; padding-top: 12px; color: var(--msv-blau-text); }
+.r-tab tr.r-zw-gut td { color: var(--color-ok); } .r-tab tr.r-zw-schlecht td { color: var(--color-bad); }
+.r-platz { display:inline-block; min-width: 30px; text-align:center; padding: 2px 6px; border-radius: 999px; font-weight: 600; background: color-mix(in srgb, var(--color-fg) 8%, var(--color-bg)); }
+.r-platz.r-top { background: color-mix(in srgb, var(--color-ok) 22%, var(--color-bg)); color: var(--color-ok); }
+.r-platz.r-flop { background: color-mix(in srgb, var(--color-bad) 18%, var(--color-bg)); color: var(--color-bad); }
+.r-tab tr.r-gefahr td:first-child { box-shadow: inset 4px 0 0 var(--color-bad); }
+.r-tab tr.r-chance td:first-child { box-shadow: inset 4px 0 0 var(--color-ok); }
+.r-h2-abstand { margin-top: var(--cds-gap-lg) !important; }
+.g-naechst { margin: 0 0 0 8px; }
+.r-max { font-weight: 700; color: var(--msv-blau-text); }
+@media (max-width: 860px) { .r-zwei { grid-template-columns: 1fr; } }
+
+.s-titel { margin: var(--cds-gap-lg) 0 var(--cds-gap-sm); font-weight: var(--cds-font-weight-medium); font-size: var(--cds-font-size-heading); }
+.s-titel.s-gut { color: var(--color-ok); } .s-titel.s-schlecht { color: var(--color-bad); }
+.s-karten { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-md); }
+.s-karte { background: var(--color-panel); border:1px solid var(--color-border-line); border-left: 5px solid var(--msv-blau); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); }
+.s-karte.s-gut { border-left-color: var(--color-ok); } .s-karte.s-schlecht { border-left-color: var(--color-bad); }
+.s-kopf { display:flex; justify-content:space-between; align-items:center; gap: 8px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .06em; }
+.s-platz { text-transform:none; letter-spacing:0; font-weight: var(--cds-font-weight-medium); padding: 2px 8px; border-radius: 999px; background: color-mix(in srgb, var(--color-fg) 8%, var(--color-bg)); color: var(--color-fg); white-space:nowrap; }
+.s-gut .s-platz { background: color-mix(in srgb, var(--color-ok) 18%, var(--color-bg)); } .s-schlecht .s-platz { background: color-mix(in srgb, var(--color-bad) 16%, var(--color-bg)); }
+.s-satz { font-size: 17px; line-height: 1.4; margin: 8px 0 6px; font-weight: 500; }
+.s-liga { margin:0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.s-tore { margin: 6px 0 14px; }
+.s-tore-kopf { display:flex; justify-content:space-between; flex-wrap:wrap; gap: 8px; margin-bottom: 6px; font-size: var(--cds-font-size-body); }
+.s-tore-kopf span { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.s-stapel { display:flex; height: 22px; border-radius: 6px; overflow:hidden; gap: 2px; background: color-mix(in srgb, var(--color-fg) 6%, var(--color-bg)); }
+.s-stapel i { display:block; height:100%; }
+.s-legende { display:flex; flex-wrap:wrap; gap: 4px 16px; margin-top: 6px; font-size: var(--cds-font-size-caption); }
+.s-legende span { display:inline-flex; align-items:center; gap: 6px; } .s-legende i { width: 10px; height: 10px; border-radius: 2px; display:inline-block; }
+.s-stil { margin: 4px 0 0; padding-left: 20px; } .s-stil li { margin: 6px 0; font-size: var(--cds-font-size-body); line-height: 1.4; }
+.s-mehr { margin: var(--cds-gap-lg) 0; border:1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); background: var(--color-panel); }
+.s-mehr summary { cursor:pointer; color: var(--msv-blau-text); font-weight: var(--cds-font-weight-medium); }
+.s-mehr[open] summary { margin-bottom: var(--cds-gap-md); }
+.s-mehr .msv-panel { border:0; padding: 0; margin-bottom: var(--cds-gap-lg); }
+
+.a-zwei { display:grid; grid-template-columns: 1fr 1fr; gap: var(--cds-gap-lg); }
+.a-box h2 { margin-bottom: var(--cds-gap-sm); }
+.a-gut h2 { color: var(--color-ok); border-left-color: var(--color-ok); }
+.a-schlecht h2 { color: var(--color-bad); border-left-color: var(--color-bad); }
+.lk-zeile { display:grid; grid-template-columns: minmax(0,1.6fr) 70px minmax(0,1.3fr) 180px; align-items:center; gap: var(--cds-gap-sm); padding: 7px 0; border-bottom: 1px solid var(--color-border-line); }
+.lk-zeile:last-child { border-bottom:0; }
+.a-box .lk-zeile { grid-template-columns: minmax(0,1fr) 64px; grid-template-areas: "l w" "r r" "s s"; row-gap: 4px; }
+.a-box .lk-label { grid-area:l; } .a-box .lk-wert { grid-area:w; } .a-box .lk-rang { grid-area:r; } .a-box .lk-streifenbox { grid-area:s; }
+.lk-label { font-size: var(--cds-font-size-body); }
+.lk-info { color: var(--color-fg-muted); cursor:help; font-size: 12px; }
+.lk-wert { font-family: var(--font-anthropic-sans); font-weight:600; font-size: 19px; text-align:right; color: var(--msv-blau-text); font-variant-numeric: tabular-nums; }
+.lk-rang { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.lk-rang.msv-good { color: var(--color-ok); } .lk-rang.msv-bad { color: var(--color-bad); }
+.lk-streifen { display:block; }
+.lk-h3 { margin: 0 0 6px; font-size: var(--cds-font-size-body); }
+.lk-unter { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 10px 0 4px; text-transform: uppercase; letter-spacing:.08em; }
+.lk-balken { display:grid; grid-template-columns: 170px 1fr 70px; align-items:center; gap: 8px; font-size: var(--cds-font-size-caption); margin: 3px 0; }
+.lk-bar { height: 10px; border-radius: 5px; background: color-mix(in srgb, var(--color-fg) 7%, var(--color-bg)); overflow:hidden; display:block; }
+.lk-bar i { display:block; height:100%; border-radius:5px; }
+.lk-balken b { text-align:right; font-weight:500; font-variant-numeric: tabular-nums; }
+.msv-table.a-links th:nth-child(n), .msv-table.a-links td:nth-child(n) { text-align:left; }
+.g-form { display:flex; gap: var(--cds-gap-sm); flex-wrap:wrap; }
+.g-spiel { display:flex; flex-direction:column; min-width: 120px; padding: 8px 10px; border-radius: var(--cds-radius); border:1px solid var(--color-border-line); border-top-width: 5px; }
+.g-spiel b { font-family: var(--font-anthropic-sans); font-weight:600; font-size: 20px; }
+.g-spiel span { font-size: var(--cds-font-size-caption); } .g-spiel small { color: var(--color-fg-muted); font-size: 11px; }
+.g-S { border-top-color: var(--color-ok); } .g-U { border-top-color: var(--color-warn); } .g-N { border-top-color: var(--color-bad); }
+@media (max-width: 800px) {
+  .a-zwei { grid-template-columns: 1fr; }
+  .lk-zeile { grid-template-columns: minmax(0,1fr) 64px; grid-template-areas: "l w" "r r" "s s"; row-gap: 4px; }
+  .lk-label { grid-area:l; } .lk-wert { grid-area:w; } .lk-rang { grid-area:r; } .lk-streifenbox { grid-area:s; }
+  .lk-balken { grid-template-columns: 120px 1fr 64px; }
+}
 .p-kopfzeile { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap: var(--cds-gap-sm); margin-bottom: var(--cds-gap-md); }
 .p-suche { min-width: 240px; flex: 0 1 320px; }
 .p-legende { margin:0; }
 .p-gruppe { margin: var(--cds-gap-lg) 0 var(--cds-gap-sm); font-size: var(--cds-font-size-caption); letter-spacing:.12em; text-transform:uppercase; color: var(--msv-blau-text); font-weight: var(--cds-font-weight-medium); }
 .p-zeile { appearance:none; width:100%; display:grid; grid-template-columns: 64px minmax(160px,1.3fr) minmax(110px,.8fr) minmax(0,2.4fr) 16px; align-items:center; gap: var(--cds-gap-md);
   text-align:left; font:inherit; color: var(--color-fg); background: var(--color-panel); border:1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 8px 14px 8px 8px; margin-bottom: 8px; cursor:pointer; }
-.p-zeile:hover { border-color: var(--msv-blau); box-shadow: 0 2px 10px rgba(0,88,168,.12); }
+.p-zeile:hover { border-color: rgba(255,255,255,.6); background: rgba(30,48,110,.75); }
 .p-foto { width:64px; height:80px; border-radius:8px; object-fit:cover; display:block; background: color-mix(in srgb, var(--msv-blau) 12%, var(--color-bg)); }
 .p-ini { display:flex; align-items:center; justify-content:center; font-weight:600; color: var(--msv-blau-text); font-size:18px; }
 .p-name { font-weight:700; font-size: 16px; margin-bottom:6px; }
@@ -83,14 +154,14 @@
 .p-pos { color: var(--color-fg-muted); }
 .p-werte { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--cds-gap-sm); }
 .p-werte div { display:flex; flex-direction:column; }
-.p-werte b { font-family: var(--font-anthropic-serif); font-weight:400; font-size: 20px; color: var(--msv-blau-text); font-variant-numeric: tabular-nums; }
+.p-werte b { font-family: var(--font-anthropic-sans); font-weight:600; font-size: 20px; color: #fff; font-variant-numeric: tabular-nums; }
 .p-werte span { font-size: 11.5px; color: var(--color-fg-muted); }
 .p-ampel { display:inline-block; width:12px; height:12px; border-radius:50%; background: color-mix(in srgb, var(--color-fg) 22%, var(--color-bg)); }
 .p-ampel.p-ok { background: var(--color-ok); } .p-ampel.p-hoch { background: var(--color-bad); } .p-ampel.p-tief { background: var(--msv-blau); }
 .p-zurueck { margin-bottom: var(--cds-gap-md); font-size: var(--cds-font-size-body); text-decoration:none; }
 .p-detailkopf { display:flex; align-items:center; gap: var(--cds-gap-lg); margin-bottom: var(--cds-gap-lg); }
 .p-detailkopf .p-foto { width:96px; height:120px; border-radius:12px; }
-.p-detailkopf .p-name { font-family: var(--font-anthropic-serif); font-weight:400; font-size: 28px; }
+.p-detailkopf .p-name { font-family: var(--font-anthropic-sans); font-weight:600; font-size: 28px; }
 @media (max-width: 720px) {
   .p-zeile { grid-template-columns: 56px 1fr 16px; }
   .p-foto { width:56px; height:70px; }
@@ -105,13 +176,58 @@
 .msv-table tr.p-spiel td:first-child { box-shadow: inset 4px 0 0 color-mix(in srgb, #e08a00 85%, var(--color-fg)); }
 .msv-table td.msv-bad, .msv-table td.t-tief { font-weight: var(--cds-font-weight-medium); }
 .msv-fail { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: var(--cds-pad-md); }
+
+.i-kopf { display:flex; align-items:baseline; gap: var(--cds-gap-md); flex-wrap:wrap; margin: var(--cds-gap-xl) 0 var(--cds-gap-md); padding-top: var(--cds-gap-md); border-top: 1px solid rgba(255,255,255,.25); }
+.i-titel { margin:0; font-size: var(--cds-font-size-heading); font-weight:600; }
+.i-kopf .msv-note { margin:0; }
+.i-stile { display:flex; flex-direction:column; gap: 10px; margin-top: var(--cds-gap-sm); }
+.i-stil, .i-phase { display:grid; grid-template-columns: minmax(120px, 190px) 1fr; align-items:center; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); }
+.i-phase { margin: 6px 0; grid-template-columns: minmax(110px, 140px) 1fr; }
+.i-stil-l { color: var(--color-fg-muted); }
+.i-top .i-stil-l { color:#fff; font-weight:700; }
+.i-stil-bars { display:flex; flex-direction:column; gap:3px; }
+.i-zeile { display:grid; grid-template-columns: 1fr 40px; align-items:center; gap: 8px; }
+.i-zeile b { text-align:right; font-weight:600; font-variant-numeric: tabular-nums; }
+.i-zwei { display:grid; grid-template-columns: 1fr; gap: var(--cds-gap-md); }
+
+.au-grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--cds-gap-lg); }
+.au-spiel { display:flex; flex-direction:column; gap: 6px; min-width:0; }
+.au-kopf { display:flex; flex-wrap:wrap; align-items:baseline; gap: 4px 10px; padding: 6px 10px; border-radius: 8px; border:1px solid var(--color-border-line); border-top-width: 4px; }
+.au-kopf b { font-size: 20px; font-weight:600; } .au-kopf span { font-weight:600; } .au-kopf small { color: var(--color-fg-muted); width:100%; }
+.au-form { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); } .au-form b { color:#fff; font-size: 15px; }
+.au-anteil { color: var(--color-fg-muted); }
+.au-feld { position:relative; max-width: 330px; width:100%; margin: 0 auto; }
+.au-wechsel { margin:0; font-size: 12px; color: var(--color-fg-muted); line-height:1.4; }
+@media (max-width: 900px) { .au-grid { grid-template-columns: 1fr; } }
+
+.msv-wrap:has(#gegner:not([hidden])) { max-width: 1480px; }
+.g-layout { display:grid; grid-template-columns: minmax(0,1fr) 320px; gap: var(--cds-gap-lg); align-items:start; }
+.g-haupt { min-width:0; }
+.g-notizen { position: sticky; top: 16px; display:flex; flex-direction:column; gap: 10px; max-height: calc(100vh - 32px); box-sizing:border-box; margin-bottom:0; }
+.nt-kopf { display:flex; flex-direction:column; gap:2px; }
+.nt-kopf h2 { margin:0; }
+.nt-team { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); padding-left: 16px; }
+.nt-liste { flex: 1 1 auto; min-height: 160px; overflow-y:auto; display:flex; flex-direction:column; gap: 8px; padding-right: 2px; }
+.nt-leer { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 8px 0; }
+.nt-blase { align-self:flex-end; max-width: 92%; background: rgba(78,138,195,.45); border: 1px solid rgba(255,255,255,.18); border-radius: 14px 14px 4px 14px; padding: 8px 10px 6px; }
+.nt-text { white-space: pre-wrap; word-break: break-word; font-size: 15px; line-height: 1.35; }
+.nt-fuss { display:flex; justify-content:flex-end; align-items:center; gap: 8px; margin-top: 4px; font-size: 11.5px; color: var(--color-fg-muted); }
+.nt-weg, .nt-ja, .nt-nein { appearance:none; border:0; background: transparent; color: var(--color-fg-muted); font: inherit; cursor:pointer; padding: 0 4px; border-radius: 6px; }
+.nt-weg { font-size: 16px; line-height: 1; } .nt-weg:hover { color: var(--color-bad); }
+.nt-ja { color: #fff; background: var(--color-bad); padding: 2px 8px; } .nt-nein { color:#fff; background: rgba(255,255,255,.15); padding: 2px 8px; }
+.nt-form { display:flex; gap: 8px; align-items:flex-end; }
+.nt-eingabe { flex:1; resize: none; font: inherit; font-size: 15px; padding: 9px 10px; border-radius: 10px; border:1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color:#fff; }
+.nt-eingabe::placeholder { color: rgba(255,255,255,.55); }
+.nt-senden { appearance:none; border:0; border-radius: 10px; padding: 10px 14px; font: inherit; font-weight: 600; background:#fff; color: var(--msv-navy); cursor:pointer; }
+.nt-hinweis, .nt-fehler { margin:0; font-size: 11.5px; color: var(--color-fg-muted); } .nt-fehler { color: var(--color-bad); }
+@media (max-width: 1200px) { .g-layout { grid-template-columns: 1fr; } .g-notizen { position: static; max-height: none; } .nt-liste { max-height: 360px; } }
 </style>
 
 <div class="msv">
   <header class="msv-head" id="kopf">
-    <div class="msv-logo" id="wappen"><img alt="Wappen MSV Duisburg" src="data:image/png;base64,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"></div>
+    <img class="msv-wort" id="wappen" src="__SCHRIFTZUG__" alt="MSV Duisburg">
     <div class="msv-head-text">
-      <p class="msv-kicker">Die Zebras · Leistungsdaten</p>
+      <p class="msv-kicker">Leistungsdaten</p>
       <h1 class="msv-title">MSV Dashboard</h1>
       <p class="msv-sub">Saison 2026/27 · Daten: SkillCorner, Polar Team Pro</p>
     </div>
@@ -119,6 +235,8 @@
 
   <nav class="msv-tabs" role="tablist" id="reiter">
     <button class="msv-tab" role="tab" data-tab="physis" aria-selected="true">Spieldaten</button>
+    <button class="msv-tab" role="tab" data-tab="analyse" aria-selected="false">Spielanalyse</button>
+    <button class="msv-tab" role="tab" data-tab="gegner" aria-selected="false">Gegneranalyse</button>
     <button class="msv-tab" role="tab" data-tab="training" aria-selected="false">Training</button>
     <button class="msv-tab" role="tab" data-tab="spieler" aria-selected="false">Spieler</button>
   </nav>
@@ -278,6 +396,112 @@
       </div>
     </div>
   </section>
+  <section id="analyse" data-panel="analyse" hidden>
+    <div class="msv-cards" data-draw="aKpi"></div>
+    <div class="r-zwei">
+      <div class="msv-panel">
+        <h2>Profil im Ligavergleich</h2>
+        <p class="msv-note">Außen = bester Wert der Liga, Mitte = schlechtester. Gestrichelt = Liga-Schnitt.</p>
+        <div class="r-radar" data-draw="aRadar"></div>
+      </div>
+      <div class="msv-panel">
+        <h2>Stärken und Schwächen</h2>
+        <p class="msv-note">Platz unter 20 Teams, Platz 1 = bester Wert.</p>
+        <div data-draw="aTabelleSS"></div>
+      </div>
+    </div>
+    <div class="r-zwei">
+      <div class="msv-panel">
+        <h2>Angriffswege</h2>
+        <div data-draw="aWege"></div>
+      </div>
+      <div class="msv-panel">
+        <h2>Tore und Gegentore nach Spielminute</h2>
+        <div class="msv-chart msv-chart-sm" data-draw="aMinuten"></div>
+      </div>
+    </div>
+    <div class="msv-panel">
+      <h2>Entstehung der Tore und Gegentore</h2>
+      <div data-draw="aToreKurz"></div>
+    </div>
+    <div class="msv-panel">
+      <h2>Torgefährliche Spieler</h2>
+      <p class="msv-note">Saisonwerte. Schussvorlage = letzter Pass vor einem Schuss. Tiefenläufe = Läufe hinter die Abwehrkette, die angespielt wurden.</p>
+      <div data-draw="aScorer"></div>
+    </div>
+    <div data-draw="aImpect"></div>
+    <details class="s-mehr">
+      <summary>Alle Kennzahlen anzeigen</summary>
+      <div data-draw="aTabelleAlle"></div>
+    </details>
+    <details class="s-mehr">
+      <summary>Alle Gegentore einzeln anzeigen</summary>
+      <div class="msv-tablewrap"><table class="msv-table a-links">
+        <thead><tr><th>Datum</th><th>Gegner</th><th>Minute</th><th>Entstehung</th><th>Seite</th><th>Spielstand vorher</th></tr></thead>
+        <tbody data-draw="aGegentorListe"></tbody>
+      </table></div>
+    </details>
+    <p class="msv-note">Eigene Auswertung der SkillCorner-Daten aller bisherigen Spiele der 3. Liga.</p>
+  </section>
+
+  <section id="gegner" data-panel="gegner" hidden>
+    <div class="msv-picker">
+      <label class="msv-picker-label" for="g-wahl">Gegner</label>
+      <select class="dash-select msv-select" id="g-wahl" data-draw="gWahl" aria-label="Gegner wählen"></select>
+      <span class="msv-note g-naechst" data-draw="gNaechstText"></span>
+    </div>
+    <div class="g-layout">
+    <div class="g-haupt">
+    <div class="msv-cards" data-draw="gKpi"></div>
+    <div class="msv-panel">
+      <h2>Aufstellungen der letzten 3 Spiele</h2>
+      <p class="msv-note">Durchschnittsposition der Feldspieler der Startelf im eigenen Ballbesitz, vergrößerter Ausschnitt (Abstände maßstabsgetreu), Spielrichtung nach oben. Darüber die Grundordnung gegen den Ball mit Anteil der Spielzeit. Quelle: SkillCorner.</p>
+      <div data-draw="gAufstellung"></div>
+    </div>
+    <div class="r-zwei">
+      <div class="msv-panel">
+        <h2>Gegner und MSV im Vergleich</h2>
+        <p class="msv-note">Außen = bester Wert der Liga, Mitte = schlechtester.</p>
+        <div class="msv-legend"><span class="msv-key r-key-g"></span><span data-draw="gName">Gegner</span> <span class="msv-key msv-key-msv"></span>MSV Duisburg</div>
+        <div class="r-radar" data-draw="gRadar"></div>
+      </div>
+      <div class="msv-panel">
+        <h2>Kennzahlen</h2>
+        <p class="msv-note">Grün = Schwäche des Gegners (Platz 16–20), Rot = Stärke (Platz 1–5).</p>
+        <div data-draw="gVergleich"></div>
+      </div>
+    </div>
+    <div class="r-zwei">
+      <div class="msv-panel">
+        <h2>Angriffswege des Gegners</h2>
+        <div data-draw="gWege"></div>
+      </div>
+      <div class="msv-panel">
+        <h2>Form</h2>
+        <div data-draw="gForm"></div>
+        <h2 class="r-h2-abstand">Tore und Gegentore nach Spielminute</h2>
+        <div class="msv-chart msv-chart-sm" data-draw="gMinuten"></div>
+      </div>
+    </div>
+    <div class="msv-panel">
+      <h2>Entstehung seiner Tore und Gegentore</h2>
+      <div data-draw="gToreKurz"></div>
+    </div>
+    <div class="msv-panel">
+      <h2>Torgefährliche Spieler</h2>
+      <p class="msv-note" data-draw="gScorerNote">Saisonwerte. Schussvorlage = letzter Pass vor einem Schuss. Tiefenläufe = Läufe hinter die Abwehrkette, die angespielt wurden.</p>
+      <div data-draw="gScorer"></div>
+    </div>
+    <div data-draw="gImpect"></div>
+    <details class="s-mehr">
+      <summary>Alle Kennzahlen anzeigen</summary>
+      <div data-draw="gTabelleAlle"></div>
+    </details>
+    </div>
+    <aside class="g-notizen msv-panel" data-draw="gNotizen" aria-label="Notizen zum Gegner"></aside>
+    </div>
+  </section>
+
   <section id="training" data-panel="training" hidden>
     <div class="msv-subtabs" role="tablist" aria-label="Trainingsansicht wählen">
       <button class="msv-subtab" role="tab" data-sub="einheit" aria-selected="true">Einheit</button>
@@ -1861,4 +2085,1107 @@ dash.draw('pKopf', (el) => {
   info.append(n, pos, window.pChips(d));
   el.append(window.pFoto(d), info);
 });
+</script>
+
+<script>
+// ===== Liga: Spielanalyse (MSV) und Gegneranalyse =====
+window.MSV_ID = '756';
+window.LK_GRUPPEN = [['aufbau', 'Spielaufbau'], ['kreieren', 'Chancen kreieren und Abschluss'], ['umschalten', 'Umschalten'],
+  ['pressing', 'Gegen den Ball'], ['defensive', 'Verteidigen: was Gegner gegen uns schaffen'], ['physis', 'Physis']];
+// typ: q = Quote in %, s = pro Spiel; seite: e = eigene Aktionen, g = Aktionen der Gegner; r: +1 hoch ist gut, -1 niedrig ist gut, 0 Stil
+window.LK = [
+  { id: 'a1', g: 'aufbau', l: 'Aufbau unter Druck gelöst', e: 'Anteil der Aufbauphasen unter Gegnerdruck, die ins Mittelfeld führen', typ: 'q', z: ['aufbau_druck_geloest', 'aufbau_druck'], s: 'e', r: 1 },
+  { id: 'a2', g: 'aufbau', l: 'Ballverlust im Aufbau unter Druck', e: 'Anteil der Aufbauphasen unter Druck, die mit Ballverlust enden', typ: 'q', z: ['aufbau_druck_verlust', 'aufbau_druck'], s: 'e', r: -1 },
+  { id: 'a3', g: 'aufbau', l: 'Aufbau-Ausgang über links', typ: 'q', z: ['aufbau_ausgang_links', 'aufbau_ausgang'], s: 'e', r: 0 },
+  { id: 'a4', g: 'aufbau', l: 'Aufbau-Ausgang durch die Mitte', typ: 'q', z: ['aufbau_ausgang_mitte', 'aufbau_ausgang'], s: 'e', r: 0 },
+  { id: 'a5', g: 'aufbau', l: 'Aufbau-Ausgang über rechts', typ: 'q', z: ['aufbau_ausgang_rechts', 'aufbau_ausgang'], s: 'e', r: 0 },
+  { id: 'k1', g: 'kreieren', l: 'Kreativphasen mit Weg in den Abschluss', e: 'Anteil der Phasen im Angriffsaufbau, die in eine Abschlussphase führen', typ: 'q', z: ['kreieren_abschluss', 'kreieren'], s: 'e', r: 1 },
+  { id: 'k2', g: 'kreieren', l: 'Strafraum-Eintritte pro Spiel', typ: 's', z: ['strafraum'], s: 'e', r: 1 },
+  { id: 'k3', g: 'kreieren', l: 'Schüsse pro Spiel', typ: 's', z: ['schuesse'], s: 'e', r: 1 },
+  { id: 'k4', g: 'kreieren', l: 'Anteil Schüsse aus dem Strafraum', typ: 'q', z: ['schuesse_strafraum', 'schuesse'], s: 'e', r: 1 },
+  { id: 'k5', g: 'kreieren', l: 'Tore pro Spiel', typ: 's', z: ['tore'], s: 'e', r: 1, f: 2 },
+  { id: 'k6', g: 'kreieren', l: 'Strafraum-Eintritte über links', typ: 'q', z: ['strafraum_links', 'strafraum'], s: 'e', r: 0 },
+  { id: 'k7', g: 'kreieren', l: 'Strafraum-Eintritte über rechts', typ: 'q', z: ['strafraum_rechts', 'strafraum'], s: 'e', r: 0 },
+  { id: 'k8', g: 'kreieren', l: 'Angriffe über lange oder hohe Bälle', e: 'Anteil der Übergänge ins Abschlussdrittel per langem oder hohem Ball', typ: 'q', z: ['prog_ueber', 'kreieren_abschluss'], s: 'e', r: 0 },
+  { id: 'k9', g: 'kreieren', l: 'Angriffe über die Außenbahn', typ: 'q', z: ['prog_aussen', 'kreieren_abschluss'], s: 'e', r: 0 },
+  { id: 'u1', g: 'umschalten', l: 'Umschaltmomente mit Abschluss', e: 'Anteil eigener Umschalt- und Konterphasen, die zu einem Schuss führen', typ: 'q', z: ['umschalten_gefaehrlich', 'umschalten'], s: 'e', r: 1 },
+  { id: 'u2', g: 'umschalten', l: 'Umschaltmomente pro Spiel', typ: 's', z: ['umschalten'], s: 'e', r: 0 },
+  { id: 'u3', g: 'umschalten', l: 'Gegnerische Konter mit Abschluss', e: 'Anteil der gegnerischen Umschaltphasen, die zu einem Schuss führen', typ: 'q', z: ['umschalten_gefaehrlich', 'umschalten'], s: 'g', r: -1 },
+  { id: 'p1', g: 'pressing', l: 'Hohes Pressing: Ballgewinn', typ: 'q', z: ['pressing_regain', 'pressing'], s: 'e', r: 1 },
+  { id: 'p2', g: 'pressing', l: 'Hohes Pressing: Gegner gestört', e: 'Gegner muss den Ball wegschlagen oder ins Aus spielen', typ: 'q', z: ['pressing_disruption', 'pressing'], s: 'e', r: 1 },
+  { id: 'p3', g: 'pressing', l: 'Hohes Pressing wird überspielt', typ: 'q', z: ['pressing_ueberspielt', 'pressing'], s: 'e', r: -1 },
+  { id: 'p4', g: 'pressing', l: 'Gegenpressing führt zum Ballgewinn', e: 'Anteil der Gegenpressing-Situationen nach Ballverlust, die den Ball zurückholen', typ: 'q', z: ['gegenpressing_erfolg', 'gegenpressing'], s: 'e', r: 1 },
+  { id: 'd1', g: 'defensive', l: 'Gegentore pro Spiel', typ: 's', z: ['tore'], s: 'g', r: -1, f: 2 },
+  { id: 'd2', g: 'defensive', l: 'Zugelassene Schüsse pro Spiel', typ: 's', z: ['schuesse'], s: 'g', r: -1 },
+  { id: 'd3', g: 'defensive', l: 'Zugelassene Strafraum-Eintritte pro Spiel', typ: 's', z: ['strafraum'], s: 'g', r: -1 },
+  { id: 'd4', g: 'defensive', l: 'Anteil zugelassener Schüsse aus dem Strafraum', typ: 'q', z: ['schuesse_strafraum', 'schuesse'], s: 'g', r: -1 },
+  { id: 'd5', g: 'defensive', l: 'Gegner kommen aus dem Aufbau in den Abschluss', e: 'Anteil gegnerischer Kreativphasen, die in eine Abschlussphase führen', typ: 'q', z: ['kreieren_abschluss', 'kreieren'], s: 'g', r: -1 },
+  { id: 'd6', g: 'defensive', l: 'Gegner spielen sich durch die Mitte', e: 'Anteil gegnerischer Übergänge ins Abschlussdrittel durch das Zentrum', typ: 'q', z: ['prog_durch', 'kreieren_abschluss'], s: 'g', r: -1 },
+  { id: 'd7', g: 'defensive', l: 'Gegner kommt über unsere rechte Seite in den Strafraum', typ: 'q', z: ['strafraum_links', 'strafraum'], s: 'g', r: 0 },
+  { id: 'd8', g: 'defensive', l: 'Gegner kommt über unsere linke Seite in den Strafraum', typ: 'q', z: ['strafraum_rechts', 'strafraum'], s: 'g', r: 0 },
+  { id: 'f1', g: 'physis', l: 'Laufdistanz pro Spiel (km)', typ: 'p', z: ['distanz_m'], div: 1000, s: 'e', r: 1, f: 1 },
+  { id: 'f2', g: 'physis', l: 'Intensive Meter pro Spiel (über 20 km/h)', typ: 'p', z: ['intensiv_m'], s: 'e', r: 1 },
+  { id: 'f3', g: 'physis', l: 'Sprints pro Spiel', typ: 'p', z: ['sprints'], s: 'e', r: 1 }
+];
+window.LK_STIL = ['a3', 'a4', 'a5', 'k6', 'k7', 'k8', 'k9', 'u2', 'd7', 'd8'];
+
+dash.calc('liga_teams', {
+  title: 'Liga: Summen je Team',
+  description: 'Je Team: Spiele, eigene Zähler, Zähler der Gegner, Physis, Tore und Gegentore.',
+  inputs: ['liga'],
+  fn: (S) => {
+    const T = {};
+    (S || []).forEach((sp) => {
+      const keys = Object.keys(sp.teams || {});
+      if (keys.length !== 2) return;
+      keys.forEach((k, i) => {
+        const a = sp.teams[k], b = sp.teams[keys[1 - i]], id = String(a.team_id);
+        const t = T[id] || (T[id] = { id: id, name: a.name || k, kurz: k, spiele: [], Z: {}, G: {}, P: {}, nP: 0, tore: [], gegentore: [] });
+        if (a.name && a.name !== k) t.name = a.name;
+        t.spiele.push({ match_id: sp.match_id, datum: sp.datum, gegner: b.name || keys[1 - i], gegner_id: String(b.team_id),
+          tore: (a.tore || []).length, gegentore: (b.tore || []).length });
+        Object.entries(a.zaehler || {}).forEach(([z, v]) => { t.Z[z] = (t.Z[z] || 0) + v; });
+        Object.entries(b.zaehler || {}).forEach(([z, v]) => { t.G[z] = (t.G[z] || 0) + v; });
+        if (a.physis && a.physis.distanz_m) { t.nP += 1; ['distanz_m', 'intensiv_m', 'sprints'].forEach((z) => { t.P[z] = (t.P[z] || 0) + (a.physis[z] || 0); }); }
+        (a.tore || []).forEach((g) => t.tore.push(Object.assign({ datum: sp.datum, gegner: b.name || keys[1 - i] }, g)));
+        (b.tore || []).forEach((g) => t.gegentore.push(Object.assign({ datum: sp.datum, gegner: b.name || keys[1 - i] }, g)));
+      });
+    });
+    return Object.values(T).filter((t) => t.spiele.length >= 2).sort((a, b) => a.name.localeCompare(b.name));
+  }
+});
+
+dash.calc('liga_werte', {
+  title: 'Liga: Kennzahlen und Ränge',
+  description: 'Je Kennzahl der Wert jedes Teams, Rang (1 = bester Wert) und Ligaschnitt.',
+  inputs: ['liga_teams'],
+  fn: (T) => {
+    const out = {};
+    (window.LK || []).forEach((m) => {
+      const werte = (T || []).map((t) => {
+        let v = null;
+        if (m.typ === 'p') v = t.nP ? (t.P[m.z[0]] || 0) / t.nP / (m.div || 1) : null;
+        else {
+          const Q = m.s === 'g' ? t.G : t.Z;
+          if (m.typ === 'q') v = (Q[m.z[1]] || 0) >= 5 ? 100 * (Q[m.z[0]] || 0) / Q[m.z[1]] : null;
+          else v = (Q[m.z[0]] || 0) / t.spiele.length;
+        }
+        return { id: t.id, v: v };
+      }).filter((x) => x.v != null && isFinite(x.v));
+      const sortiert = werte.slice().sort((a, b) => (m.r < 0 ? a.v - b.v : b.v - a.v));
+      const rang = {}; sortiert.forEach((x, i) => { rang[x.id] = i + 1; });
+      out[m.id] = { werte: werte, rang: rang, n: werte.length, schnitt: d3.mean(werte, (x) => x.v) };
+    });
+    return [out];
+  }
+});
+
+window.lkWert = (m, v) => {
+  if (v == null) return '—';
+  if (m.typ === 'q') return TF.f0(v) + ' %';
+  return (m.f === 2 ? TF.f2 : m.f === 1 ? TF.f1 : (v >= 10 ? TF.f0 : TF.f1))(v);
+};
+window.lkDaten = () => { const w = dash.data('liga_werte'); return w.status === 'ok' && w.data && w.data[0] ? w.data[0] : null; };
+window.lkTeams = () => { const t = dash.data('liga_teams'); return t.status === 'ok' && t.data ? t.data : []; };
+window.lkTeam = (id) => window.lkTeams().find((t) => t.id === String(id));
+
+// Kleiner Ligavergleich: Punkte aller Teams, Ligaschnitt, gewähltes Team, optional MSV als Ring. Rechts = besser.
+window.lkStreifen = (m, W, teamId, vergleichId) => {
+  const D = window.lkDaten(); if (!D || !D[m.id]) return document.createElement('span');
+  const d = D[m.id], H = 22, pad = 6;
+  const ext = d3.extent(d.werte, (x) => x.v); if (ext[0] === ext[1]) { ext[0] -= 1; ext[1] += 1; }
+  const x = d3.scaleLinear().domain(m.r < 0 ? [ext[1], ext[0]] : ext).range([pad, W - pad]);
+  const svg = d3.create('svg').attr('width', W).attr('height', H).attr('class', 'lk-streifen').attr('aria-hidden', 'true');
+  svg.append('rect').attr('x', 0).attr('y', 4).attr('width', W).attr('height', H - 8).attr('rx', 4).style('fill', 'color-mix(in srgb, var(--color-fg) 6%, var(--color-bg))');
+  svg.append('line').attr('x1', x(d.schnitt)).attr('x2', x(d.schnitt)).attr('y1', 2).attr('y2', H - 2).style('stroke', 'var(--color-warn)').style('stroke-width', 2);
+  svg.selectAll('circle.o').data(d.werte.filter((w) => w.id !== String(teamId) && w.id !== String(vergleichId))).join('circle')
+    .attr('cx', (w) => x(w.v)).attr('cy', H / 2).attr('r', 3).style('fill', 'color-mix(in srgb, var(--color-fg) 28%, var(--color-bg))');
+  const vgl = d.werte.find((w) => w.id === String(vergleichId));
+  if (vgl) svg.append('circle').attr('cx', x(vgl.v)).attr('cy', H / 2).attr('r', 5.5).style('fill', 'none').style('stroke', 'var(--msv-blau)').style('stroke-width', 2);
+  const me = d.werte.find((w) => w.id === String(teamId));
+  if (me) svg.append('circle').attr('cx', x(me.v)).attr('cy', H / 2).attr('r', 6).style('fill', m.r === 0 ? 'var(--msv-blau-chart)' : (d.rang[me.id] <= 5 ? 'var(--color-ok)' : d.rang[me.id] > d.n - 5 ? 'var(--color-bad)' : 'var(--msv-blau-chart)'));
+  return svg.node();
+};
+
+window.lkZeile = (m, teamId, vergleichId) => {
+  const D = window.lkDaten(), d = D && D[m.id];
+  const me = d ? d.werte.find((w) => w.id === String(teamId)) : null;
+  const z = document.createElement('div'); z.className = 'lk-zeile';
+  const l = document.createElement('div'); l.className = 'lk-label'; l.textContent = m.l; if (m.e) { l.title = m.e; const i = document.createElement('span'); i.className = 'lk-info'; i.textContent = ' ⓘ'; l.appendChild(i); }
+  const w = document.createElement('div'); w.className = 'lk-wert'; w.textContent = window.lkWert(m, me ? me.v : null);
+  const r = document.createElement('div'); r.className = 'lk-rang';
+  if (me) {
+    const rg = d.rang[me.id];
+    r.textContent = (m.r === 0 ? 'Rang ' + rg + ' von ' + d.n + ' (1 = höchster Wert)' : 'Platz ' + rg + ' von ' + d.n) + ' · Liga Ø ' + window.lkWert(m, d.schnitt);
+    if (m.r !== 0) r.classList.toggle('msv-good', rg <= 5), r.classList.toggle('msv-bad', rg > d.n - 5);
+  } else r.textContent = 'keine Daten';
+  const s = document.createElement('div'); s.className = 'lk-streifenbox'; s.appendChild(window.lkStreifen(m, 180, teamId, vergleichId));
+  z.append(l, w, r, s);
+  return z;
+};
+
+// Stärken und Schwächen: beste und schlechteste Ränge in Klartext
+window.lkExtreme = (teamId) => {
+  const D = window.lkDaten(); if (!D) return { gut: [], schlecht: [] };
+  const L = window.LK.filter((m) => m.r !== 0 && D[m.id] && D[m.id].rang[String(teamId)]).map((m) => ({ m: m, rang: D[m.id].rang[String(teamId)], n: D[m.id].n }));
+  return {
+    gut: L.filter((x) => x.rang <= 5).sort((a, b) => a.rang - b.rang).slice(0, 6),
+    schlecht: L.filter((x) => x.rang > x.n - 5).sort((a, b) => (b.rang - b.n) - (a.rang - a.n)).slice(0, 6)
+  };
+};
+window.lkListe = (el, eintraege, teamId, vergleichId, leer) => {
+  el.replaceChildren();
+  if (!eintraege.length) { const p = document.createElement('p'); p.className = 'msv-note'; p.textContent = leer; el.appendChild(p); return; }
+  eintraege.forEach((x) => el.appendChild(window.lkZeile(x.m, teamId, vergleichId)));
+};
+
+window.lkPhasen = (el, teamId, vergleichId, ohneStil) => {
+  el.replaceChildren();
+  window.LK_GRUPPEN.forEach(([g, titel]) => {
+    const M = window.LK.filter((m) => m.g === g && (!ohneStil || m.r !== 0));
+    if (!M.length) return;
+    const p = document.createElement('div'); p.className = 'msv-panel';
+    const h = document.createElement('h2'); h.textContent = titel; p.appendChild(h);
+    M.forEach((m) => p.appendChild(window.lkZeile(m, teamId, vergleichId)));
+    el.appendChild(p);
+  });
+  const leg = document.createElement('p'); leg.className = 'msv-note';
+  leg.textContent = 'Ligavergleich: graue Punkte = andere Teams, orange Linie = Ligaschnitt, rechts = besser.' + (vergleichId ? ' Blauer Ring = MSV.' : '');
+  el.prepend(leg);
+};
+
+window.LK_HERKUNFT = { spielaufbau: 'aus dem Spielaufbau', ballgewinn: 'nach Ballgewinn / Konter', standard: 'nach Standard', langer_ball: 'nach langem Ball' };
+window.LK_SEITE = { links: 'links', mitte: 'zentral', rechts: 'rechts' };
+window.lkTore = (el, t) => {
+  el.replaceChildren();
+  if (!t) { el.textContent = '—'; return; }
+  const grid = document.createElement('div'); grid.className = 'a-zwei';
+  [['Tore', t.tore, 'var(--color-ok)'], ['Gegentore', t.gegentore, 'var(--color-bad)']].forEach(([titel, L, farbe]) => {
+    const box = document.createElement('div');
+    const h = document.createElement('h3'); h.className = 'lk-h3'; h.textContent = titel + ' (' + L.length + ')'; box.appendChild(h);
+    const teil = (feld, namen, ueber) => {
+      const u = document.createElement('div'); u.className = 'lk-unter'; u.textContent = ueber; box.appendChild(u);
+      Object.keys(namen).forEach((k) => {
+        const n = L.filter((g) => g[feld] === k).length, anteil = L.length ? n / L.length : 0;
+        const z = document.createElement('div'); z.className = 'lk-balken';
+        const a = document.createElement('span'); a.textContent = namen[k];
+        const bar = document.createElement('span'); bar.className = 'lk-bar';
+        const f = document.createElement('i'); f.style.width = (100 * anteil) + '%'; f.style.background = farbe; bar.appendChild(f);
+        const b = document.createElement('b'); b.textContent = n + (L.length ? ' (' + TF.f0(100 * anteil) + ' %)' : '');
+        z.append(a, bar, b); box.appendChild(z);
+      });
+    };
+    teil('herkunft', window.LK_HERKUNFT, 'Entstehung');
+    teil('seite', window.LK_SEITE, 'Seite (Sicht des Angreifers)');
+    const zeit = {}; ['0–15', '16–30', '31–45+', '46–60', '61–75', '76–90+'].forEach((k) => { zeit[k] = k; });
+    L.forEach((g) => { const m = g.minute; g.zeit = m <= 15 ? '0–15' : m <= 30 ? '16–30' : m <= 47 ? '31–45+' : m <= 60 ? '46–60' : m <= 75 ? '61–75' : '76–90+'; });
+    teil('zeit', zeit, 'Spielminute');
+    grid.appendChild(box);
+  });
+  el.appendChild(grid);
+};
+
+// ----- Reiter Spielanalyse (MSV) -----
+dash.draw('aLede', (el) => {
+  const t = window.lkTeam(window.MSV_ID);
+  if (!t) { el.textContent = 'Noch keine Ligadaten vorhanden.'; return; }
+  const s = t.spiele, sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
+  const b = (x) => { const e = document.createElement('b'); e.textContent = x; return e; };
+  const ex = window.lkExtreme(window.MSV_ID);
+  el.replaceChildren('MSV Duisburg nach ', b(String(s.length)), ' Spielen: ', b(sieg + ' S / ' + rem + ' U / ' + (s.length - sieg - rem) + ' N'), ', Tore ',
+    b(d3.sum(s, (x) => x.tore) + ':' + d3.sum(s, (x) => x.gegentore)), '. Darunter: was im Vergleich zu den 19 anderen Teams am stärksten auffällt.');
+});
+dash.draw('aStaerken', (el) => window.lkListe(el, window.lkExtreme(window.MSV_ID).gut, window.MSV_ID, null, 'Keine Kennzahl unter den Top 5.'));
+dash.draw('aSchwaechen', (el) => window.lkListe(el, window.lkExtreme(window.MSV_ID).schlecht, window.MSV_ID, null, 'Keine Kennzahl unter den letzten 5.'));
+dash.draw('aTore', (el) => window.lkTore(el, window.lkTeam(window.MSV_ID)));
+dash.draw('aPhasen', (el) => window.lkPhasen(el, window.MSV_ID, null, false));
+dash.draw('aGegentorListe', (tb) => {
+  tb.replaceChildren();
+  const t = window.lkTeam(window.MSV_ID); if (!t) return;
+  const stand = { winning: 'Führung', drawing: 'Unentschieden', losing: 'Rückstand' };
+  t.gegentore.slice().sort((a, b) => (a.datum < b.datum ? 1 : a.datum > b.datum ? -1 : b.minute - a.minute)).forEach((g) => {
+    const tr = document.createElement('tr');
+    // game_state ist aus Sicht des Torschützen: dessen Rückstand = unsere Führung
+    const unser = { winning: 'losing', losing: 'winning', drawing: 'drawing' }[g.stand];
+    [window.msvDatum(g.datum), g.gegner, g.minute + '.', window.LK_HERKUNFT[g.herkunft] || g.herkunft, window.LK_SEITE[g.seite] || '—', stand[unser] || '—']
+      .forEach((x) => { const td = document.createElement('td'); td.textContent = x; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+});
+window.tPhase = (p) => ({ build_up: 'Spielaufbau', create: 'Angriffsaufbau', finish: 'Abschlussphase', direct: 'Direktes Spiel', transition: 'Umschalten', quick_break: 'Konter', set_play: 'Standard', chaotic: 'Unklare Situation', disruption: 'Gestörte Phase' }[p] || p || '—');
+
+// ----- Reiter Gegneranalyse -----
+window.gNaechster = () => {
+  const p = dash.data('liga_plan'); if (p.status !== 'ok' || !p.data) return null;
+  const heute = new Date().toISOString().slice(0, 10);
+  return p.data.filter((s) => (String(s.heim_id) === window.MSV_ID || String(s.gast_id) === window.MSV_ID) && s.status !== 'closed' && s.datum.slice(0, 10) >= heute)
+    .sort((a, b) => (a.datum < b.datum ? -1 : 1))[0] || null;
+};
+window.gId = null;
+window.gAktuell = () => {
+  const T = window.lkTeams().filter((t) => t.id !== window.MSV_ID);
+  if (!T.length) return null;
+  if (window.gId && T.some((t) => t.id === window.gId)) return window.lkTeam(window.gId);
+  const n = window.gNaechster();
+  const nid = n ? String(String(n.heim_id) === window.MSV_ID ? n.gast_id : n.heim_id) : null;
+  return (nid && window.lkTeam(nid)) || T[0];
+};
+window.gDraws = ['gLede', 'gForm', 'gSchwaechen', 'gStaerken', 'gStil', 'gTore', 'gPhasen', 'gSpieler'];
+dash.draw('gWahl', (sel) => {
+  const T = window.lkTeams().filter((t) => t.id !== window.MSV_ID);
+  const n = window.gNaechster(), nid = n ? String(String(n.heim_id) === window.MSV_ID ? n.gast_id : n.heim_id) : null;
+  sel.replaceChildren(...T.map((t) => new Option(t.name + (t.id === nid ? '  · nächster Gegner' : ''), t.id)));
+  const a = window.gAktuell(); if (a) sel.value = a.id;
+  sel.onchange = () => { window.gId = sel.value; window.gDraws.forEach((d) => dash.draw(d)); };
+});
+dash.draw('gLede', (el) => {
+  const t = window.gAktuell(); if (!t) { el.textContent = 'Noch keine Ligadaten vorhanden.'; return; }
+  const s = t.spiele, sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
+  const b = (x) => { const e = document.createElement('b'); e.textContent = x; return e; };
+  const n = window.gNaechster(), naechst = n && [String(n.heim_id), String(n.gast_id)].includes(t.id);
+  el.replaceChildren(b(t.name), ' nach ', b(String(s.length)), ' Spielen: ', b(sieg + ' S / ' + rem + ' U / ' + (s.length - sieg - rem) + ' N'),
+    ', Tore ', b(d3.sum(s, (x) => x.tore) + ':' + d3.sum(s, (x) => x.gegentore)), '.');
+  if (naechst) el.append(' Nächstes Spiel gegen den MSV: ', b(window.tTag(n.datum.slice(0, 10)) + ', ' + (String(n.heim_id) === window.MSV_ID ? 'Heimspiel' : 'Auswärtsspiel')), '.');
+});
+dash.draw('gForm', (el) => {
+  el.replaceChildren();
+  const t = window.gAktuell(); if (!t) return;
+  const box = document.createElement('div'); box.className = 'g-form';
+  t.spiele.slice().sort((a, b) => (a.datum < b.datum ? 1 : -1)).slice(0, 6).forEach((s) => {
+    const k = document.createElement('div'); const erg = s.tore > s.gegentore ? 'S' : s.tore === s.gegentore ? 'U' : 'N';
+    k.className = 'g-spiel g-' + erg;
+    const e = document.createElement('b'); e.textContent = s.tore + ':' + s.gegentore;
+    const g = document.createElement('span'); g.textContent = s.gegner;
+    const d = document.createElement('small'); d.textContent = window.msvDatum(s.datum);
+    k.append(e, g, d); box.appendChild(k);
+  });
+  el.appendChild(box);
+});
+dash.draw('gSchwaechen', (el) => { const t = window.gAktuell(); if (t) window.lkListe(el, window.lkExtreme(t.id).schlecht, t.id, window.MSV_ID, 'Keine Kennzahl unter den letzten 5 der Liga.'); });
+dash.draw('gStaerken', (el) => { const t = window.gAktuell(); if (t) window.lkListe(el, window.lkExtreme(t.id).gut, t.id, window.MSV_ID, 'Keine Kennzahl unter den Top 5 der Liga.'); });
+dash.draw('gStil', (el) => {
+  el.replaceChildren(); const t = window.gAktuell(); if (!t) return;
+  window.LK.filter((m) => window.LK_STIL.includes(m.id)).forEach((m) => el.appendChild(window.lkZeile(m, t.id, window.MSV_ID)));
+});
+dash.draw('gTore', (el) => window.lkTore(el, window.gAktuell()));
+dash.draw('gPhasen', (el) => { const t = window.gAktuell(); if (t) window.lkPhasen(el, t.id, window.MSV_ID, true); });
+dash.draw('gSpieler', (tb) => {
+  tb.replaceChildren();
+  const t = window.gAktuell(), L = dash.data('liga'); if (!t || L.status !== 'ok' || !L.data) return;
+  const S = {};
+  L.data.forEach((sp) => (sp.spieler || []).filter((p) => String(p.team_id) === t.id).forEach((p) => {
+    const x = S[p.name] || (S[p.name] = { name: p.name, pos: {}, spiele: 0, min: 0, km: 0, hi: 0, sp: 0, top: 0 });
+    x.spiele += 1; x.min += p.min; x.km += p.km; x.hi += p.hi; x.sp += p.sprints; x.top = Math.max(x.top, p.psv99 || 0); x.pos[p.pos] = (x.pos[p.pos] || 0) + 1;
+  }));
+  Object.values(S).sort((a, b) => b.min - a.min).slice(0, 14).forEach((x) => {
+    const n90 = (v) => (x.min > 0 ? v / x.min * 90 : 0);
+    const pos = Object.entries(x.pos).sort((a, b) => b[1] - a[1])[0][0];
+    const tr = document.createElement('tr');
+    [x.name, pos, TF.f0(x.spiele), TF.f0(x.min), TF.f1(n90(x.km)), TF.f0(n90(x.hi)), TF.f1(n90(x.sp)), TF.f1(x.top)]
+      .forEach((v) => { const td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+});
+</script>
+
+<script>
+// ===== Vereinfachte Ansicht: Klartext statt Prozent =====
+window.vonZehn = (v) => (v == null ? '—' : Math.round(v) + ' von 100');
+window.lkWert = (m, v) => {
+  if (v == null) return '—';
+  if (m.typ === 'q') return window.vonZehn(v);
+  return (m.f === 2 || m.f === 1 ? TF.f1 : (v >= 10 ? TF.f0 : TF.f1))(v);
+};
+window.LK_SATZ = {
+  k5: (S, x) => S.nom + ' erzielt ' + x + ' Tore pro Spiel.',
+  d1: (S, x) => S.nom + ' kassiert ' + x + ' Gegentore pro Spiel.',
+  k3: (S, x) => S.nom + ' kommt auf ' + x + ' Schüsse pro Spiel.',
+  d2: (S, x) => 'Gegner kommen gegen ' + S.akk + ' auf ' + x + ' Schüsse pro Spiel.',
+  k2: (S, x) => S.nom + ' kommt ' + x + '-mal pro Spiel in den gegnerischen Strafraum.',
+  d3: (S, x) => 'Gegner kommen ' + x + '-mal pro Spiel in den Strafraum ' + S.von + '.',
+  a1: (S, x) => S.nom + ' spielt sich bei ' + x + ' Aufbauten unter Gegnerdruck frei.',
+  a2: (S, x) => S.nom + ' verliert bei ' + x + ' Aufbauten unter Gegnerdruck den Ball.',
+  k1: (S, x) => 'Aus dem Angriffsaufbau kommt ' + S.nom + ' bei ' + x + ' Versuchen in eine Abschlusssituation.',
+  k4: (S, x) => x + ' Schüssen ' + S.von + ' kommen aus dem Strafraum.',
+  u1: (S, x) => 'Bei ' + x + ' Kontern und Umschaltmomenten kommt ' + S.nom + ' zum Schuss.',
+  u3: (S, x) => 'Bei ' + x + ' gegnerischen Kontern kommt der Gegner gegen ' + S.akk + ' zum Schuss.',
+  p1: (S, x) => 'Im hohen Pressing erobert ' + S.nom + ' bei ' + x + ' Situationen den Ball.',
+  p2: (S, x) => 'Im hohen Pressing zwingt ' + S.nom + ' den Gegner bei ' + x + ' Situationen zum Befreiungsschlag.',
+  p3: (S, x) => 'Bei ' + x + ' Situationen wird das hohe Pressing ' + S.von + ' überspielt.',
+  p4: (S, x) => 'Nach Ballverlust holt sich ' + S.nom + ' den Ball bei ' + x + ' Gegenpressing-Situationen sofort zurück.',
+  d4: (S, x) => x + ' Schüssen gegen ' + S.akk + ' kommen aus dem Strafraum.',
+  d5: (S, x) => 'Gegner kommen gegen ' + S.akk + ' bei ' + x + ' Angriffen aus dem Aufbau in eine Abschlusssituation.',
+  d6: (S, x) => 'Gegner spielen sich gegen ' + S.akk + ' bei ' + x + ' Angriffen durch die Mitte ins letzte Drittel.',
+  f1: (S, x) => S.nom + ' läuft ' + x + ' km pro Spiel.',
+  f2: (S, x) => S.nom + ' läuft ' + x + ' m pro Spiel mit über 20 km/h.',
+  f3: (S, x) => S.nom + ' kommt auf ' + x + ' Sprints pro Spiel.'
+};
+window.LK_KURZ = { k5: 'Tore', d1: 'Gegentore', k3: 'Schüsse', d2: 'Zugelassene Schüsse', k2: 'Strafraum-Aktionen', d3: 'Strafraum-Verteidigung',
+  a1: 'Aufbau unter Druck', a2: 'Ballverluste im Aufbau', k1: 'Weg in den Abschluss', k4: 'Schussqualität', u1: 'Konter', u3: 'Konter-Verteidigung',
+  p1: 'Hohes Pressing', p2: 'Hohes Pressing', p3: 'Pressing überspielt', p4: 'Gegenpressing', d4: 'Gegnerische Schussqualität', d5: 'Verteidigung im Mittelfeld',
+  d6: 'Zentrum', f1: 'Laufleistung', f2: 'Intensive Läufe', f3: 'Sprints' };
+window.S_MSV = { nom: 'der MSV', akk: 'den MSV', von: 'des MSV' };
+window.sTeam = (n) => ({ nom: n, akk: n, von: 'von ' + n });
+window.grossAnfang = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+// Die markantesten Kennzahlen, höchstens eine je Bereich
+window.lkTop = (teamId, art, anzahl) => {
+  const D = window.lkDaten(); if (!D) return [];
+  const L = window.LK.filter((m) => m.r !== 0 && window.LK_SATZ[m.id] && D[m.id] && D[m.id].rang[String(teamId)])
+    .map((m) => { const d = D[m.id], rg = d.rang[String(teamId)]; return { m: m, rang: rg, n: d.n, guete: art === 'gut' ? rg : d.n + 1 - rg }; })
+    .filter((x) => (art === 'gut' ? x.rang <= Math.floor(x.n / 2) : x.rang > Math.ceil(x.n / 2)))
+    .sort((a, b) => a.guete - b.guete);
+  const out = [], gruppen = new Set();
+  L.forEach((x) => { if (out.length < anzahl && !gruppen.has(x.m.g)) { out.push(x); gruppen.add(x.m.g); } });
+  return out;
+};
+window.lkKarten = (el, liste, teamId, subjekt, art, leer) => {
+  el.replaceChildren();
+  if (!liste.length) { const p = document.createElement('p'); p.className = 'msv-note'; p.textContent = leer; el.appendChild(p); return; }
+  const D = window.lkDaten();
+  liste.forEach((x) => {
+    const d = D[x.m.id], me = d.werte.find((w) => w.id === String(teamId));
+    const k = document.createElement('div'); k.className = 's-karte s-' + art;
+    const kopf = document.createElement('div'); kopf.className = 's-kopf';
+    const t = document.createElement('span'); t.textContent = window.LK_KURZ[x.m.id] || x.m.l;
+    const b = document.createElement('span'); b.className = 's-platz'; b.textContent = 'Platz ' + x.rang + ' von ' + x.n;
+    kopf.append(t, b);
+    const satz = document.createElement('p'); satz.className = 's-satz';
+    satz.textContent = window.grossAnfang(window.LK_SATZ[x.m.id](subjekt, window.lkWert(x.m, me.v)));
+    const liga = document.createElement('p'); liga.className = 's-liga';
+    liga.textContent = 'Zum Vergleich, Liga-Schnitt: ' + window.lkWert(x.m, d.schnitt) + (x.m.typ === 'q' ? '' : ' pro Spiel');
+    k.append(kopf, satz, liga);
+    el.appendChild(k);
+  });
+};
+
+// Tore und Gegentore in einer Zeile je Richtung
+window.LK_FARBEN = { spielaufbau: 'var(--msv-blau-chart)', ballgewinn: 'var(--color-warn)', standard: 'color-mix(in srgb, var(--color-fg) 45%, var(--color-bg))', langer_ball: 'color-mix(in srgb, var(--msv-blau) 40%, var(--color-bg))' };
+window.lkToreKurz = (el, t, wir) => {
+  el.replaceChildren();
+  if (!t) { el.textContent = '—'; return; }
+  [['Tore', t.tore], ['Gegentore', t.gegentore]].forEach(([titel, L]) => {
+    const z = document.createElement('div'); z.className = 's-tore';
+    const h = document.createElement('div'); h.className = 's-tore-kopf';
+    const hz1 = L.filter((g) => g.minute <= 46).length;
+    h.innerHTML = '';
+    const a = document.createElement('b'); a.textContent = titel + ': ' + L.length;
+    const c = document.createElement('span'); c.textContent = '1. Halbzeit ' + hz1 + ' · 2. Halbzeit ' + (L.length - hz1);
+    h.append(a, c);
+    const bar = document.createElement('div'); bar.className = 's-stapel';
+    const leg = document.createElement('div'); leg.className = 's-legende';
+    Object.keys(window.LK_HERKUNFT).forEach((k) => {
+      const n = L.filter((g) => g.herkunft === k).length; if (!n) return;
+      const seg = document.createElement('i'); seg.style.flex = String(n); seg.style.background = window.LK_FARBEN[k]; seg.title = window.LK_HERKUNFT[k] + ': ' + n; bar.appendChild(seg);
+      const l = document.createElement('span'); const p = document.createElement('i'); p.style.background = window.LK_FARBEN[k];
+      l.append(p, n + ' ' + window.LK_HERKUNFT[k]); leg.appendChild(l);
+    });
+    z.append(h, bar, leg); el.appendChild(z);
+  });
+};
+
+// ----- Spielanalyse -----
+dash.draw('aGut', (el) => window.lkKarten(el, window.lkTop(window.MSV_ID, 'gut', 3), window.MSV_ID, window.S_MSV, 'gut', 'Keine auffälligen Stärken im Ligavergleich.'));
+dash.draw('aSchlecht', (el) => window.lkKarten(el, window.lkTop(window.MSV_ID, 'schlecht', 3), window.MSV_ID, window.S_MSV, 'schlecht', 'Keine auffälligen Schwächen im Ligavergleich.'));
+dash.draw('aToreKurz', (el) => window.lkToreKurz(el, window.lkTeam(window.MSV_ID)));
+
+// ----- Gegneranalyse -----
+window.gDraws = ['gLede', 'gForm', 'gStilKurz', 'gVerwundbar', 'gGefahr', 'gToreKurz', 'gSpielerKurz', 'gPhasen'];
+window.gKurzname = (t) => t.name;
+dash.draw('gVerwundbar', (el) => { const t = window.gAktuell(); if (t) window.lkKarten(el, window.lkTop(t.id, 'schlecht', 3), t.id, window.sTeam(t.name), 'gut', 'Keine auffälligen Schwächen im Ligavergleich.'); });
+dash.draw('gGefahr', (el) => { const t = window.gAktuell(); if (t) window.lkKarten(el, window.lkTop(t.id, 'gut', 3), t.id, window.sTeam(t.name), 'schlecht', 'Keine auffälligen Stärken im Ligavergleich.'); });
+dash.draw('gToreKurz', (el) => window.lkToreKurz(el, window.gAktuell()));
+dash.draw('gStilKurz', (el) => {
+  el.replaceChildren();
+  const t = window.gAktuell(), D = window.lkDaten(); if (!t || !D) return;
+  const w = (id) => { const d = D[id]; const me = d && d.werte.find((x) => x.id === t.id); return me ? { v: me.v, rang: d.rang[t.id], n: d.n, avg: d.schnitt } : null; };
+  const saetze = [];
+  const seiteText = { links: 'seine linke Seite (unsere rechte)', mitte: 'die Mitte', rechts: 'seine rechte Seite (unsere linke)' };
+  const dominant = (ids, namen, start) => {
+    const L = ids.map((id, i) => ({ id: id, n: namen[i], x: w(id) })).filter((a) => a.x);
+    if (!L.length) return;
+    const top = L.sort((a, b) => (b.x.v - b.x.avg) - (a.x.v - a.x.avg))[0];
+    if (top.x.v - top.x.avg < 5) { saetze.push(start.replace(' auf', '') + ' ausgewogen über alle Seiten' + (start.endsWith(' auf') ? ' auf' : '') + ', ohne klare Vorliebe.'); return; }
+    saetze.push(start.replace(' auf', '') + ' bevorzugt über ' + seiteText[top.n] + (start.endsWith(' auf') ? ' auf' : '') + ': ' + window.vonZehn(top.x.v) + ' (Liga ' + window.vonZehn(top.x.avg) + ').');
+  };
+  dominant(['a3', 'a4', 'a5'], ['links', 'mitte', 'rechts'], 'Baut auf');
+  dominant(['k6', 'k7'], ['links', 'rechts'], 'Kommt in den Strafraum');
+  const k8 = w('k8'), k9 = w('k9'), u2 = w('u2'), p1 = w('p1'), d1 = w('d1');
+  if (k8 && k8.rang <= 5) saetze.push('Spielt oft lange oder hohe Bälle ins letzte Drittel.');
+  if (k8 && k8.rang > k8.n - 5) saetze.push('Spielt kaum lange Bälle, sucht eher flache Lösungen.');
+  if (k9 && k9.rang <= 5) saetze.push('Greift viel über die Außenbahnen an.');
+  if (k9 && k9.rang > k9.n - 5) saetze.push('Greift eher durch das Zentrum an als über außen.');
+  if (u2 && u2.rang <= 5) saetze.push('Lebt viel vom Umschalten: ' + TF.f1(u2.v) + ' Umschaltmomente pro Spiel (Liga ' + TF.f1(u2.avg) + ').');
+  if (u2 && u2.rang > u2.n - 5) saetze.push('Wenig Umschaltspiel, eher geduldiger Ballbesitz.');
+  if (p1 && p1.rang <= 5) saetze.push('Presst erfolgreich hoch: erobert im hohen Pressing bei ' + window.vonZehn(p1.v) + ' Situationen den Ball.');
+  const ul = document.createElement('ul'); ul.className = 's-stil';
+  saetze.forEach((s) => { const li = document.createElement('li'); li.textContent = s; ul.appendChild(li); });
+  el.appendChild(ul);
+});
+dash.draw('gSpielerKurz', (el) => {
+  el.replaceChildren();
+  const t = window.gAktuell(), L = dash.data('liga'); if (!t || L.status !== 'ok' || !L.data) return;
+  const S = {};
+  L.data.forEach((sp) => (sp.spieler || []).filter((p) => String(p.team_id) === t.id).forEach((p) => {
+    const x = S[p.name] || (S[p.name] = { name: p.name, pos: {}, min: 0, hi: 0, sp: 0, top: 0 });
+    x.min += p.min; x.hi += p.hi; x.sp += p.sprints; x.top = Math.max(x.top, p.psv99 || 0); x.pos[p.pos] = (x.pos[p.pos] || 0) + 1;
+  }));
+  const A = Object.values(S).filter((x) => x.min >= 270);
+  A.forEach((x) => { x.p = Object.entries(x.pos).sort((a, b) => b[1] - a[1])[0][0]; x.hi90 = x.hi / x.min * 90; x.sp90 = x.sp / x.min * 90; });
+  const box = document.createElement('div'); box.className = 's-karten';
+  [['Schnellster Spieler', (x) => x.top, (x) => TF.f1(x.top) + ' km/h Topspeed'],
+   ['Meiste intensive Meter', (x) => x.hi90, (x) => TF.f0(x.hi90) + ' m pro 90 Min. über 20 km/h'],
+   ['Meiste Sprints', (x) => x.sp90, (x) => TF.f1(x.sp90) + ' Sprints pro 90 Min.']].forEach(([titel, f, txt]) => {
+    const best = d3.greatest(A, f); if (!best) return;
+    const k = document.createElement('div'); k.className = 's-karte';
+    const kopf = document.createElement('div'); kopf.className = 's-kopf'; kopf.textContent = titel;
+    const s = document.createElement('p'); s.className = 's-satz'; s.textContent = best.name + ' (' + best.p + ')';
+    const l = document.createElement('p'); l.className = 's-liga'; l.textContent = txt(best);
+    k.append(kopf, s, l); box.appendChild(k);
+  });
+  el.appendChild(box);
+});
+</script>
+
+<script>
+// ===== Spielanalyse/Gegneranalyse mit Diagrammen =====
+window.R_ACHSEN = [['k5', 'Tore'], ['k3', 'Schüsse'], ['k2', 'Strafraum-\nAktionen'], ['a1', 'Aufbau\nunter Druck'], ['u1', 'Konter'],
+  ['p1', 'Pressing'], ['p4', 'Gegen-\npressing'], ['d1', 'Wenig\nGegentore'], ['d2', 'Wenig zugel.\nSchüsse'], ['f2', 'Intensive\nLäufe']];
+window.G_FARBE = 'color-mix(in srgb, #d9480f 85%, var(--color-fg))';
+window.rWert = (id, teamId) => {
+  const D = window.lkDaten(); const d = D && D[id]; if (!d) return null;
+  const me = d.werte.find((w) => w.id === String(teamId)); if (!me) return null;
+  return { v: me.v, rang: d.rang[String(teamId)], n: d.n, schnitt: d.schnitt, score: d.n > 1 ? 100 * (d.n - d.rang[String(teamId)]) / (d.n - 1) : 50 };
+};
+window.lkWert = (m, v) => {
+  if (v == null) return '—';
+  if (m.typ === 'q') return Math.round(v) + ' von 100';
+  return (m.f === 2 || m.f === 1 ? TF.f1 : (v >= 10 ? TF.f0 : TF.f1))(v);
+};
+window.lkM = (id) => window.LK.find((m) => m.id === id);
+
+window.rRadar = (el, teams) => {
+  el.replaceChildren();
+  const W = 500, H = 440, cx = W / 2, cy = H / 2, R = 140;
+  const A = window.R_ACHSEN, n = A.length, ang = (i) => -Math.PI / 2 + 2 * Math.PI * i / n;
+  const pt = (i, s) => [cx + Math.cos(ang(i)) * R * s / 100, cy + Math.sin(ang(i)) * R * s / 100];
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Spinnennetz-Diagramm Ligavergleich');
+  [25, 50, 75, 100].forEach((s) => svg.append('polygon').attr('points', A.map((a, i) => pt(i, s).join(',')).join(' '))
+    .style('fill', 'none').style('stroke-dasharray', s === 50 ? '4 3' : null).style('stroke', s === 50 ? 'var(--color-warn)' : 'var(--cds-chart-grid)'));
+  A.forEach((a, i) => {
+    const [x, y] = pt(i, 100);
+    svg.append('line').attr('x1', cx).attr('y1', cy).attr('x2', x).attr('y2', y).style('stroke', 'var(--cds-chart-grid)');
+    const [lx, ly] = pt(i, 114);
+    const t = svg.append('text').attr('x', lx).attr('y', ly).attr('text-anchor', Math.abs(lx - cx) < 8 ? 'middle' : lx > cx ? 'start' : 'end')
+      .attr('dominant-baseline', 'middle').style('font-size', '11.5px').style('fill', 'var(--color-fg)');
+    a[1].split('\n').forEach((z, k, arr) => t.append('tspan').attr('x', lx).attr('dy', k === 0 ? (-(arr.length - 1) * 0.6) + 'em' : '1.2em').text(z));
+  });
+  const tip = window.msvTip(el);
+  teams.forEach((tm) => {
+    const S = A.map(([id]) => window.rWert(id, tm.id));
+    svg.append('polygon').attr('points', S.map((s, i) => pt(i, s ? s.score : 0).join(',')).join(' '))
+      .style('fill', tm.farbe).style('fill-opacity', 0.18).style('stroke', tm.farbe).style('stroke-width', 2.5);
+    S.forEach((s, i) => {
+      if (!s) return;
+      const [x, y] = pt(i, s.score);
+      svg.append('circle').attr('cx', x).attr('cy', y).attr('r', 4.5).style('fill', tm.farbe)
+        .on('pointermove', (ev) => tip.show(ev, [tm.name + ' · ' + A[i][1].replace('\n', ' '), 'Wert: ' + window.lkWert(window.lkM(A[i][0]), s.v) + ' · Liga Ø ' + window.lkWert(window.lkM(A[i][0]), s.schnitt), 'Platz ' + s.rang + ' von ' + s.n]))
+        .on('pointerleave', () => tip.hide());
+    });
+  });
+};
+
+window.rPlatz = (rang, n, gegner) => {
+  const gut = gegner ? ' r-flop' : ' r-top', schlecht = gegner ? ' r-top' : ' r-flop';
+  const s = document.createElement('span'); s.className = 'r-platz' + (rang <= 5 ? gut : rang > n - 5 ? schlecht : '');
+  s.textContent = rang + '.'; s.title = 'Platz ' + rang + ' von ' + n; return s;
+};
+window.rTabelle = (el, zeilen, spalten) => {
+  el.replaceChildren();
+  const wrap = document.createElement('div'); wrap.className = 'msv-tablewrap';
+  const t = document.createElement('table'); t.className = 'msv-table r-tab';
+  const th = document.createElement('tr'); spalten.forEach((s) => { const c = document.createElement('th'); c.textContent = s; th.appendChild(c); });
+  const thead = document.createElement('thead'); thead.appendChild(th); t.appendChild(thead);
+  const tb = document.createElement('tbody');
+  zeilen.forEach((z) => {
+    const tr = document.createElement('tr'); if (z.klasse) tr.className = z.klasse;
+    z.zellen.forEach((c) => { const td = document.createElement('td'); if (c instanceof Node) td.appendChild(c); else td.textContent = c; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb); wrap.appendChild(t); el.appendChild(wrap);
+};
+window.rStaerkenSchwaechen = (el, teamId) => {
+  const D = window.lkDaten(); if (!D) return;
+  const L = window.LK.filter((m) => m.r !== 0 && D[m.id] && D[m.id].rang[String(teamId)]).map((m) => ({ m: m, w: window.rWert(m.id, teamId) }));
+  const gut = L.filter((x) => x.w.rang <= 5).sort((a, b) => a.w.rang - b.w.rang).slice(0, 5);
+  const schlecht = L.filter((x) => x.w.rang > x.w.n - 5).sort((a, b) => b.w.rang - a.w.rang).slice(0, 5);
+  const zeile = (x) => ({ zellen: [x.m.l, window.lkWert(x.m, x.w.v), window.lkWert(x.m, x.w.schnitt), window.rPlatz(x.w.rang, x.w.n)] });
+  const zw = (txt, kl) => ({ klasse: 'r-zwischen ' + kl, zellen: [txt, '', '', ''] });
+  window.rTabelle(el, [zw('Stärken', 'r-zw-gut')].concat(gut.map(zeile)).concat([zw('Schwächen', 'r-zw-schlecht')]).concat(schlecht.map(zeile)),
+    ['Kennzahl', 'Wert', 'Liga Ø', 'Platz']);
+};
+window.rAlle = (el, teamId, msv) => {
+  const z = [];
+  window.LK_GRUPPEN.forEach(([g, titel]) => {
+    z.push({ klasse: 'r-zwischen', zellen: msv ? [titel, '', '', '', ''] : [titel, '', '', ''] });
+    window.LK.filter((m) => m.g === g).forEach((m) => {
+      const w = window.rWert(m.id, teamId); if (!w) return;
+      const c = [m.l, window.lkWert(m, w.v)];
+      if (msv) { const k = window.rWert(m.id, window.MSV_ID); c.push(k ? window.lkWert(m, k.v) : '—'); }
+      c.push(window.lkWert(m, w.schnitt), m.r === 0 ? '–' : window.rPlatz(w.rang, w.n, msv));
+      z.push({ zellen: c });
+    });
+  });
+  window.rTabelle(el, z, msv ? ['Kennzahl', 'Gegner', 'MSV', 'Liga Ø', 'Platz'] : ['Kennzahl', 'Wert', 'Liga Ø', 'Platz']);
+};
+
+window.rKpi = (el, t) => {
+  el.replaceChildren(); if (!t) return;
+  const s = t.spiele, sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
+  const k5 = window.rWert('k5', t.id), d1 = window.rWert('d1', t.id), k3 = window.rWert('k3', t.id), d2 = window.rWert('d2', t.id);
+  [['Spiele', String(s.length), sieg + ' S · ' + rem + ' U · ' + (s.length - sieg - rem) + ' N'],
+   ['Tore', d3.sum(s, (x) => x.tore) + ':' + d3.sum(s, (x) => x.gegentore), 'Tordifferenz ' + (d3.sum(s, (x) => x.tore) - d3.sum(s, (x) => x.gegentore))],
+   ['Tore pro Spiel', k5 ? TF.f1(k5.v) : '—', k5 ? 'Platz ' + k5.rang + ' · Liga Ø ' + TF.f1(k5.schnitt) : ''],
+   ['Gegentore pro Spiel', d1 ? TF.f1(d1.v) : '—', d1 ? 'Platz ' + d1.rang + ' · Liga Ø ' + TF.f1(d1.schnitt) : ''],
+   ['Schüsse pro Spiel', k3 ? TF.f0(k3.v) + ' : ' + (d2 ? TF.f0(d2.v) : '—') : '—', 'eigene : zugelassene']].forEach(([h, v, d]) => {
+    const c = document.createElement('div'); c.className = 'msv-card';
+    const a = document.createElement('h3'); a.textContent = h;
+    const b = document.createElement('div'); b.className = 'msv-big'; b.textContent = v;
+    const e = document.createElement('div'); e.className = 'msv-delta'; e.textContent = d;
+    c.append(a, b, e); el.appendChild(c);
+  });
+};
+
+window.rMinuten = (el, t) => {
+  el.replaceChildren(); if (!t) return;
+  const B = ['0–15', '16–30', '31–45', '46–60', '61–75', '76–90'];
+  const fach = (m) => (m <= 15 ? 0 : m <= 30 ? 1 : m <= 46 ? 2 : m <= 60 ? 3 : m <= 75 ? 4 : 5);
+  const data = B.map((b, i) => ({ b: b, tore: t.tore.filter((g) => fach(g.minute) === i).length, gegen: t.gegentore.filter((g) => fach(g.minute) === i).length }));
+  const leg = document.createElement('div'); leg.className = 'msv-legend';
+  leg.innerHTML = '<span class="msv-key" style="background:var(--color-ok)"></span>Tore <span class="msv-key" style="background:var(--color-bad)"></span>Gegentore';
+  el.appendChild(leg);
+  const W = el.clientWidth || 420, H = 190, m = { t: 18, r: 6, b: 26, l: 26 };
+  const x0 = d3.scaleBand().domain(B).range([m.l, W - m.r]).padding(0.25), x1 = d3.scaleBand().domain(['tore', 'gegen']).range([0, x0.bandwidth()]).padding(0.1);
+  const y = d3.scaleLinear().domain([0, Math.max(2, d3.max(data, (d) => Math.max(d.tore, d.gegen)))]).nice().range([H - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Tore und Gegentore nach Spielminute');
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(d3.format('d')))
+    .call((g) => { g.select('.domain').remove(); g.selectAll('line').style('stroke', 'var(--cds-chart-grid)'); });
+  svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x0).tickSize(0)).call((g) => { g.select('.domain').style('stroke', 'var(--cds-chart-axis)'); g.selectAll('text').attr('dy', '1em'); });
+  data.forEach((d) => [['tore', 'var(--color-ok)'], ['gegen', 'var(--color-bad)']].forEach(([k, f]) => {
+    const x = x0(d.b) + x1(k);
+    svg.append('rect').attr('x', x).attr('width', x1.bandwidth()).attr('y', y(d[k])).attr('height', y(0) - y(d[k])).attr('rx', 2).style('fill', f);
+    if (d[k]) svg.append('text').attr('class', 'lbl').attr('x', x + x1.bandwidth() / 2).attr('y', y(d[k]) - 4).attr('text-anchor', 'middle').text(d[k]);
+  }));
+};
+
+window.rWege = (el, teamId, msv) => {
+  el.replaceChildren();
+  const g = (id) => window.rWert(id, teamId);
+  const a = [g('a3'), g('a4'), g('a5')], s7 = g('k7'), s6 = g('k6');
+  if (!a[0] || !s6 || !s7) { el.textContent = '—'; return; }
+  const st = [s6.v, Math.max(0, 100 - s6.v - s7.v), s7.v], stAvg = [s6.schnitt, Math.max(0, 100 - s6.schnitt - s7.schnitt), s7.schnitt];
+  const W = 320, H = 400, p = 14, fw = W - 2 * p, fh = H - 2 * p - 40;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Angriffswege auf dem Spielfeld').style('max-width', '360px').style('display', 'block').style('margin', '0 auto');
+  const feld = 'color-mix(in srgb, var(--color-ok) 10%, var(--color-bg))', linie = 'color-mix(in srgb, var(--color-fg) 35%, var(--color-bg))';
+  svg.append('rect').attr('x', p).attr('y', p + 20).attr('width', fw).attr('height', fh).attr('rx', 4).style('fill', feld).style('stroke', linie);
+  svg.append('line').attr('x1', p).attr('x2', p + fw).attr('y1', p + 20 + fh / 2).attr('y2', p + 20 + fh / 2).style('stroke', linie);
+  svg.append('rect').attr('x', p + fw * 0.2).attr('y', p + 20).attr('width', fw * 0.6).attr('height', fh * 0.16).style('fill', 'none').style('stroke', linie);
+  svg.append('rect').attr('x', p + fw * 0.2).attr('y', p + 20 + fh * 0.84).attr('width', fw * 0.6).attr('height', fh * 0.16).style('fill', 'none').style('stroke', linie);
+  svg.append('text').attr('x', W / 2).attr('y', p + 10).attr('text-anchor', 'middle').style('font-size', '11px').style('fill', 'var(--color-fg-muted)').text('Angriffsrichtung ↑');
+  const xs = [p + fw / 6 - 14, p + fw / 2 - 14, p + 5 * fw / 6 - 14], farbe = msv ? 'var(--msv-blau-chart)' : window.G_FARBE;
+  const pfeil = (x, y1, y2, wert, avg) => {
+    const b = 4 + 22 * wert / 100;
+    svg.append('line').attr('x1', x).attr('x2', x).attr('y1', y1).attr('y2', y2 + 8).style('stroke', farbe).style('stroke-width', b).style('stroke-linecap', 'round').style('opacity', 0.85);
+    svg.append('path').attr('d', `M${x - b / 2 - 6},${y2 + 10} L${x},${y2 - 6} L${x + b / 2 + 6},${y2 + 10} Z`).style('fill', farbe);
+    const tx = x + b / 2 + 5;
+    svg.append('text').attr('x', tx).attr('y', (y1 + y2) / 2).attr('dy', '.35em').style('font-weight', '700').style('font-size', '16px').style('fill', 'var(--color-fg)').text(Math.round(wert) + '%');
+  };
+  const y0 = p + 20;
+  a.forEach((w, i) => pfeil(xs[i], y0 + fh * 0.92, y0 + fh * 0.58, w.v, w.schnitt));
+  st.forEach((v, i) => pfeil(xs[i], y0 + fh * 0.42, y0 + fh * 0.12, v, stAvg[i]));
+  svg.append('text').attr('x', p + 4).attr('y', y0 + fh * 0.5 + 14).style('font-size', '11px').style('fill', 'var(--color-fg-muted)').text('unten: Ausgang aus dem Spielaufbau');
+  svg.append('text').attr('x', p + 4).attr('y', y0 + fh * 0.5 - 6).style('font-size', '11px').style('fill', 'var(--color-fg-muted)').text('oben: Weg in den Strafraum');
+  ['links', 'Mitte', 'rechts'].forEach((l, i) => svg.append('text').attr('x', xs[i]).attr('y', H - 8).attr('text-anchor', 'middle').style('font-size', '11.5px').style('fill', 'var(--color-fg)').text(l));
+  const n = document.createElement('p'); n.className = 'msv-note';
+  n.textContent = msv ? 'Anteil der Angriffe je Seite, aus Sicht des MSV.' : 'Anteil der Angriffe je Seite, aus Sicht des Gegners. Seine linke Seite ist unsere rechte Abwehrseite.';
+  el.appendChild(n);
+};
+
+dash.draw('aKpi', (el) => window.rKpi(el, window.lkTeam(window.MSV_ID)));
+dash.draw('aRadar', (el) => window.rRadar(el, [{ id: window.MSV_ID, name: 'MSV Duisburg', farbe: 'var(--msv-blau-chart)' }]));
+dash.draw('aTabelleSS', (el) => window.rStaerkenSchwaechen(el, window.MSV_ID));
+dash.draw('aWege', (el) => window.rWege(el, window.MSV_ID, true));
+dash.draw('aMinuten', (el) => window.rMinuten(el, window.lkTeam(window.MSV_ID)));
+dash.draw('aTabelleAlle', (el) => window.rAlle(el, window.MSV_ID, false));
+
+window.gDraws = ['gNaechstText', 'gKpi', 'gName', 'gRadar', 'gVergleich', 'gWege', 'gForm', 'gMinuten', 'gToreKurz', 'gScorer', 'gTabelleAlle'];
+dash.draw('gNaechstText', (el) => {
+  const t = window.gAktuell(), n = window.gNaechster();
+  el.textContent = t && n && [String(n.heim_id), String(n.gast_id)].includes(t.id)
+    ? 'Nächstes Spiel: ' + window.tTag(n.datum.slice(0, 10)) + ', ' + (String(n.heim_id) === window.MSV_ID ? 'Heimspiel' : 'Auswärtsspiel') : '';
+});
+dash.draw('gKpi', (el) => window.rKpi(el, window.gAktuell()));
+dash.draw('gName', (el) => { const t = window.gAktuell(); el.textContent = t ? t.name : 'Gegner'; });
+dash.draw('gRadar', (el) => {
+  const t = window.gAktuell(); if (!t) return;
+  window.rRadar(el, [{ id: window.MSV_ID, name: 'MSV Duisburg', farbe: 'var(--msv-blau-chart)' }, { id: t.id, name: t.name, farbe: window.G_FARBE }]);
+});
+dash.draw('gVergleich', (el) => {
+  const t = window.gAktuell(); if (!t) return;
+  const z = window.R_ACHSEN.map(([id]) => {
+    const m = window.lkM(id), g = window.rWert(id, t.id), k = window.rWert(id, window.MSV_ID);
+    if (!g) return null;
+    return { klasse: g.rang <= 5 ? 'r-gefahr' : g.rang > g.n - 5 ? 'r-chance' : '', zellen: [m.l, window.lkWert(m, g.v), k ? window.lkWert(m, k.v) : '—', window.lkWert(m, g.schnitt), window.rPlatz(g.rang, g.n, true)] };
+  }).filter(Boolean);
+  window.rTabelle(el, z, ['Kennzahl', 'Gegner', 'MSV', 'Liga Ø', 'Platz Gegner']);
+});
+dash.draw('gWege', (el) => { const t = window.gAktuell(); if (t) window.rWege(el, t.id, false); });
+dash.draw('gMinuten', (el) => window.rMinuten(el, window.gAktuell()));
+dash.draw('gTabelleAlle', (el) => { const t = window.gAktuell(); if (t) window.rAlle(el, t.id, true); });
+</script>
+
+<script>
+// Torgefährliche Spieler: Tore, Assists, Pre-Assists, Schüsse, Schussvorlagen, Pässe in den Strafraum, Tiefenläufe
+window.rScorer = (el, teamId) => {
+  el.replaceChildren();
+  const L = dash.data('liga'); if (L.status !== 'ok' || !L.data) return;
+  const S = {};
+  L.data.forEach((sp) => (sp.aktionen || []).filter((a) => String(a.team_id) === String(teamId)).forEach((a) => {
+    const x = S[a.name] || (S[a.name] = { name: a.name, pos: {}, tore: 0, assists: 0, pre: 0, schuesse: 0, vorlagen: 0, strafraum: 0, tiefe: 0 });
+    x.tore += a.tore || 0; x.assists += a.assists || 0; x.pre += a.pre_assists || 0; x.schuesse += a.schuesse || 0;
+    x.vorlagen += a.schussvorlagen || 0; x.strafraum += a.paesse_strafraum || 0; x.tiefe += a.tiefenlaeufe_angespielt || 0;
+    if (a.pos) x.pos[a.pos] = (x.pos[a.pos] || 0) + 1;
+  }));
+  const A = Object.values(S).map((x) => Object.assign(x, { punkte: x.tore + x.assists, p: (Object.entries(x.pos).sort((a, b) => b[1] - a[1])[0] || [''])[0] }))
+    .filter((x) => x.punkte + x.pre + x.schuesse + x.vorlagen > 0)
+    .sort((a, b) => b.punkte - a.punkte || b.tore - a.tore || b.vorlagen + b.schuesse - a.vorlagen - a.schuesse).slice(0, 10);
+  const max = (k) => d3.max(A, (x) => x[k]) || 0;
+  const z = A.map((x) => ({ zellen: [x.name, x.p, ...['tore', 'assists', 'pre', 'schuesse', 'vorlagen', 'strafraum', 'tiefe'].map((k) => {
+    const s = document.createElement('span'); s.textContent = String(x[k]); if (x[k] && x[k] === max(k)) s.className = 'r-max'; return s; })] }));
+  window.rTabelle(el, z, ['Spieler', 'Pos.', 'Tore', 'Assists', 'Pre-Assists', 'Schüsse', 'Schuss­vorlagen', 'Pässe in den Strafraum', 'Tiefenläufe']);
+};
+dash.draw('aScorer', (el) => window.rScorer(el, window.MSV_ID));
+dash.draw('gScorer', (el) => { const t = window.gAktuell(); if (t) window.rScorer(el, t.id); });
+</script>
+<script>
+// ----- Impect-Teamwerte (Excel-Export) -----
+window.IM_STILE = [
+  ['Spielstile|Ballbesitz & Kontrolle', 'Ballbesitz & Kontrolle'],
+  ['Spielstile|Konter-Fußball', 'Konter'],
+  ['Spielstile|Zweite Bälle & Vertikal', 'Zweite Bälle & vertikal'],
+  ['Spielstile|Underdog pressing', 'Underdog-Pressing'],
+  ['Spielstile|Heavy metal', 'Heavy Metal (Pressing & Tempo)'],
+  ['Spielstile|Safety first', 'Safety first (Absicherung)']
+];
+// r: 1 = hoch ist gut, -1 = niedrig ist gut, 0 = neutral (Platz nach Höhe)
+window.IM_TORGEFAHR = [
+  { l: 'xG pro Spiel', k: 'Tore erzielen|Shot-based xG', r: 1, d: 2, t: 'Erwartete Tore aus den eigenen Schüssen' },
+  { l: 'Tore pro Spiel', k: 'Tore erzielen|Tore / Spiel', r: 1, d: 1 },
+  { l: 'Tore minus xG', k: 'tore_minus_xg', r: 1, d: 2, plus: true, t: 'Positiv = mehr Tore als erwartet (gute Chancenverwertung)' },
+  { l: 'Gegnerische Abwehr überspielt', k: 'Tore erzielen|Gegn. Abwehr überspielen', r: 1, d: 0, t: 'Überspielte Verteidiger pro Spiel (Impect-Packing)' },
+  { l: 'xG gegen pro Spiel', k: 'Gegentore verhindern|Shot-based xG (Gegner)', r: -1, d: 2, t: 'Erwartete Tore aus den Schüssen des Gegners' },
+  { l: 'Gegentore pro Spiel', k: 'Gegentore verhindern|Gegentore / Spiel', r: -1, d: 1 },
+  { l: 'Gegentore minus xG gegen', k: 'gegentore_minus_xg', r: -1, d: 2, plus: true, t: 'Negativ = weniger Gegentore als erwartet (Torwart, Glück)' },
+  { l: 'Eigene Abwehr überspielt', k: 'Gegentore verhindern|Stabilität eigene Abwehr', r: -1, d: 0, t: 'Vom Gegner überspielte eigene Verteidiger pro Spiel' },
+  { l: 'Ballbesitz', k: 'Standard-Daten - Standard-Daten|Ballbesitz-Quote', r: 0, pct: true },
+  { l: 'Zweikampfquote', k: 'Standard-Daten - Standard-Daten|Zweikampf-Quote', r: 1, pct: true },
+  { l: 'Luftzweikampfquote', k: 'Standard-Daten - Standard-Daten|Luftzweikampf-Quote', r: 1, pct: true },
+  { l: 'Zweite Bälle gewonnen', k: 'Standard-Daten - Standard-Daten|Zweite Bälle gewonnen (%)', r: 1, pct: true }
+];
+window.IM_PRESSING = [
+  { l: 'Anlaufhöhe (Meter vom eigenen Tor)', k: 'Übersicht|Durchschnittliche Anlaufhöhe (m)', r: 0, d: 1 },
+  { l: 'Torwart angelaufen', k: 'Übersicht|Torhüter angelaufen (%)', r: 0, pct: true },
+  { l: 'Erzwungene lange Bälle', k: 'Übersicht|Erzwungene hohe Pässe (%)', r: 0, pct: true },
+  { l: 'Druck beim Anlaufen', k: 'Übersicht|Durchschnittlicher Druck beim Anlaufen', r: 0, d: 1 },
+  { l: 'Druck zwischen den Ketten', k: 'Übersicht|Durchschnittlicher Druck zwischen den Ketten', r: 0, d: 1 },
+  { l: 'Druck im Gegenpressing', k: 'Übersicht|Durchschnittlicher Druck im Gegenpressing', r: 0, d: 1 }
+];
+window.IM_PHASEN_OFF = [['Im Ballbesitz', 'Aus Ballbesitz'], ['Umschalten nach Balleroberung', 'Nach Balleroberung'], ['Standards', 'Standards'], ['Zweite Bälle', 'Zweite Bälle']];
+window.IM_PHASEN_DEF = [['Gegen den Ball', 'Gegen den Ball'], ['Umschalten nach Ballverlust', 'Nach Ballverlust'], ['Standards', 'Standards'], ['Zweite Bälle', 'Zweite Bälle']];
+window.IM_SCHUESSE = [['Kopfball', 'Kopfball'], ['Schuss aus Nahdistanz', 'Nahdistanz'], ['Schuss aus Halbdistanz', 'Halbdistanz'], ['Fernschuss', 'Fernschuss'],
+  ['1-vs-1 gegen TW Schuss', 'Eins gegen eins mit dem Torwart'], ['Schuss aufs leere Tor', 'Aufs leere Tor'], ['Elfmeter', 'Elfmeter'], ['Freistoß', 'Direkter Freistoß']];
+
+window.imDaten = () => { const d = dash.data('impect'); return d.status === 'ok' && d.data && d.data.teams ? d.data : null; };
+window.imWerte = (id) => {
+  const D = window.imDaten(); const t = D && D.teams[String(id)]; if (!t) return null;
+  const w = Object.assign({}, t.w);
+  w.tore_minus_xg = (w['Tore erzielen|Tore / Spiel'] ?? NaN) - (w['Tore erzielen|Shot-based xG'] ?? NaN);
+  w.gegentore_minus_xg = (w['Gegentore verhindern|Gegentore / Spiel'] ?? NaN) - (w['Gegentore verhindern|Shot-based xG (Gegner)'] ?? NaN);
+  return w;
+};
+window.imRang = (k, id, r) => {
+  const D = window.imDaten(); if (!D) return null;
+  const alle = Object.keys(D.teams).map((t) => ({ t, v: window.imWerte(t)[k] })).filter((x) => Number.isFinite(x.v));
+  const eig = alle.find((x) => x.t === String(id)); if (!eig) return null;
+  const besser = alle.filter((x) => (r === -1 ? x.v < eig.v : x.v > eig.v)).length;
+  return { v: eig.v, rang: besser + 1, n: alle.length, schnitt: d3.mean(alle, (x) => x.v) };
+};
+window.imFmt = (m, v) => {
+  if (!Number.isFinite(v)) return '—';
+  if (m.pct) return Math.round(v * 100) + ' %';
+  const d = m.d ?? 1;
+  if (Math.abs(v) < 0.5 * Math.pow(10, -d)) v = 0;
+  const s = v.toLocaleString('de-DE', { minimumFractionDigits: d, maximumFractionDigits: d });
+  return m.plus && v > 0 ? '+' + s : s;
+};
+window.imEl = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+window.imPanel = (titel, notiz) => {
+  const p = window.imEl('div', 'msv-panel'); p.appendChild(window.imEl('h2', null, titel));
+  if (notiz) p.appendChild(window.imEl('p', 'msv-note', notiz));
+  return p;
+};
+window.imPlatzZelle = (rg, m, gegner) => {
+  if (!rg) return '—';
+  if (m.r === 0) { const s = window.imEl('span', 'r-platz', rg.rang + '.'); s.title = 'Rang ' + rg.rang + ' von ' + rg.n + ' (1 = höchster Wert)'; return s; }
+  return window.rPlatz(rg.rang, rg.n, gegner);
+};
+
+// Spielstil: Balken 0–100 je Stil, optional zweites Team zum Vergleich
+window.imStil = (box, id, vglId, namen, farben) => {
+  const wrap = window.imEl('div', 'i-stile');
+  const W = window.imWerte(id), V = vglId ? window.imWerte(vglId) : null;
+  const top = window.IM_STILE.map(([k]) => W[k] || 0).reduce((a, b, i, arr) => (b > arr[a] ? i : a), 0);
+  window.IM_STILE.forEach(([k, l], i) => {
+    const z = window.imEl('div', 'i-stil' + (i === top ? ' i-top' : ''));
+    z.appendChild(window.imEl('span', 'i-stil-l', l));
+    const bars = window.imEl('div', 'i-stil-bars');
+    [[W, farben[0], namen[0]], ...(V ? [[V, farben[1], namen[1]]] : [])].forEach(([w, f, n]) => {
+      const zeile = window.imEl('div', 'i-zeile');
+      const bar = window.imEl('span', 'lk-bar'); const fill = window.imEl('i'); fill.style.width = Math.round((w[k] || 0) * 100) + '%'; fill.style.background = f;
+      bar.appendChild(fill); bar.title = n + ': ' + Math.round((w[k] || 0) * 100) + ' von 100';
+      zeile.append(bar, window.imEl('b', null, Math.round((w[k] || 0) * 100)));
+      bars.appendChild(zeile);
+    });
+    z.appendChild(bars); wrap.appendChild(z);
+  });
+  box.appendChild(wrap);
+};
+
+// Tabelle mit Werten, Liga-Schnitt und Platz
+window.imTabelle = (box, liste, id, vglId, gegner) => {
+  const z = liste.map((m) => {
+    const rg = window.imRang(m.k, id, m.r); if (!rg) return null;
+    const v = vglId ? window.imWerte(vglId) : null;
+    const zellen = [m.t ? Object.assign(window.imEl('span', null, m.l + ' '), {}) : m.l, window.imFmt(m, rg.v)];
+    if (m.t) { const s = zellen[0]; const i = window.imEl('span', 'lk-info', 'ⓘ'); i.title = m.t; s.appendChild(i); }
+    if (vglId) zellen.push(window.imFmt(m, v ? v[m.k] : NaN));
+    zellen.push(window.imFmt(m, rg.schnitt), window.imPlatzZelle(rg, m, gegner));
+    let klasse = '';
+    if (m.r !== 0) klasse = rg.rang <= 5 ? (gegner ? 'r-gefahr' : 'r-chance') : rg.rang > rg.n - 5 ? (gegner ? 'r-chance' : 'r-gefahr') : '';
+    return { klasse, zellen };
+  }).filter(Boolean);
+  const d = window.imEl('div'); box.appendChild(d);
+  window.rTabelle(d, z, vglId ? ['Kennzahl', gegner ? 'Gegner' : 'Wert', 'MSV', 'Liga Ø', 'Platz'] : ['Kennzahl', 'Wert', 'Liga Ø', 'Platz']);
+};
+
+// Entstehung nach Spielphase: Tore und xG pro Spiel
+window.imPhasen = (box, id, defensiv) => {
+  const W = window.imWerte(id);
+  const pre = defensiv ? ['Alle defensiven Spielphasen - Gegentore|', 'Alle defensiven Spielphasen - Shot-based xG (Gegner)|'] : ['Alle offensiven Spielphasen - Tore|', 'Alle offensiven Spielphasen - Shot-based xG|'];
+  const P = defensiv ? window.IM_PHASEN_DEF : window.IM_PHASEN_OFF;
+  const max = Math.max(0.5, ...P.flatMap(([k]) => [W[pre[0] + k] || 0, W[pre[1] + k] || 0]));
+  box.appendChild(window.imEl('div', 'lk-unter', defensiv ? 'Gegentore entstehen …' : 'Tore entstehen …'));
+  P.forEach(([k, l]) => {
+    const z = window.imEl('div', 'i-phase');
+    z.appendChild(window.imEl('span', 'i-stil-l', l));
+    const bars = window.imEl('div', 'i-stil-bars');
+    [[pre[0] + k, defensiv ? 'var(--color-bad)' : 'var(--color-ok)', defensiv ? 'Gegentore' : 'Tore'], [pre[1] + k, 'var(--msv-blau-chart)', 'xG']].forEach(([key, f, n]) => {
+      const v = W[key] || 0;
+      const zeile = window.imEl('div', 'i-zeile');
+      const bar = window.imEl('span', 'lk-bar'); const fill = window.imEl('i'); fill.style.width = (100 * v / max) + '%'; fill.style.background = f; bar.appendChild(fill);
+      zeile.append(bar, window.imEl('b', null, v.toLocaleString('de-DE', { minimumFractionDigits: n === 'xG' ? 2 : 1, maximumFractionDigits: n === 'xG' ? 2 : 1 })));
+      bar.title = n + ' pro Spiel'; bars.appendChild(zeile);
+    });
+    z.appendChild(bars); box.appendChild(z);
+  });
+};
+
+// Schussarten: xG für und gegen je Art, mit Platz
+window.imSchuesse = (box, id, gegner) => {
+  const z = window.IM_SCHUESSE.map(([k, l]) => {
+    const a = window.imRang('Offensiv - Shot-based xG|' + k, id, 1), b = window.imRang('Defensiv - Shot-based xG (Gegner)|' + k, id, -1);
+    if (!a || !b) return null;
+    const m = { d: 2, r: 1 };
+    return { zellen: [l, window.imFmt(m, a.v), window.rPlatz(a.rang, a.n, gegner), window.imFmt(m, b.v), window.rPlatz(b.rang, b.n, gegner)] };
+  }).filter(Boolean);
+  const d = window.imEl('div'); box.appendChild(d);
+  window.rTabelle(d, z, ['Schussart', 'xG für', 'Platz', 'xG gegen', 'Platz']);
+};
+
+window.imBlock = (el, id, vglId, gegner) => {
+  el.replaceChildren();
+  const D = window.imDaten();
+  if (!D || !window.imWerte(id)) { el.appendChild(window.imEl('p', 'msv-note', 'Noch keine Impect-Daten. Excel-Export in 02_Daten/impect/ ablegen.')); return; }
+  const name = (D.teams[String(id)] || {}).name || 'Team';
+  const kopf = window.imEl('div', 'i-kopf');
+  kopf.append(window.imEl('h3', 'i-titel', 'Impect-Daten'), window.imEl('span', 'msv-note', 'Saisonschnitt pro Spiel · Stand ' + window.msvDatum(D.stand)));
+  el.appendChild(kopf);
+
+  const r1 = window.imEl('div', 'r-zwei');
+  const p1 = window.imPanel('Spielstil', 'Impect-Einstufung von 0 bis 100. Hervorgehoben = prägendster Stil' + (vglId ? ' des Gegners.' : '.'));
+  if (vglId) { const lg = window.imEl('div', 'msv-legend'); lg.append(window.imEl('span', 'msv-key r-key-g'), name + ' ', window.imEl('span', 'msv-key msv-key-msv'), 'MSV Duisburg'); p1.appendChild(lg); }
+  window.imStil(p1, id, vglId, [name, 'MSV Duisburg'], vglId ? [window.G_FARBE, 'var(--msv-blau-chart)'] : ['var(--msv-blau-chart)']);
+  const p2 = window.imPanel('Torgefahr und Abwehr', 'xG = erwartete Tore aus der Qualität der Schüsse. Platz unter ' + Object.keys(D.teams).length + ' Teams.');
+  window.imTabelle(p2, window.IM_TORGEFAHR, id, vglId, gegner);
+  r1.append(p1, p2); el.appendChild(r1);
+
+  const r2 = window.imEl('div', 'r-zwei');
+  const p3 = window.imPanel('Wie entstehen Tore und Gegentore?', 'Pro Spiel, nach Spielphase.');
+  const lg3 = window.imEl('div', 'msv-legend'); const k1 = window.imEl('span', 'msv-key'); k1.style.background = 'var(--color-ok)'; const k2 = window.imEl('span', 'msv-key'); k2.style.background = 'var(--color-bad)'; const k3 = window.imEl('span', 'msv-key msv-key-msv');
+  lg3.append(k1, 'Tore', k2, 'Gegentore', k3, 'xG (erwartet)'); p3.appendChild(lg3);
+  const zw = window.imEl('div', 'i-zwei'); const a = window.imEl('div'), b = window.imEl('div');
+  window.imPhasen(a, id, false); window.imPhasen(b, id, true); zw.append(a, b); p3.appendChild(zw);
+  const p4 = window.imPanel('Pressing', 'Rang 1 = höchster Wert der Liga.');
+  window.imTabelle(p4, window.IM_PRESSING, id, vglId, gegner);
+  r2.append(p3, p4); el.appendChild(r2);
+
+  const p5 = window.imPanel('Schussarten', 'xG pro Spiel je Schussart. xG für: Platz 1 = gefährlichste Offensive. xG gegen: Platz 1 = am wenigsten zugelassen.');
+  window.imSchuesse(p5, id, gegner); el.appendChild(p5);
+};
+
+dash.draw('aImpect', (el) => window.imBlock(el, window.MSV_ID, null, false));
+dash.draw('gImpect', (el) => { const t = window.gAktuell(); if (t) window.imBlock(el, t.id, window.MSV_ID, true); });
+if (window.gDraws && !window.gDraws.includes('gImpect')) window.gDraws.push('gImpect');
+</script>
+<script>
+// ----- Echte Aufstellungen der letzten 3 Spiele (SkillCorner-Positionen im eigenen Ballbesitz) -----
+window.auSpiele = (id) => { const d = dash.data('aufstellungen'); return d.status === 'ok' && d.data && d.data[String(id)] ? d.data[String(id)] : []; };
+window.auNachname = (n) => { const t = String(n || '').split(' '); return t.length > 1 ? t.slice(1).join(' ') : n; };
+window.auFeld = (box, sp, farbe) => {
+  // Ausschnitt um die Feldspieler (ohne Torwart), gleicher Massstab in beide Richtungen = Form bleibt echt, nur vergroessert
+  const F = (sp.start || []).filter((p) => p.rolle !== 'GK');
+  if (!F.length) return;
+  const W = 320, VH = 270, rand = 6;
+  const xs = F.map((p) => p.x), ys = F.map((p) => p.y);
+  const x0 = Math.min(...xs) - rand, x1 = Math.max(...xs) + rand, y0 = Math.min(...ys) - rand, y1 = Math.max(...ys) + rand;
+  const s = Math.min(W / (y1 - y0), VH / (x1 - x0));
+  const mx = (y0 + y1) / 2, my = (x0 + x1) / 2;
+  const px = (y) => W / 2 + (mx - y) * s, py = (x) => VH / 2 + (my - x) * s;
+  const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${VH}`).attr('width', '100%').attr('role', 'img')
+    .attr('aria-label', 'Durchschnittspositionen der Feldspieler im Ballbesitz');
+  const cid = 'au-clip-' + Math.random().toString(36).slice(2, 8);
+  svg.append('clipPath').attr('id', cid).append('rect').attr('width', W).attr('height', VH).attr('rx', 8);
+  svg.append('rect').attr('width', W).attr('height', VH).attr('rx', 8).style('fill', 'rgba(255,255,255,.04)').style('stroke', 'rgba(255,255,255,.18)');
+  const g = svg.append('g').attr('clip-path', `url(#${cid})`).style('fill', 'none').style('stroke', 'rgba(255,255,255,.3)').style('stroke-width', 1.2);
+  g.append('rect').attr('x', px(34)).attr('y', py(52.5)).attr('width', 68 * s).attr('height', 105 * s);
+  g.append('line').attr('x1', px(34)).attr('x2', px(-34)).attr('y1', py(0)).attr('y2', py(0));
+  g.append('circle').attr('cx', px(0)).attr('cy', py(0)).attr('r', 9.15 * s);
+  [52.5, -52.5].forEach((gx) => {
+    const d = gx > 0 ? -1 : 1;
+    g.append('rect').attr('x', px(20.16)).attr('y', py(gx > 0 ? gx : gx + 16.5)).attr('width', 40.32 * s).attr('height', 16.5 * s);
+  });
+  // Hoehe der letzten Linie: Mittel der hintersten 3 Feldspieler
+  const hinten = F.slice().sort((a, b) => a.x - b.x).slice(0, 3);
+  const lx = d3.mean(hinten, (p) => p.x);
+  svg.append('line').attr('x1', 4).attr('x2', W - 4).attr('y1', py(lx)).attr('y2', py(lx)).style('stroke', 'var(--color-warn)').style('stroke-dasharray', '5 4').style('opacity', .8);
+  svg.append('text').attr('x', 8).attr('y', 16).style('font-size', '11px').style('fill', 'var(--color-warn)').text('- - Abwehrlinie Ø ' + Math.round(lx + 52.5) + ' m vor eigenem Tor');
+  svg.append('text').attr('x', W - 8).attr('y', 16).attr('text-anchor', 'end').style('font-size', '11px').style('fill', 'var(--color-fg-muted)').text('Spielrichtung ↑');
+  const tip = window.msvTip(box);
+  // Kreise, die sich fast decken, leicht auseinanderschieben (nur Darstellung, Tooltip zeigt echte Werte)
+  F.forEach((p) => { p._x = px(p.y); p._y = py(p.x); });
+  for (let it = 0; it < 30; it++) {
+    F.forEach((a, i) => F.slice(i + 1).forEach((b) => {
+      const dx = b._x - a._x, dy = b._y - a._y, d = Math.hypot(dx, dy) || 0.01;
+      if (d < 32) { const m = (32 - d) / 2, ux = dx / d, uy = dy / d; a._x -= ux * m; a._y -= uy * m; b._x += ux * m; b._y += uy * m; }
+    }));
+  }
+  const belegt = F.map((p) => ({ x: p._x, y: p._y, r: 15 }));
+  const frei = (x, y, w) => x - w / 2 > 2 && x + w / 2 < W - 2 && !belegt.some((b) => (b.w ? Math.abs(b.x - x) < (b.w + w) / 2 + 2 && Math.abs(b.y - y) < 14 : Math.abs(b.x - x) < w / 2 + 14 && Math.abs(b.y - y) < 21));
+  F.slice().sort((a, b) => b.x - a.x).forEach((p) => {
+    const cx = p._x, cy = p._y, w = window.auNachname(p.name).length * 6.6;
+    const opt = [[cx, cy + 26], [cx, cy - 20], [cx + w / 2 + 17, cy + 4], [cx - w / 2 - 17, cy + 4], [cx, cy + 40]];
+    const o = opt.find(([lx, ly]) => frei(lx, ly - 4, w)) || opt[0];
+    p._lx = o[0]; p._ly = o[1];
+    belegt.push({ x: p._lx, y: p._ly - 4, w });
+  });
+  const kreise = svg.append('g'), namen = svg.append('g');
+  F.forEach((p) => {
+    const cx = p._x, cy = p._y;
+    const k = kreise.append('g')
+      .on('pointermove', (ev) => tip.show(ev, [(p.nr != null ? '#' + p.nr + ' ' : '') + p.name, 'Rolle laut SkillCorner: ' + (p.rolle || '—'), Math.round(p.x + 52.5) + ' m vor dem eigenen Tor', p.n + ' erfasste Aktionen']))
+      .on('pointerleave', () => tip.hide());
+    k.append('circle').attr('cx', cx).attr('cy', cy).attr('r', 14).style('fill', farbe).style('stroke', '#fff').style('stroke-width', 1.5);
+    k.append('text').attr('x', cx).attr('y', cy).attr('dy', '.35em').attr('text-anchor', 'middle').style('font-size', p.nr != null ? '13px' : '9.5px').style('font-weight', '700').style('fill', '#fff').text(p.nr != null ? p.nr : (p.rolle || ''));
+    namen.append('text').attr('x', p._lx).attr('y', p._ly).attr('text-anchor', 'middle').style('font-size', '12px').style('font-weight', '600').style('fill', '#fff').style('pointer-events', 'none')
+      .style('paint-order', 'stroke').style('stroke', 'rgba(16,28,72,.9)').style('stroke-width', 3).text(window.auNachname(p.name));
+  });
+};
+window.auBlock = (el, id, farbe) => {
+  el.replaceChildren();
+  const L = window.auSpiele(id);
+  if (!L.length) { el.appendChild(window.imEl('p', 'msv-note', 'Keine Aufstellungsdaten vorhanden.')); return; }
+  const plan = dash.data('liga_plan'), P = plan.status === 'ok' && plan.data ? plan.data : [];
+  const grid = window.imEl('div', 'au-grid');
+  L.forEach((sp) => {
+    const k = window.imEl('div', 'au-spiel');
+    const pe = P.find((x) => String(x.id) === String(sp.match_id));
+    const ort = pe ? (String(pe.heim_id) === String(id) ? 'Heim' : 'Auswärts') : '';
+    const erg = sp.tore > sp.gegentore ? 'S' : sp.tore === sp.gegentore ? 'U' : 'N';
+    const kopf = window.imEl('div', 'au-kopf g-' + erg);
+    kopf.append(window.imEl('b', null, (sp.tore ?? '–') + ':' + (sp.gegentore ?? '–')), window.imEl('span', null, 'gegen ' + (sp.gegner || '?')),
+      window.imEl('small', null, (sp.datum ? window.tTag(sp.datum.slice(0, 10)) : '') + (ort ? ' · ' + ort : '')));
+    k.appendChild(kopf);
+    const f = (sp.gegen_ball || [])[0];
+    const form = window.imEl('div', 'au-form');
+    form.append(window.imEl('span', null, 'Gegen den Ball: '), window.imEl('b', null, f ? f.f : '—'));
+    if (f) form.appendChild(window.imEl('span', 'au-anteil', ' ' + Math.round(f.anteil * 100) + ' %'));
+    const zweite = (sp.gegen_ball || [])[1];
+    if (zweite && zweite.anteil >= 0.15) form.appendChild(window.imEl('span', 'au-anteil', ' · auch ' + zweite.f + ' (' + Math.round(zweite.anteil * 100) + ' %)'));
+    k.appendChild(form);
+    const feld = window.imEl('div', 'au-feld'); k.appendChild(feld);
+    window.auFeld(feld, sp, farbe);
+    const w = (sp.wechsel || []);
+    k.appendChild(window.imEl('p', 'au-wechsel', w.length ? 'Eingewechselt: ' + w.map((x) => (x.nr != null ? '#' + x.nr + ' ' : '') + window.auNachname(x.name) + ' (' + Math.max(1, x.ab) + '.)').join(', ') : 'Keine Einwechslungen erfasst.'));
+    grid.appendChild(k);
+  });
+  el.appendChild(grid);
+};
+dash.draw('gAufstellung', (el) => { const t = window.gAktuell(); if (t) window.auBlock(el, t.id, window.G_FARBE); });
+if (window.gDraws && !window.gDraws.includes('gAufstellung')) window.gDraws.push('gAufstellung');
+</script>
+<script>
+// ----- Notizen zum Gegner (Chat-Stil) -----
+// Online (Passwort-Website): gemeinsamer Speicher in einem privaten GitHub-Repository, verschluesselt mit dem Dashboard-Passwort.
+// Ohne Online-Zugang (Test-Dashboard): nur im Browser (localStorage).
+window.NT_KEY = 'msv-notizen-v1';
+window.ntEntwurf = {};
+window.NT = { cache: null, sha: null, status: 'neu', fehler: '', key: null, salz: null, zuletzt: 0, laeuft: null };
+window.ntCfg = () => { const d = dash.data('notizen_cfg'); return d.status === 'ok' && d.data && d.data.token && window.MSV_PW_EIN ? d.data : null; };
+window.ntOnline = () => !!window.ntCfg();
+
+const ntB64 = (u8) => { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
+const ntUnB64 = (s) => Uint8Array.from(atob(s.replace(/\s/g, '')), (c) => c.charCodeAt(0));
+window.ntSchluessel = async (salz) => {
+  if (window.NT.key && window.NT.salz && ntB64(window.NT.salz) === ntB64(salz)) return window.NT.key;
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(window.MSV_PW_EIN), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: salz, iterations: 200000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  window.NT.key = key; window.NT.salz = salz; return key;
+};
+window.ntApi = async (methode, body) => {
+  const c = window.ntCfg();
+  const r = await fetch('https://api.github.com/repos/' + c.repo + '/contents/notizen.json', {
+    method: methode, cache: 'no-store',
+    headers: { Authorization: 'Bearer ' + c.token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  return r;
+};
+window.ntHolen = async () => {
+  const r = await window.ntApi('GET');
+  if (r.status === 404) { window.NT.cache = {}; window.NT.sha = null; return; }
+  if (!r.ok) throw new Error('GitHub ' + r.status);
+  const j = await r.json();
+  const datei = JSON.parse(new TextDecoder().decode(ntUnB64(j.content)));
+  const salz = ntUnB64(datei.salz), key = await window.ntSchluessel(salz);
+  const klar = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ntUnB64(datei.iv) }, key, ntUnB64(datei.ct));
+  window.NT.cache = JSON.parse(new TextDecoder().decode(klar));
+  window.NT.sha = j.sha;
+};
+window.ntSchreiben = async (alle) => {
+  const salz = window.NT.salz || crypto.getRandomValues(new Uint8Array(16));
+  const key = await window.ntSchluessel(salz), iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(alle))));
+  const datei = JSON.stringify({ v: 1, salz: ntB64(salz), iv: ntB64(iv), ct: ntB64(ct) });
+  const body = { message: 'Notizen ' + new Date().toISOString().slice(0, 16), content: ntB64(new TextEncoder().encode(datei)) };
+  if (window.NT.sha) body.sha = window.NT.sha;
+  const r = await window.ntApi('PUT', body);
+  if (r.status === 409 || r.status === 422) return false;   // jemand anderes hat zwischendurch gespeichert
+  if (!r.ok) throw new Error('GitHub ' + r.status);
+  window.NT.sha = (await r.json()).content.sha; window.NT.cache = alle; return true;
+};
+// Aenderung anwenden: frisch holen, aendern, speichern; bei gleichzeitiger Aenderung bis zu 3 Versuche
+window.ntAendern = async (fn) => {
+  if (!window.ntOnline()) {
+    const a = window.ntLokal(); if (a === null) return false;
+    fn(a); try { localStorage.setItem(window.NT_KEY, JSON.stringify(a)); return true; } catch (e) { return false; }
+  }
+  for (let i = 0; i < 3; i++) {
+    await window.ntHolen();
+    const a = JSON.parse(JSON.stringify(window.NT.cache || {})); fn(a);
+    if (await window.ntSchreiben(a)) { window.NT.zuletzt = Date.now(); return true; }
+  }
+  throw new Error('Speichern nicht möglich (Konflikt)');
+};
+window.ntLokal = () => { try { const v = localStorage.getItem(window.NT_KEY); return v ? JSON.parse(v) : {}; } catch (e) { return null; } };
+window.ntAlle = () => (window.ntOnline() ? window.NT.cache : window.ntLokal());
+window.ntAktualisieren = (still) => {
+  if (!window.ntOnline() || window.NT.laeuft) return window.NT.laeuft;
+  if (!still) { window.NT.status = 'laedt'; }
+  window.NT.laeuft = window.ntHolen()
+    .then(() => { window.NT.status = 'ok'; window.NT.fehler = ''; window.NT.zuletzt = Date.now(); })
+    .catch((e) => { window.NT.status = 'fehler'; window.NT.fehler = String(e.message || e); })
+    .finally(() => { window.NT.laeuft = null; const el = document.querySelector('[data-draw="gNotizen"]'); if (el && !el.closest('[hidden]') && !window.ntTippt()) dash.draw('gNotizen'); });
+  return window.NT.laeuft;
+};
+window.ntTippt = () => { const a = document.activeElement; return !!(a && a.classList && a.classList.contains('nt-eingabe') && a.value); };
+// Alle 60 Sekunden neue Notizen anderer holen, solange die Gegneranalyse offen ist
+setInterval(() => { const el = document.querySelector('[data-draw="gNotizen"]'); if (el && !el.closest('[hidden]') && document.visibilityState === 'visible') window.ntAktualisieren(true); }, 60000);
+
+window.ntZeit = (ms) => {
+  const d = new Date(ms), z = (n) => String(n).padStart(2, '0');
+  return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'][d.getDay()] + ' ' + z(d.getDate()) + '.' + z(d.getMonth() + 1) + '. ' + z(d.getHours()) + ':' + z(d.getMinutes());
+};
+dash.draw('gNotizen', (el) => {
+  el.replaceChildren();
+  const t = window.gAktuell(); if (!t) return;
+  const id = String(t.id), E = window.imEl, online = window.ntOnline();
+  const kopf = E('div', 'nt-kopf');
+  kopf.append(E('h2', null, 'Notizen'), E('span', 'nt-team', t.name));
+  el.appendChild(kopf);
+  if (online && window.NT.status === 'neu') { window.ntAktualisieren(); }
+  const alle = window.ntAlle();
+  if (!online && alle === null) { el.appendChild(E('p', 'msv-note', 'Dieser Browser erlaubt kein Speichern. Notizen sind hier leider nicht möglich.')); return; }
+  const liste = E('div', 'nt-liste'); liste.setAttribute('role', 'log'); liste.setAttribute('aria-live', 'polite');
+  const meldung = (txt, cls) => liste.appendChild(E('p', cls || 'nt-leer', txt));
+  if (online && window.NT.status === 'laedt' && !window.NT.cache) meldung('Notizen werden geladen …');
+  else if (online && window.NT.status === 'fehler' && !window.NT.cache) meldung('Notizen konnten nicht geladen werden (' + window.NT.fehler + ').', 'nt-fehler');
+  const notizen = ((alle || {})[id]) || [];
+  if (alle && !notizen.length) meldung('Noch keine Notizen zu ' + t.name + '.');
+  notizen.forEach((n) => {
+    const b = E('div', 'nt-blase');
+    const fuss = E('div', 'nt-fuss');
+    const weg = E('button', 'nt-weg', '×'); weg.type = 'button'; weg.title = 'Notiz löschen'; weg.setAttribute('aria-label', 'Notiz löschen');
+    weg.onclick = () => {
+      fuss.replaceChildren(E('span', null, 'Löschen?'));
+      const ja = E('button', 'nt-ja', 'Ja'), nein = E('button', 'nt-nein', 'Nein'); ja.type = nein.type = 'button';
+      ja.onclick = async () => {
+        ja.disabled = nein.disabled = true; ja.textContent = '…';
+        try { await window.ntAendern((a) => { a[id] = (a[id] || []).filter((x) => x.id !== n.id); if (!a[id].length) delete a[id]; }); }
+        catch (e) { window.NT.fehler = String(e.message || e); }
+        dash.draw('gNotizen');
+      };
+      nein.onclick = () => dash.draw('gNotizen');
+      fuss.append(ja, nein);
+    };
+    fuss.append(E('span', 'nt-zeit', window.ntZeit(n.zeit)), weg);
+    b.append(E('div', 'nt-text', n.text), fuss); liste.appendChild(b);
+  });
+  el.appendChild(liste);
+  const form = E('form', 'nt-form');
+  const inp = E('textarea', 'nt-eingabe'); inp.rows = 2; inp.setAttribute('aria-label', 'Neue Notiz');
+  inp.value = window.ntEntwurf[id] || '';
+  inp.oninput = () => { window.ntEntwurf[id] = inp.value; };
+  const senden = E('button', 'nt-senden', 'Senden'); senden.type = 'submit';
+  form.append(inp, senden);
+  const status = E('p', 'nt-hinweis', online ? 'Für alle mit Dashboard-Passwort sichtbar, auch am Handy.' : 'Gespeichert nur in diesem Browser auf diesem Gerät.');
+  form.onsubmit = async (ev) => {
+    ev.preventDefault();
+    const text = inp.value.trim(); if (!text) return;
+    senden.disabled = true; senden.textContent = '…';
+    try {
+      const ok = await window.ntAendern((a) => { (a[id] = a[id] || []).push({ id: Date.now() + '-' + Math.random().toString(36).slice(2, 6), text, zeit: Date.now() }); });
+      if (!ok) throw new Error('nicht gespeichert');
+      window.ntEntwurf[id] = '';
+      dash.draw('gNotizen');
+      const neu = document.querySelector('.nt-eingabe'); if (neu) neu.focus();
+    } catch (e) {
+      senden.disabled = false; senden.textContent = 'Senden';
+      status.className = 'nt-fehler'; status.textContent = 'Notiz konnte nicht gespeichert werden (' + (e.message || e) + '). Bitte erneut senden.';
+    }
+  };
+  inp.onkeydown = (ev) => { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); form.requestSubmit(); } };
+  el.append(form, status);
+  liste.scrollTop = liste.scrollHeight;
+});
+if (window.gDraws && !window.gDraws.includes('gNotizen')) window.gDraws.push('gNotizen');
 </script>

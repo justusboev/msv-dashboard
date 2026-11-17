@@ -29,6 +29,8 @@ jobs:
       MSV_TOKEN_DATEI: 02_Daten/polar_token.txt
       SKILLCORNER_USER: ${{ secrets.SKILLCORNER_USER }}
       SKILLCORNER_PW: ${{ secrets.SKILLCORNER_PASSWORT }}
+      NOTIZEN_TOKEN: ${{ secrets.NOTIZEN_TOKEN }}
+      NOTIZEN_REPO: justusboev/msv-notizen
       TZ: Europe/Berlin
     steps:
       - uses: actions/checkout@v4
@@ -45,6 +47,9 @@ jobs:
 
       - name: Kader und Spielerfotos entschluesseln
         run: python 03_Skripte/zustand.py stammdaten-auspacken
+
+      - name: Impect-Daten entschluesseln
+        run: python 03_Skripte/zustand.py impect-auspacken
 
       - name: Trainings von Polar holen
         id: polar
@@ -68,6 +73,18 @@ jobs:
           python daten_zusammenfuehren.py
           exit 0
 
+      - name: Liga von SkillCorner holen und auswerten
+        id: liga
+        run: |
+          if [ -z "$SKILLCORNER_PW" ]; then echo "Kein SkillCorner-Zugang hinterlegt, uebersprungen."; exit 0; fi
+          set +e
+          python 03_Skripte/liga_abholen.py --nur-neu
+          rc=$?
+          if [ $rc -ne 0 ] && [ $rc -ne 10 ]; then echo "fehler=1" >> "$GITHUB_OUTPUT"; fi
+          python 03_Skripte/liga_auswerten.py || echo "fehler=1" >> "$GITHUB_OUTPUT"
+          python 03_Skripte/liga_aufstellungen.py || echo "fehler=1" >> "$GITHUB_OUTPUT"
+          exit 0
+
       - name: Dashboard bauen
         run: |
           mkdir -p seite
@@ -80,7 +97,7 @@ jobs:
           git config user.name "MSV Dashboard"
           git config user.email "actions@users.noreply.github.com"
           git add daten/zustand.enc daten/zustand.pruefsumme
-          git diff --cached --quiet || (git commit -m "Datenstand $(date '+%d.%m.%Y %H:%M')" && git push)
+          git diff --cached --quiet || (git commit -m "Datenstand $(date '+%d.%m.%Y %H:%M')" && git pull --rebase && git push)
 
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -91,7 +108,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Fehler melden
-        if: steps.polar.outputs.fehler == '1' || steps.skillcorner.outputs.fehler == '1'
+        if: steps.polar.outputs.fehler == '1' || steps.skillcorner.outputs.fehler == '1' || steps.liga.outputs.fehler == '1'
         run: |
           echo "Abruf fehlgeschlagen. Details im Schritt 'Trainings von Polar holen' bzw. 'Spiele von SkillCorner holen'."
           tail -20 04_Tests/polar_protokoll.txt || true

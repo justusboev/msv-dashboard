@@ -12,7 +12,8 @@ DATEN = os.environ.get("MSV_DATEN") or os.path.join(ORDNER, "02_Daten")
 ZIEL = os.path.join(ORDNER, "daten", "zustand.enc")
 PRUEF = os.path.join(ORDNER, "daten", "zustand.pruefsumme")
 INHALT = ["polar_einheiten", "skillcorner_api_physis", "letzter_abruf.json", "polar_letzter_abruf.json", "polar_token.txt",
-          "skillcorner_physis_alle_spiele.csv", "polar_spieler_einheiten.csv", "polar_drills.csv", "polar_team_einheiten.csv"]
+          "skillcorner_physis_alle_spiele.csv", "polar_spieler_einheiten.csv", "polar_drills.csv", "polar_team_einheiten.csv",
+          "liga_kennzahlen.json", "liga/spielplan.json", "liga_aufstellungen.json"]
 KOPF, ZUSATZ = b"MSV1", b"msv-zustand-v1"
 
 
@@ -123,6 +124,38 @@ def stammdaten_auspacken():
     print("Stammdaten entschluesselt: %d Dateien." % n)
 
 
+# ---- Impect-Teamwerte (aus dem Excel-Export), verschluesselt mit dem Dashboard-Passwort ----
+IMPECT = os.path.join(ORDNER, "daten", "impect.enc")
+IMPECT_JSON = os.path.join(DATEN, "impect_teams.json")
+
+
+def impect_verschluesseln(roh):
+    """Bytes von impect_teams.json -> verschluesselte Bytes (Format MSI1)."""
+    salz, nonce = os.urandom(16), os.urandom(12)
+    return b"MSI1" + salz + nonce + AESGCM(stamm_schluessel(salz)).encrypt(nonce, gzip.compress(roh, mtime=0), b"msv-impect-v1")
+
+
+def impect_einpacken():
+    if not os.path.exists(IMPECT_JSON):
+        sys.exit("Keine 02_Daten/impect_teams.json vorhanden.")
+    open(IMPECT, "wb").write(impect_verschluesseln(open(IMPECT_JSON, "rb").read()))
+    print("Impect-Daten verschluesselt (%d KB)." % (os.path.getsize(IMPECT) // 1024))
+
+
+def impect_auspacken():
+    if not os.path.exists(IMPECT):
+        print("Keine Impect-Daten vorhanden.")
+        return
+    d = open(IMPECT, "rb").read()
+    if d[:4] != b"MSI1":
+        sys.exit("impect.enc hat ein unbekanntes Format.")
+    roh = gzip.decompress(AESGCM(stamm_schluessel(d[4:20])).decrypt(d[20:32], d[32:], b"msv-impect-v1"))
+    os.makedirs(DATEN, exist_ok=True)
+    open(IMPECT_JSON, "wb").write(roh)
+    print("Impect-Daten entschluesselt.")
+
+
 if __name__ == "__main__":
     {"einpacken": einpacken, "auspacken": auspacken,
-     "stammdaten-einpacken": stammdaten_einpacken, "stammdaten-auspacken": stammdaten_auspacken}[sys.argv[1]]()
+     "stammdaten-einpacken": stammdaten_einpacken, "stammdaten-auspacken": stammdaten_auspacken,
+     "impect-einpacken": impect_einpacken, "impect-auspacken": impect_auspacken}[sys.argv[1]]()
