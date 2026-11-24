@@ -9,6 +9,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  actions: read
 
 concurrency:
   group: msv-dashboard
@@ -17,9 +18,11 @@ concurrency:
 jobs:
   aktualisieren:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.veroeffentlichen.outputs.page_url }}
+    outputs:
+      seite: ${{ steps.hochladen.outcome }}
+      polar_fehler: ${{ steps.polar.outputs.fehler }}
+      skillcorner_fehler: ${{ steps.skillcorner.outputs.fehler }}
+      liga_fehler: ${{ steps.liga.outputs.fehler }}
     env:
       ZUSTAND_SCHLUESSEL: ${{ secrets.ZUSTAND_SCHLUESSEL }}
       MSV_PW: ${{ secrets.DASHBOARD_PASSWORT }}
@@ -100,16 +103,36 @@ jobs:
           git diff --cached --quiet || (git commit -m "Datenstand $(date '+%d.%m.%Y %H:%M')" && git pull --rebase && git push)
 
       - uses: actions/upload-pages-artifact@v3
+        id: hochladen
         with:
           path: seite
 
+  # Eigener Job fuers Veroeffentlichen: GitHub braucht seit Nov. 2026 einen Moment,
+  # bis das hochgeladene Seitenpaket auffindbar ist. Im selben Job schlug das fehl.
+  veroeffentlichen:
+    needs: aktualisieren
+    if: always() && needs.aktualisieren.outputs.seite == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.veroeffentlichen.outputs.page_url }}
+    steps:
+      - name: Kurz warten
+        run: sleep 20
       - name: Veroeffentlichen
         id: veroeffentlichen
         uses: actions/deploy-pages@v4
 
+  melden:
+    needs: [aktualisieren, veroeffentlichen]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
       - name: Fehler melden
-        if: steps.polar.outputs.fehler == '1' || steps.skillcorner.outputs.fehler == '1' || steps.liga.outputs.fehler == '1'
+        if: needs.aktualisieren.outputs.polar_fehler == '1' || needs.aktualisieren.outputs.skillcorner_fehler == '1' || needs.aktualisieren.outputs.liga_fehler == '1' || needs.veroeffentlichen.result != 'success'
         run: |
-          echo "Abruf fehlgeschlagen. Details im Schritt 'Trainings von Polar holen' bzw. 'Spiele von SkillCorner holen'."
-          tail -20 04_Tests/polar_protokoll.txt || true
+          echo "Polar-Fehler: ${{ needs.aktualisieren.outputs.polar_fehler }}"
+          echo "SkillCorner-Fehler: ${{ needs.aktualisieren.outputs.skillcorner_fehler }}"
+          echo "Liga-Fehler: ${{ needs.aktualisieren.outputs.liga_fehler }}"
+          echo "Veroeffentlichen: ${{ needs.veroeffentlichen.result }}"
           exit 1

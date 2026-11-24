@@ -102,9 +102,24 @@ import base64 as _b64
 def _uri(n, typ):
     f=os.path.join(HIER,'design',n)
     return ('data:'+typ+';base64,'+_b64.b64encode(open(f,'rb').read()).decode()) if os.path.exists(f) else ''
+
+def _app_icons(ziel_html):
+    """App-Logo, Favicon und Manifest neben die HTML-Datei legen (fuer 'Zum Home-Bildschirm')."""
+    import shutil, json as _j
+    ordner = os.path.dirname(os.path.abspath(ziel_html))
+    for n in ('apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'favicon-32.png'):
+        q = os.path.join(HIER, 'design', n)
+        if os.path.exists(q):
+            shutil.copyfile(q, os.path.join(ordner, n))
+    _j.dump({'name': 'MSV Dashboard', 'short_name': 'MSV Dashboard', 'start_url': './', 'scope': './', 'display': 'standalone',
+             'background_color': '#1b2a5c', 'theme_color': '#1b2a5c',
+             'icons': [{'src': 'icon-192.png', 'sizes': '192x192', 'type': 'image/png'}, {'src': 'icon-512.png', 'sizes': '512x512', 'type': 'image/png'}]},
+            open(os.path.join(ordner, 'manifest.webmanifest'), 'w', encoding='utf-8'), ensure_ascii=False)
+
 html=f'''<!DOCTYPE html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MSV Dashboard</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-title" content="MSV Dashboard"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="theme-color" content="#1b2a5c">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>{vars_css}{style}</style>
 </head><body><div class="msv-wrap">
@@ -118,4 +133,5 @@ html=f'''<!DOCTYPE html>
 </body></html>'''
 html=html.replace('__HINTERGRUND__',_uri('hintergrund.jpg','image/jpeg')).replace('__SCHRIFTZUG__',_uri('schriftzug.png','image/png'))
 open(sys.argv[2],'w',encoding='utf-8').write(html)
+_app_icons(sys.argv[2])
 print(len(html))
