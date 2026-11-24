@@ -128,10 +128,19 @@
 .lk-bar i { display:block; height:100%; border-radius:5px; }
 .lk-balken b { text-align:right; font-weight:500; font-variant-numeric: tabular-nums; }
 .msv-table.a-links th:nth-child(n), .msv-table.a-links td:nth-child(n) { text-align:left; }
-.g-form { display:flex; gap: var(--cds-gap-sm); flex-wrap:wrap; }
+.g-form { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--cds-gap-sm); }
+.g-form .g-spiel { min-width:0; } .g-form .g-spiel span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+@media (max-width: 480px) { .g-form { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 .g-spiel { display:flex; flex-direction:column; min-width: 120px; padding: 8px 10px; border-radius: var(--cds-radius); border:1px solid var(--color-border-line); border-top-width: 5px; }
 .g-spiel b { font-family: var(--font-anthropic-sans); font-weight:600; font-size: 20px; }
 .g-spiel span { font-size: var(--cds-font-size-caption); } .g-spiel small { color: var(--color-fg-muted); font-size: 11px; }
+.l-tab td, .l-tab th { text-align:right; } .l-tab td:nth-child(2), .l-tab th:nth-child(2) { text-align:left; white-space:nowrap; }
+.l-tab tr.l-msv td { font-weight:700; background: rgba(255,255,255,.10) !important; }
+.l-tab tr.l-auf td:first-child { box-shadow: inset 4px 0 0 var(--color-ok); } .l-tab tr.l-rel td:first-child { box-shadow: inset 4px 0 0 var(--color-warn); } .l-tab tr.l-ab td:first-child { box-shadow: inset 4px 0 0 var(--color-bad); }
+.l-form { display:inline-flex; gap:3px; } .l-form i { display:inline-block; width:18px; height:18px; line-height:18px; border-radius:4px; font-style:normal; font-size:11px; font-weight:700; text-align:center; color:#fff; }
+.l-form i.S { background: var(--color-ok); } .l-form i.U { background: var(--color-warn); } .l-form i.N { background: var(--color-bad); }
+.l-erg td:nth-child(1) { text-align:left; } .l-erg td:nth-child(2) { text-align:right; } .l-erg td:nth-child(3) { text-align:center; font-weight:700; white-space:nowrap; } .l-erg td:nth-child(4) { text-align:left; }
+.l-erg tr.l-msv td { background: rgba(255,255,255,.10) !important; }
 .g-S { border-top-color: var(--color-ok); } .g-U { border-top-color: var(--color-warn); } .g-N { border-top-color: var(--color-bad); }
 @media (max-width: 800px) {
   .a-zwei { grid-template-columns: 1fr; }
@@ -237,6 +246,7 @@
     <button class="msv-tab" role="tab" data-tab="physis" aria-selected="true">Spieldaten</button>
     <button class="msv-tab" role="tab" data-tab="analyse" aria-selected="false">Spielanalyse</button>
     <button class="msv-tab" role="tab" data-tab="gegner" aria-selected="false">Gegneranalyse</button>
+    <button class="msv-tab" role="tab" data-tab="liga" aria-selected="false">Liga</button>
     <button class="msv-tab" role="tab" data-tab="training" aria-selected="false">Training</button>
     <button class="msv-tab" role="tab" data-tab="spieler" aria-selected="false">Spieler</button>
   </nav>
@@ -467,7 +477,7 @@
       </div>
       <div class="msv-panel">
         <h2>Kennzahlen</h2>
-        <p class="msv-note">Grün = Schwäche des Gegners (Platz 16–20), Rot = Stärke (Platz 1–5).</p>
+        <p class="msv-note">Grün = Stärke des Gegners (Platz 1–5), Rot = Schwäche (Platz 16–20).</p>
         <div data-draw="gVergleich"></div>
       </div>
     </div>
@@ -499,6 +509,23 @@
     </details>
     </div>
     <aside class="g-notizen msv-panel" data-draw="gNotizen" aria-label="Notizen zum Gegner"></aside>
+    </div>
+  </section>
+
+  <section id="liga" data-panel="liga" hidden>
+    <div class="msv-panel">
+      <h2>Tabelle 3. Liga</h2>
+      <p class="msv-note" data-draw="ligaStand"></p>
+      <div data-draw="ligaTabelle"></div>
+      <p class="msv-note l-legende"><span class="msv-key" style="background:var(--color-ok)"></span>Aufstieg <span class="msv-key" style="background:var(--color-warn)"></span>Relegation <span class="msv-key" style="background:var(--color-bad)"></span>Abstieg · Form: letzte 5 Spiele, neuestes rechts. Quelle: offizielle Ergebnisse (OpenLigaDB).</p>
+    </div>
+    <div class="msv-panel">
+      <h2>Ergebnisse</h2>
+      <div class="msv-picker">
+        <label class="msv-picker-label" for="l-spieltag">Spieltag</label>
+        <select class="dash-select msv-select" id="l-spieltag" data-draw="ligaSpieltagWahl" aria-label="Spieltag wählen"></select>
+      </div>
+      <div data-draw="ligaErgebnisse"></div>
     </div>
   </section>
 
@@ -2143,7 +2170,7 @@ dash.calc('liga_teams', {
         const t = T[id] || (T[id] = { id: id, name: a.name || k, kurz: k, spiele: [], Z: {}, G: {}, P: {}, nP: 0, tore: [], gegentore: [] });
         if (a.name && a.name !== k) t.name = a.name;
         t.spiele.push({ match_id: sp.match_id, datum: sp.datum, gegner: b.name || keys[1 - i], gegner_id: String(b.team_id),
-          tore: (a.tore || []).length, gegentore: (b.tore || []).length });
+          tore: a.tore_offiziell ?? (a.tore || []).length, gegentore: b.tore_offiziell ?? (b.tore || []).length });
         Object.entries(a.zaehler || {}).forEach(([z, v]) => { t.Z[z] = (t.Z[z] || 0) + v; });
         Object.entries(b.zaehler || {}).forEach(([z, v]) => { t.G[z] = (t.G[z] || 0) + v; });
         if (a.physis && a.physis.distanz_m) { t.nP += 1; ['distanz_m', 'intensiv_m', 'sprints'].forEach((z) => { t.P[z] = (t.P[z] || 0) + (a.physis[z] || 0); }); }
@@ -2289,7 +2316,7 @@ window.lkTore = (el, t) => {
 dash.draw('aLede', (el) => {
   const t = window.lkTeam(window.MSV_ID);
   if (!t) { el.textContent = 'Noch keine Ligadaten vorhanden.'; return; }
-  const s = t.spiele, sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
+  const s = window.ligaAlle(t), sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
   const b = (x) => { const e = document.createElement('b'); e.textContent = x; return e; };
   const ex = window.lkExtreme(window.MSV_ID);
   el.replaceChildren('MSV Duisburg nach ', b(String(s.length)), ' Spielen: ', b(sieg + ' S / ' + rem + ' U / ' + (s.length - sieg - rem) + ' N'), ', Tore ',
@@ -2340,7 +2367,7 @@ dash.draw('gWahl', (sel) => {
 });
 dash.draw('gLede', (el) => {
   const t = window.gAktuell(); if (!t) { el.textContent = 'Noch keine Ligadaten vorhanden.'; return; }
-  const s = t.spiele, sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
+  const s = window.ligaAlle(t), sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
   const b = (x) => { const e = document.createElement('b'); e.textContent = x; return e; };
   const n = window.gNaechster(), naechst = n && [String(n.heim_id), String(n.gast_id)].includes(t.id);
   el.replaceChildren(b(t.name), ' nach ', b(String(s.length)), ' Spielen: ', b(sieg + ' S / ' + rem + ' U / ' + (s.length - sieg - rem) + ' N'),
@@ -2351,7 +2378,7 @@ dash.draw('gForm', (el) => {
   el.replaceChildren();
   const t = window.gAktuell(); if (!t) return;
   const box = document.createElement('div'); box.className = 'g-form';
-  t.spiele.slice().sort((a, b) => (a.datum < b.datum ? 1 : -1)).slice(0, 6).forEach((s) => {
+  window.ligaAlle(t).slice().sort((a, b) => (a.datum < b.datum ? 1 : -1)).slice(0, 6).reverse().forEach((s) => {   // älteste oben links, neuestes unten rechts
     const k = document.createElement('div'); const erg = s.tore > s.gegentore ? 'S' : s.tore === s.gegentore ? 'U' : 'N';
     k.className = 'g-spiel g-' + erg;
     const e = document.createElement('b'); e.textContent = s.tore + ':' + s.gegentore;
@@ -2596,7 +2623,7 @@ window.rRadar = (el, teams) => {
 };
 
 window.rPlatz = (rang, n, gegner) => {
-  const gut = gegner ? ' r-flop' : ' r-top', schlecht = gegner ? ' r-top' : ' r-flop';
+  const gut = ' r-top', schlecht = ' r-flop';   // immer aus Sicht des Teams: Stärke grün, Schwäche rot
   const s = document.createElement('span'); s.className = 'r-platz' + (rang <= 5 ? gut : rang > n - 5 ? schlecht : '');
   s.textContent = rang + '.'; s.title = 'Platz ' + rang + ' von ' + n; return s;
 };
@@ -2641,7 +2668,7 @@ window.rAlle = (el, teamId, msv) => {
 
 window.rKpi = (el, t) => {
   el.replaceChildren(); if (!t) return;
-  const s = t.spiele, sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
+  const s = window.ligaAlle(t), sieg = s.filter((x) => x.tore > x.gegentore).length, rem = s.filter((x) => x.tore === x.gegentore).length;
   const k5 = window.rWert('k5', t.id), d1 = window.rWert('d1', t.id), k3 = window.rWert('k3', t.id), d2 = window.rWert('d2', t.id);
   [['Spiele', String(s.length), sieg + ' S · ' + rem + ' U · ' + (s.length - sieg - rem) + ' N'],
    ['Tore', d3.sum(s, (x) => x.tore) + ':' + d3.sum(s, (x) => x.gegentore), 'Tordifferenz ' + (d3.sum(s, (x) => x.tore) - d3.sum(s, (x) => x.gegentore))],
@@ -2735,7 +2762,7 @@ dash.draw('gVergleich', (el) => {
   const z = window.R_ACHSEN.map(([id]) => {
     const m = window.lkM(id), g = window.rWert(id, t.id), k = window.rWert(id, window.MSV_ID);
     if (!g) return null;
-    return { klasse: g.rang <= 5 ? 'r-gefahr' : g.rang > g.n - 5 ? 'r-chance' : '', zellen: [m.l, window.lkWert(m, g.v), k ? window.lkWert(m, k.v) : '—', window.lkWert(m, g.schnitt), window.rPlatz(g.rang, g.n, true)] };
+    return { klasse: g.rang <= 5 ? 'r-chance' : g.rang > g.n - 5 ? 'r-gefahr' : '', zellen: [m.l, window.lkWert(m, g.v), k ? window.lkWert(m, k.v) : '—', window.lkWert(m, g.schnitt), window.rPlatz(g.rang, g.n, true)] };
   }).filter(Boolean);
   window.rTabelle(el, z, ['Kennzahl', 'Gegner', 'MSV', 'Liga Ø', 'Platz Gegner']);
 });
@@ -2871,7 +2898,7 @@ window.imTabelle = (box, liste, id, vglId, gegner) => {
     if (vglId) zellen.push(window.imFmt(m, v ? v[m.k] : NaN));
     zellen.push(window.imFmt(m, rg.schnitt), window.imPlatzZelle(rg, m, gegner));
     let klasse = '';
-    if (m.r !== 0) klasse = rg.rang <= 5 ? (gegner ? 'r-gefahr' : 'r-chance') : rg.rang > rg.n - 5 ? (gegner ? 'r-chance' : 'r-gefahr') : '';
+    if (m.r !== 0) klasse = rg.rang <= 5 ? 'r-chance' : rg.rang > rg.n - 5 ? 'r-gefahr' : '';
     return { klasse, zellen };
   }).filter(Boolean);
   const d = window.imEl('div'); box.appendChild(d);
@@ -2958,9 +2985,9 @@ window.auFeld = (box, sp, farbe) => {
   const W = 320, VH = 270, rand = 6;
   const xs = F.map((p) => p.x), ys = F.map((p) => p.y);
   const x0 = Math.min(...xs) - rand, x1 = Math.max(...xs) + rand, y0 = Math.min(...ys) - rand, y1 = Math.max(...ys) + rand;
-  const s = Math.min(W / (y1 - y0), VH / (x1 - x0));
+  const OBEN = 34, s = Math.min(W / (y1 - y0), (VH - OBEN - 8) / (x1 - x0));
   const mx = (y0 + y1) / 2, my = (x0 + x1) / 2;
-  const px = (y) => W / 2 + (mx - y) * s, py = (x) => VH / 2 + (my - x) * s;
+  const px = (y) => W / 2 + (mx - y) * s, py = (x) => OBEN + (VH - OBEN - 8) / 2 + (my - x) * s;
   const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${VH}`).attr('width', '100%').attr('role', 'img')
     .attr('aria-label', 'Durchschnittspositionen der Feldspieler im Ballbesitz');
   const cid = 'au-clip-' + Math.random().toString(36).slice(2, 8);
@@ -2990,7 +3017,7 @@ window.auFeld = (box, sp, farbe) => {
     }));
   }
   const belegt = F.map((p) => ({ x: p._x, y: p._y, r: 15 }));
-  const frei = (x, y, w) => x - w / 2 > 2 && x + w / 2 < W - 2 && !belegt.some((b) => (b.w ? Math.abs(b.x - x) < (b.w + w) / 2 + 2 && Math.abs(b.y - y) < 14 : Math.abs(b.x - x) < w / 2 + 14 && Math.abs(b.y - y) < 21));
+  const frei = (x, y, w) => x - w / 2 > 2 && x + w / 2 < W - 2 && y > OBEN - 4 && y < VH - 4 && !belegt.some((b) => (b.w ? Math.abs(b.x - x) < (b.w + w) / 2 + 2 && Math.abs(b.y - y) < 14 : Math.abs(b.x - x) < w / 2 + 14 && Math.abs(b.y - y) < 21));
   F.slice().sort((a, b) => b.x - a.x).forEach((p) => {
     const cx = p._x, cy = p._y, w = window.auNachname(p.name).length * 6.6;
     const opt = [[cx, cy + 26], [cx, cy - 20], [cx + w / 2 + 17, cy + 4], [cx - w / 2 - 17, cy + 4], [cx, cy + 40]];
@@ -3005,14 +3032,14 @@ window.auFeld = (box, sp, farbe) => {
       .on('pointermove', (ev) => tip.show(ev, [(p.nr != null ? '#' + p.nr + ' ' : '') + p.name, 'Rolle laut SkillCorner: ' + (p.rolle || '—'), Math.round(p.x + 52.5) + ' m vor dem eigenen Tor', p.n + ' erfasste Aktionen']))
       .on('pointerleave', () => tip.hide());
     k.append('circle').attr('cx', cx).attr('cy', cy).attr('r', 14).style('fill', farbe).style('stroke', '#fff').style('stroke-width', 1.5);
-    k.append('text').attr('x', cx).attr('y', cy).attr('dy', '.35em').attr('text-anchor', 'middle').style('font-size', p.nr != null ? '13px' : '9.5px').style('font-weight', '700').style('fill', '#fff').text(p.nr != null ? p.nr : (p.rolle || ''));
+    k.append('text').attr('x', cx).attr('y', cy).attr('dy', '.35em').attr('text-anchor', 'middle').style('font-size', p.nr != null ? '13px' : '9.5px').style('font-weight', '700').style('fill', 'var(--msv-navy)').text(p.nr != null ? p.nr : (p.rolle || ''));
     namen.append('text').attr('x', p._lx).attr('y', p._ly).attr('text-anchor', 'middle').style('font-size', '12px').style('font-weight', '600').style('fill', '#fff').style('pointer-events', 'none')
       .style('paint-order', 'stroke').style('stroke', 'rgba(16,28,72,.9)').style('stroke-width', 3).text(window.auNachname(p.name));
   });
 };
 window.auBlock = (el, id, farbe) => {
   el.replaceChildren();
-  const L = window.auSpiele(id);
+  const L = window.auSpiele(id).slice().reverse();   // älteste links, neueste rechts
   if (!L.length) { el.appendChild(window.imEl('p', 'msv-note', 'Keine Aufstellungsdaten vorhanden.')); return; }
   const plan = dash.data('liga_plan'), P = plan.status === 'ok' && plan.data ? plan.data : [];
   const grid = window.imEl('div', 'au-grid');
@@ -3040,8 +3067,55 @@ window.auBlock = (el, id, farbe) => {
   });
   el.appendChild(grid);
 };
-dash.draw('gAufstellung', (el) => { const t = window.gAktuell(); if (t) window.auBlock(el, t.id, window.G_FARBE); });
+window.AU_FARBE = '#EAA09B';
+dash.draw('gAufstellung', (el) => { const t = window.gAktuell(); if (t) window.auBlock(el, t.id, window.AU_FARBE); });
 if (window.gDraws && !window.gDraws.includes('gAufstellung')) window.gDraws.push('gAufstellung');
+
+// ----- Offizielle Ergebnisse und Reiter Liga -----
+window.ligaErg = () => { const d = dash.data('liga_erg'); return d.status === 'ok' && Array.isArray(d.data) && d.data.length ? d.data : null; };
+// Alle Spiele eines Teams mit offiziellem Ergebnis (Fallback: SkillCorner-Spiele)
+window.ligaAlle = (t) => {
+  const E = window.ligaErg(); if (!E || !t) return t ? t.spiele : [];
+  const id = String(t.id);
+  return E.filter((e) => e.heim_id === id || e.gast_id === id).map((e) => {
+    const h = e.heim_id === id;
+    return { match_id: e.id, datum: e.datum, gegner: h ? e.gast : e.heim, gegner_id: h ? e.gast_id : e.heim_id, tore: h ? e.th : e.tg, gegentore: h ? e.tg : e.th };
+  });
+};
+dash.draw('ligaStand', (el) => {
+  const d = dash.data('liga_tabelle');
+  el.textContent = d.status === 'ok' && d.data ? 'Nach dem ' + d.data.spieltag + '. Spieltag · Stand ' + window.msvDatum(String(d.data.stand).slice(0, 10)) : 'Noch keine Tabelle vorhanden.';
+});
+dash.draw('ligaTabelle', (el) => {
+  el.replaceChildren();
+  const d = dash.data('liga_tabelle'); if (d.status !== 'ok' || !d.data) return;
+  const T = d.data.tabelle || [], n = T.length;
+  const zeilen = T.map((t) => {
+    const form = document.createElement('span'); form.className = 'l-form';
+    (t.form || []).forEach((f) => { const i = document.createElement('i'); i.className = f; i.textContent = f; form.appendChild(i); });
+    const kl = [String(t.team_id) === window.MSV_ID ? 'l-msv' : '', t.platz <= 2 ? 'l-auf' : t.platz === 3 ? 'l-rel' : t.platz > n - 4 ? 'l-ab' : ''].join(' ');
+    return { klasse: kl, zellen: [t.platz + '.', t.name, t.spiele, t.siege, t.unentschieden, t.niederlagen, t.tore, t.gegentore, (t.differenz > 0 ? '+' : '') + t.differenz, t.punkte, form] };
+  });
+  window.rTabelle(el, zeilen, ['Pl.', 'Team', 'Sp', 'S', 'U', 'N', 'Tore', 'Gegentore', 'Diff', 'Punkte', 'Form']);
+  const t = el.querySelector('table'); if (t) t.className = 'msv-table l-tab';
+});
+dash.draw('ligaSpieltagWahl', (sel) => {
+  const E = window.ligaErg(); sel.replaceChildren(); if (!E) return;
+  const st = [...new Set(E.map((e) => e.st))].sort((a, b) => b - a);
+  st.forEach((x) => { const o = document.createElement('option'); o.value = x; o.textContent = x + '. Spieltag'; sel.appendChild(o); });
+  if (window.ligaSt == null || !st.includes(window.ligaSt)) window.ligaSt = st[0];
+  sel.value = window.ligaSt;
+  sel.onchange = () => { window.ligaSt = Number(sel.value); dash.draw('ligaErgebnisse'); };
+});
+dash.draw('ligaErgebnisse', (el) => {
+  el.replaceChildren();
+  const E = window.ligaErg(); if (!E) { el.textContent = 'Noch keine Ergebnisse vorhanden.'; return; }
+  const st = window.ligaSt ?? Math.max(...E.map((e) => e.st));
+  const L = E.filter((e) => e.st === st).sort((a, b) => (a.datum < b.datum ? -1 : 1));
+  window.rTabelle(el, L.map((e) => ({ klasse: e.heim_id === window.MSV_ID || e.gast_id === window.MSV_ID ? 'l-msv' : '',
+    zellen: [window.tTag(String(e.datum).slice(0, 10)), e.heim, e.th + ' : ' + e.tg, e.gast] })), ['Datum', 'Heim', 'Ergebnis', 'Gast']);
+  const t = el.querySelector('table'); if (t) t.className = 'msv-table l-erg';
+});
 </script>
 <script>
 // ----- Notizen zum Gegner (Chat-Stil) -----

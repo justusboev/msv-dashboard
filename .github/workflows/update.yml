@@ -88,6 +88,9 @@ jobs:
           python 03_Skripte/liga_aufstellungen.py || echo "fehler=1" >> "$GITHUB_OUTPUT"
           exit 0
 
+      - name: Tabelle 3. Liga (offizielle Ergebnisse, OpenLigaDB)
+        run: python 03_Skripte/liga_tabelle.py || echo "OpenLigaDB nicht erreichbar, letzte Tabelle bleibt."
+
       - name: Dashboard bauen
         run: |
           mkdir -p seite

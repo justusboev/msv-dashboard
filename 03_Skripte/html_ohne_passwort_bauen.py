@@ -47,6 +47,8 @@ from impect_einlesen import impect_laden
 daten['impect'] = impect_laden(daten['liga'])
 from liga_aufstellungen import aufstellungen_laden
 daten['aufstellungen'] = aufstellungen_laden(3)
+from liga_offiziell import anwenden as liga_offiziell_anwenden
+liga_offiziell_anwenden(daten)
 _IM_KAT = ['Spielstile','Allgemein','Tore erzielen','Gegentore verhindern','Alle offensiven Spielphasen - Tore','Alle offensiven Spielphasen - Shot-based xG','Alle defensiven Spielphasen - Gegentore','Alle defensiven Spielphasen - Shot-based xG (Gegner)','Übersicht','Standard-Daten - Standard-Daten','Offensiv - Shot-based xG','Defensiv - Shot-based xG (Gegner)']
 for _t in (daten['impect'].get('teams') or {}).values():
     _t['w'] = {k: v for k, v in _t['w'].items() if k.split('|')[0] in _IM_KAT}

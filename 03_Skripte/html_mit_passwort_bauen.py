@@ -54,6 +54,8 @@ from impect_einlesen import impect_laden
 daten['impect'] = impect_laden(daten['liga'])
 from liga_aufstellungen import aufstellungen_laden
 daten['aufstellungen'] = aufstellungen_laden(3)
+from liga_offiziell import anwenden as liga_offiziell_anwenden
+liga_offiziell_anwenden(daten)
 # Gemeinsame Notizen: privates GitHub-Repository, Zugang nur im verschluesselten Teil der Seite
 if os.environ.get('NOTIZEN_TOKEN'):
     daten['notizen_cfg'] = {'repo': os.environ.get('NOTIZEN_REPO', 'justusboev/msv-notizen'), 'token': os.environ['NOTIZEN_TOKEN'].strip()}

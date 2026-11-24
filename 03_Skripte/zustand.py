@@ -13,7 +13,8 @@ ZIEL = os.path.join(ORDNER, "daten", "zustand.enc")
 PRUEF = os.path.join(ORDNER, "daten", "zustand.pruefsumme")
 INHALT = ["polar_einheiten", "skillcorner_api_physis", "letzter_abruf.json", "polar_letzter_abruf.json", "polar_token.txt",
           "skillcorner_physis_alle_spiele.csv", "polar_spieler_einheiten.csv", "polar_drills.csv", "polar_team_einheiten.csv",
-          "liga_kennzahlen.json", "liga/spielplan.json", "liga_aufstellungen.json"]
+          "liga_kennzahlen.json", "liga/spielplan.json", "liga_aufstellungen.json",
+          "liga/tabelle.json", "liga/ergebnisse.json"]
 KOPF, ZUSATZ = b"MSV1", b"msv-zustand-v1"
 
 
